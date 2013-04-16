@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import com.vetapp.customer.NextVisitGUI;
 import com.vetapp.customer.createPetGUI;
+import com.vetapp.history.BirthGUI;
 import com.vetapp.shop.ShopGUI;
 
 public class VetApp {
@@ -23,6 +24,7 @@ public class VetApp {
 	    main.setShopStatusBar("This is the ShopGUI. Ready.");
        new createPetGUI();  // For test purposes only delete this line if you want
        new NextVisitGUI();   // For test purposes only delete this line if you want
+       new BirthGUI();
 	}
 
 }
