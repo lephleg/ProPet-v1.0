@@ -19,10 +19,11 @@ public class VetApp {
 		main.setVisible(true);
 		
 	    main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    main.setTitle(MAIN_WINDOW_TITLE);
+		main.setTitle(MAIN_WINDOW_TITLE);
 	    main.setShopStatusBar("This is the ShopGUI. Ready.");
-       new createPetGUI();  // For test purposes only delete this line if you want
-       new NextVisitGUI();   // For test purposes only delete this line if you want
+	    new createPetGUI();  // For test purposes only delete this line if you want
+	    new NextVisitGUI();   // For test purposes only delete this line if you want
+	    //test push
 	}
 
 }
