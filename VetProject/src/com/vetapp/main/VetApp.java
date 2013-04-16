@@ -23,6 +23,9 @@ public class VetApp {
 	    main.setShopStatusBar("This is the ShopGUI. Ready.");
        new createPetGUI();  // For test purposes only delete this line if you want
        new NextVisitGUI();   // For test purposes only delete this line if you want
+       
+       
+       //test commit
 	}
 
 }
