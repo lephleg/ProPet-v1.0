@@ -14,6 +14,8 @@ public class BirthGUI extends JFrame {
 	private JTable table;
 	private JButton back_button ;
 	public BirthGUI() {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setAutoRequestFocus(false);
 		
 		JPanel  panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -25,7 +27,7 @@ public class BirthGUI extends JFrame {
 				{"", ""},
 				{"", ""},
 				{null, null},
-				{null, null},
+				{null, null},                    //Data
 				{null, null},
 				{null, null},
 				{null, null},
@@ -60,9 +62,13 @@ public class BirthGUI extends JFrame {
 		JLabel label = new JLabel("                                                                   Births Given");
 		label.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panel.add(label ,BorderLayout.NORTH);
-		back_button = new JButton("Back");   // Den katafera na mikrynw to button "Back"
-		panel.add(back_button, BorderLayout.SOUTH);
+		back_button = new JButton("Back");   
+		//panel.add(back_button, BorderLayout.SOUTH);
+		JPanel panel_1 =new JPanel();  // Voithitiko panel 
+		panel_1.add(back_button);
+		panel.add(panel_1 , BorderLayout.SOUTH);
 	    this.setContentPane(panel );
+	    
 		setVisible(true);
 		// Gia kapoio logo otan kanw compile and run to parathyro emfanizetai elaxistopoihmeno eksorismou.
 	}
