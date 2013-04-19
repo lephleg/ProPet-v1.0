@@ -2,6 +2,7 @@ package com.vetapp.main;
 
 import javax.swing.JFrame;
 
+import com.vetapp.customer.CustomerGUI;
 import com.vetapp.customer.NextVisitGUI;
 import com.vetapp.customer.createPetGUI;
 import com.vetapp.history.BirthGUI;
@@ -25,6 +26,8 @@ public class VetApp {
        new createPetGUI();  // For test purposes only delete this line if you want
        new NextVisitGUI();   // For test purposes only delete this line if you want
        new BirthGUI();
+       new CustomerGUI();  //For test purposes only
+       
 	}
 
 }
