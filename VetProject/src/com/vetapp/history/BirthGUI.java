@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-// Needs Optimization!
+
 public class BirthGUI extends JFrame {
 	private JTable table;
 	private JButton back_button ;
@@ -69,8 +69,9 @@ public class BirthGUI extends JFrame {
 		panel.add(panel_1 , BorderLayout.SOUTH);
 	    this.setContentPane(panel );
 	    
-		setVisible(true);
-		// Gia kapoio logo otan kanw compile and run to parathyro emfanizetai elaxistopoihmeno eksorismou.
+		this.setVisible(true);
+		this.pack();
+		
 	}
 
 	}
