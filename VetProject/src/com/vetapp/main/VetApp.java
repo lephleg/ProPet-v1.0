@@ -4,6 +4,7 @@ import com.vetapp.customer.CreateCustomerGUI;
 import com.vetapp.customer.CustomerGUI;
 import com.vetapp.customer.NextVisitGUI;
 import com.vetapp.customer.createPetGUI;
+import com.vetapp.customer.editCustomerGUI;
 import com.vetapp.history.BirthGUI;
 import com.vetapp.shop.ShopGUI;
 
@@ -21,6 +22,7 @@ public class VetApp {
 		new NextVisitGUI();   
 		new BirthGUI();
 		new CustomerGUI();
+		new editCustomerGUI();
        
 	}
 
