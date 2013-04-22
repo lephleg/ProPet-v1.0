@@ -1,78 +1,92 @@
 package com.vetapp.shop;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+/*
+* ShopGUI.java
+* The initial GUI class of the application. It generates a frame
+* with the application logo on top and two buttons for the end user below 
+* to either navigate to customer list or terminate the application.
+*/
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.vetapp.util.StatusBar;
-
-public class ShopGUI extends JFrame implements ActionListener {
-
-	private static final long serialVersionUID = 2676061954249119209L;
+public class ShopGUI extends JFrame {
+	
+	//Icon URL/directory link & JButton label strings declared as constants
+	private static String LOGO_ICON_URL = "http://i.imgur.com/sn0luPx.jpg"; //(sti teliki ekdosi to URL 
+																			//tha antikatastathei me topiko directory)
 	private static String CUSTOMERS_BUTTON_LABEL = "Customers";
 	private static String QUIT_BUTTON_LABEL = "Exit";
 	
-
-	private BorderLayout shopLayout;
-	private JPanel shopPanel;
-	private BoxLayout vbox;
+	private JPanel shopPnl;			//containing logoLlb, customerBtn & quitBtn
+	private BoxLayout paneLayout;	//contentPane layout
+	private BoxLayout shopLayout;	//shopPnl layout
+	private JLabel logoLbl;
 	private JButton customersBtn;
 	private JButton quitBtn;
-	private StatusBar stBar;
-	
+	private ImageIcon logo;			//ImageIcon object for logoLbl image
+
 	public ShopGUI() {
-	    
-	    this.shopLayout = new BorderLayout();
-	    this.shopPanel = new JPanel();
-	    this.stBar = new StatusBar();
-	    this.vbox = new  BoxLayout(shopPanel, 3);
-	    this.customersBtn = new JButton(CUSTOMERS_BUTTON_LABEL);
-	    this.quitBtn = new JButton(QUIT_BUTTON_LABEL);
+		
+		//Frame configuration
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setTitle(com.vetapp.main.VetApp.MAIN_WINDOW_TITLE);	//gets window title from constant in com.vetapp.main.VetApp
 
-	    getContentPane().setLayout(shopLayout);
-	    getContentPane().add(this.shopPanel, "Center");
-	    getContentPane().add(this.stBar, "South");
-	    this.shopPanel.setLayout(vbox);
-	    
-	    this.shopPanel.add(Box.createRigidArea(new Dimension(0, 170)));
-	    this.shopPanel.add(customersBtn);
-	    this.shopPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-	    this.shopPanel.add(quitBtn);
-	    
-	    this.customersBtn.setAlignmentX(0.5F);
-	    this.quitBtn.setAlignmentX(0.5F);
-	    
-	    this.shopPanel.setVisible(true);
-	    
-	    this.customersBtn.addActionListener(this);
-	    this.quitBtn.addActionListener(this);
+		//getContentPane() layout (horizontal BoxLayout)
+		shopPnl = new JPanel();
+		paneLayout = new BoxLayout(getContentPane(),BoxLayout.X_AXIS);
+		getContentPane().setLayout(paneLayout);
+		
+		getContentPane().add(Box.createRigidArea(new Dimension(40, 0)));
+		getContentPane().add(shopPnl);
+		getContentPane().add(Box.createRigidArea(new Dimension(40, 0)));
+		
+		//shopPnl layout (vertical BoxLayout)
+		logo = setIcon(LOGO_ICON_URL);
+		logoLbl = new JLabel(logo);
+		customersBtn = new JButton(CUSTOMERS_BUTTON_LABEL);
+		quitBtn = new JButton(QUIT_BUTTON_LABEL);
+		shopLayout = new BoxLayout(shopPnl, BoxLayout.Y_AXIS);
+		shopPnl.setLayout(shopLayout);
 
+		shopPnl.add(Box.createRigidArea(new Dimension(0, 15)));
+		shopPnl.add(logoLbl);
+		shopPnl.add(Box.createRigidArea(new Dimension(0, 20)));
+		shopPnl.add(customersBtn);
+		shopPnl.add(Box.createRigidArea(new Dimension(0, 10)));
+		shopPnl.add(quitBtn);
+		shopPnl.add(Box.createRigidArea(new Dimension(0, 15)));
+
+		logoLbl.setAlignmentX(CENTER_ALIGNMENT);		//set logo JLabel alignment to CENTER
+		customersBtn.setAlignmentX(CENTER_ALIGNMENT);	//set customers JButton alignment to CENTER
+		quitBtn.setAlignmentX(CENTER_ALIGNMENT);		//set exit JButton alignment to CENTER
+		
+	    //Pack() & Enable visibility for JFrame & all containers
+		pack();
+		setVisible(true);
+		getContentPane().setVisible(true);
+		shopPnl.setVisible(true);
 	}
 	
-	//Setter for the StatusBar message
-	
-	public void setShopStatusBar(String s) {
-		this.stBar.setStatusString(s);
-	}
-
-	//ActionListener actionPerformed Method
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals(CUSTOMERS_BUTTON_LABEL)) {
-			this.stBar.setStatusString("Don't be impatient. This isn't ready yet!");
-		} else if (e.getActionCommand().equals(QUIT_BUTTON_LABEL)) {
-			this.stBar.setStatusString("Bye!");
-			System.exit(0);
+	/*
+	* A method to retrieve the logo icon
+	* */
+	public ImageIcon setIcon(String link) {
+		try {
+			URL url = new URL(link);
+			return (new ImageIcon(url));
+		} catch (MalformedURLException e) {
+			return null;
 		}
 	}
-		
 }
-	
-
