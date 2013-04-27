@@ -8,6 +8,8 @@ package com.vetapp.customer;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,8 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
+import com.vetapp.shop.ShopGUI;
 
-public class CreateCustomerGUI extends JFrame {
+
+public class CreateCustomerGUI extends JFrame implements ActionListener {
 
 	//Title and JButton label strings declared as constants
 	private static String CREATE_BUTTON_LABEL = "Create";
@@ -154,14 +158,33 @@ public class CreateCustomerGUI extends JFrame {
 	    controlPnl.add(cancelBtn);
 	    controlPnl.add(Box.createRigidArea(new Dimension(30,0)));
 	    
-	    //Enable visibility for JFrame & all containers
+	    //ActionListener
+	    createBtn.addActionListener(this);
+	    cancelBtn.addActionListener(this);
+
+	    //Pack, Center & Enable visibility for JFrame & all containers
 	    pack();
 	    setVisible(true);
+		setLocationRelativeTo(null);
 	    getContentPane().setVisible(true);
 	    mainPnl.setVisible(true);
 	    inputPnl.setVisible(true);
 	    controlPnl.setVisible(true);
 	    
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getActionCommand().equals(CREATE_BUTTON_LABEL)) {
+			//
+			//	Code to check if required fields are filled in
+			//	Code to pass the data to database
+			//
+			this.dispose();
+		} else if (e.getActionCommand().equals(CANCEL_BUTTON_LABEL)) {
+			this.dispose();
+		}
 	}
 	
 }

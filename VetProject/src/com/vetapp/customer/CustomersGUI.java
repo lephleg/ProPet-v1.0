@@ -9,6 +9,11 @@ package com.vetapp.customer;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,13 +26,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import com.vetapp.shop.ShopGUI;
 
 
-public class CustomersGUI extends JFrame {
+public class CustomersGUI extends JFrame implements ActionListener {
 	
 	//JButton labels strings declared as constants
 	private static String NEW_BUTTON_LABEL = "New Customer";
@@ -52,7 +61,8 @@ public class CustomersGUI extends JFrame {
 	public CustomersGUI() {
 		
 		//Frame configuration
-		setResizable(true);
+
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(com.vetapp.main.VetApp.MAIN_WINDOW_TITLE);	//gets window title from constant in com.vetapp.main.VetApp
 		
@@ -90,6 +100,7 @@ public class CustomersGUI extends JFrame {
 	    controlPnl.add(Box.createRigidArea(new Dimension(10, 0)));
 	    
 	    //JTable configuration
+
 	    String[] columnNames = {"Last Name","First Name","Next Visit"};		//column header labels
 	    SimpleDateFormat dateFormat = new SimpleDateFormat(("dd/MM/yyyy"));	//set format of date for Next Visit
 	    Date date;															//parse date from formatted String
@@ -106,8 +117,10 @@ public class CustomersGUI extends JFrame {
 	    		{"<lName03>", "<fName03>", (dateFormat.format(date))},
 	    		{"<lName04>", "<fName04>", (dateFormat.format(date))},
 	    };
+
 	    customerTbl = new JTable(data, columnNames);
 	    customerTbl.setAutoCreateRowSorter(true);									//enable row sorters						
+	    
 	    DefaultRowSorter sorter = ((DefaultRowSorter)customerTbl.getRowSorter());	//default sort by Last Name
 	    ArrayList list = new ArrayList();
 	    list.add( new RowSorter.SortKey(0, SortOrder.ASCENDING) );
@@ -141,8 +154,29 @@ public class CustomersGUI extends JFrame {
 
 	    backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);	//set "Back" JButton alignment to CENTER
 	    
-	    //Pack() & Enable visibility for JFrame & all containers
+	    //ActionListeners
+	    newBtn.addActionListener(this);
+	    //backBtn.addActionListener(this);
+
+	    //MouseAdapter
+	    backBtn.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+				System.out.println("Double click detected!");
+				int customerRow = customerTbl.getSelectedRow();
+				System.out.println("Customer on " + customerRow + " row selected!");
+
+				// Code to pass the Customer name in this row
+				//
+				new CustomerGUI();
+				dispose();
+			}
+		}
+		});
+	
+	    //Pack, Center & Enable visibility for JFrame & all containers
 	    pack();
+		setLocationRelativeTo(null);
 	    setVisible(true);
 	    getContentPane().setVisible(true);
 	    upperPnl.setVisible(true);
@@ -150,5 +184,18 @@ public class CustomersGUI extends JFrame {
 		lowerPnl.setVisible(true);
 		controlPnl.setVisible(true);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(BACK_BUTTON_LABEL)) {
+			new ShopGUI();
+			this.dispose();
+		} else if (e.getActionCommand().equals(NEW_BUTTON_LABEL)) {
+			new CreateCustomerGUI();
+		}
+	}
+
+
+	
 	
 }

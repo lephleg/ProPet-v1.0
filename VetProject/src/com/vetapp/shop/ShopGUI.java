@@ -8,6 +8,8 @@ package com.vetapp.shop;
 */
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -19,7 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ShopGUI extends JFrame {
+import com.vetapp.customer.CustomersGUI;
+
+public class ShopGUI extends JFrame implements ActionListener {
 	
 	//Icon URL/directory link & JButton label strings declared as constants
 	private static String LOGO_ICON_URL = "http://i.imgur.com/sn0luPx.jpg"; //(sti teliki ekdosi to URL 
@@ -71,8 +75,14 @@ public class ShopGUI extends JFrame {
 		customersBtn.setAlignmentX(CENTER_ALIGNMENT);	//set customers JButton alignment to CENTER
 		quitBtn.setAlignmentX(CENTER_ALIGNMENT);		//set exit JButton alignment to CENTER
 		
-	    //Pack() & Enable visibility for JFrame & all containers
+		
+		//ActionListener
+		customersBtn.addActionListener(this);
+		quitBtn.addActionListener(this);
+		
+	    //Pack, Center & Enable visibility for JFrame & all containers
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		getContentPane().setVisible(true);
 		shopPnl.setVisible(true);
@@ -89,4 +99,15 @@ public class ShopGUI extends JFrame {
 			return null;
 		}
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals(CUSTOMERS_BUTTON_LABEL)) {
+			new CustomersGUI();
+			this.dispose();
+		} else if (e.getActionCommand().equals(QUIT_BUTTON_LABEL)) {
+			System.exit(0);
+		}
+	}
+		
 }

@@ -3,9 +3,12 @@ package com.vetapp.customer;
 import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -16,6 +19,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.shop.ShopGUI;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,7 +28,7 @@ import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
-public class CustomerGUI extends JFrame {
+public class CustomerGUI extends JFrame implements ActionListener {
 	//Simeiosi: xrisimopoio tin default grammatoseira, i opoia stin ektelesi fainetai ligo megaluteri ap' oti i8ela. 
 
 	private JPanel contentPane;
@@ -121,26 +126,18 @@ public class CustomerGUI extends JFrame {
 		
 		
 		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
-		createcancelAppointmentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		createcancelAppointmentButton.addActionListener(this);
 		createcancelAppointmentButton.setBounds(71, 263, 194, 28);
 		contentPane.add(createcancelAppointmentButton);
 		
 		JButton deleteCustomerButton = new JButton("Delete Customer (!)");			//Delete customer button (8elei auction listener)
-		deleteCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		deleteCustomerButton.addActionListener(this);
 		deleteCustomerButton.setBounds(10, 304, 160, 28);
 		contentPane.add(deleteCustomerButton);
 		
 		JButton editCustomerButton = new JButton("Edit Customer");					//Edit customer button (8elei auction listener)
-		editCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		editCustomerButton.addActionListener(this);
+		
 		editCustomerButton.setBounds(180, 304, 130, 28);
 		contentPane.add(editCustomerButton);
 		
@@ -156,26 +153,56 @@ public class CustomerGUI extends JFrame {
 		scrollPane.setViewportView(petTable);
 		
 		JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
-		newPetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		newPetButton.addActionListener(this);
 		newPetButton.setBounds(367, 192, 89, 28);
 		contentPane.add(newPetButton);
 		
 		JButton backButton = new JButton("Back");			//Back button (8elei auction listener)
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		backButton.addActionListener(this);
 		backButton.setBounds(367, 304, 89, 28);
 		contentPane.add(backButton);
 		
 		this.setResizable(false);
+		setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getActionCommand().equals("Create/Cancel Appointment")) {
+			new NextVisitGUI();
+		} else if (e.getActionCommand().equals("Delete Customer (!)")) {
+			
+			Object[] options = {"Yes, delete this customer.",
+            "No way!"};
+			int n = JOptionPane.showOptionDialog(this,
+					"Are you sure you want to delete this customer record?\n"
+					+ "Warning: this action cannot be undone!",
+					"Confirm Customer Deletion",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					null,     //no custom icon
+					options,  //the titles of buttons
+					options[0]); //default button title
+			if (n == JOptionPane.YES_OPTION) {
+				//
+				//	Code to delete Customer from Database
+				//
+			}
+			
+		} else if (e.getActionCommand().equals("Edit Customer")) {
+			new editCustomerGUI();
+			dispose();
+		} else if (e.getActionCommand().equals("New Pet")) {
+			//new petGUI();
+			//dispose();
+		} else if (e.getActionCommand().equals("Back")) {
+			new CustomersGUI();
+			dispose();
+		}
 	}
 	
 }

@@ -22,9 +22,11 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.shop.ShopGUI;
+
 import javax.swing.JTextField;
 
-public class editCustomerGUI extends JFrame {
+public class editCustomerGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTable petTable;
@@ -144,20 +146,14 @@ public class editCustomerGUI extends JFrame {
 		visits_panel.add(nextVisitLabel);
 		
 		
-		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
+		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");
 		createcancelAppointmentButton.setEnabled(false);
-		createcancelAppointmentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		
 		createcancelAppointmentButton.setBounds(70, 300, 194, 28);
 		contentPane.add(createcancelAppointmentButton);
 		
 		JButton saveChangesButton = new JButton("Save Changes");					//Edit customer button (8elei auction listener)
-		saveChangesButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		saveChangesButton.addActionListener(this);
 		saveChangesButton.setBounds(180, 333, 130, 28);
 		contentPane.add(saveChangesButton);
 		
@@ -172,27 +168,41 @@ public class editCustomerGUI extends JFrame {
 		petTable = new JTable(petData, columnNames);
 		scrollPane.setViewportView(petTable);
 		
-		JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
+		JButton newPetButton = new JButton("New Pet");      
 		newPetButton.setEnabled(false);
-		newPetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		newPetButton.setBounds(367, 192, 89, 28);
 		contentPane.add(newPetButton);
 		
 		JButton cancelButton = new JButton("Cancel");			//Back button (8elei auction listener)
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		cancelButton.addActionListener(this);
+		
 		cancelButton.setBounds(320, 332, 89, 28);
 		contentPane.add(cancelButton);
 		
 		this.setResizable(false);
+		setLocationRelativeTo(null);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		
 	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Save Changes")) {
+			//
+			//	Code to pass changes to database
+			//
+			new CustomerGUI();
+			this.dispose();
+		} else if (e.getActionCommand().equals("Cancel")) {
+			//	Do nothing!
+			new CustomerGUI();
+			this.dispose();
+		}
+	}
+		
+	
 }
