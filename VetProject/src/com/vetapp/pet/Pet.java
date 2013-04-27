@@ -16,7 +16,7 @@ public class Pet {
 	//Constructors (#2)
 	
 	public Pet(String species, String name, String gender, String birthDay, String furColour, String specialChars,
-			String chipNumber, MedHistory history) {
+			String chipNumber) {
 		
 		this.species = species;
 		this.name = name;
@@ -25,7 +25,7 @@ public class Pet {
 		this.furColour = furColour;
 		this.specialChars = specialChars;
 		this.chipNumber = chipNumber;
-		this.history = history;
+		//this.history = history;    // Pisteuw pws to medical history den prepei na vrisketai sto constructor
 		
 	}
 	

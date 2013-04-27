@@ -8,6 +8,8 @@ package com.vetapp.customer;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,10 +18,13 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+
+import com.vetapp.pet.Pet;
 
 
 public class CreateCustomerGUI extends JFrame {
@@ -53,6 +58,10 @@ public class CreateCustomerGUI extends JFrame {
 	private BoxLayout controlLayout;	//controlPnl layout
 	
 	private Border loweredetched;	//border type of inputPnl
+	
+	private Customer aCustomer;
+	private boolean flag = true;
+
 	
 	public CreateCustomerGUI() {
 		
@@ -162,6 +171,51 @@ public class CreateCustomerGUI extends JFrame {
 	    inputPnl.setVisible(true);
 	    controlPnl.setVisible(true);
 	    
+	    createBtn.addActionListener(new createButtonListener());
+	    cancelBtn.addActionListener(new cancelButtonListener());
+	}
+	
+	public Customer getaCustomer ()
+	{
+		return aCustomer;         
+		
+	}
+	
+	public boolean getFlag()
+	{
+		return flag;
+	}
+
+	public class createButtonListener implements ActionListener {
+
+		@Override    
+		public void actionPerformed(ActionEvent arg0) {
+			
+			aCustomer = new Customer( fNameTxt.getText(),lNameTxt.getText(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
+			flag = false;
+			JOptionPane information = new JOptionPane();
+			information.showMessageDialog(null,"Customer Added !");   // Emfanish mhnymatos epityxias
+			CreateCustomerGUI.this.setVisible(false);   // Apenergopoihsh tou frame    
+			
+		}
+		
+	}
+	
+	public class cancelButtonListener implements ActionListener {
+
+		@Override    
+		public void actionPerformed(ActionEvent arg0) {
+			
+			
+			fNameTxt.setText(""); 
+		    lNameTxt.setText("");  
+		    addrTxt.setText("");                       // Epanafora twn textfield
+		    hPhoneTxt.setText(""); 
+		    mPhoneTxt.setText("");  
+		      
+			
+		}
+		
 	}
 	
 }

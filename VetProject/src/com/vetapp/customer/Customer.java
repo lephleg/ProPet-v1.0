@@ -19,17 +19,17 @@ public class Customer {
 
 	//Constructors (#2)
 	
-	public Customer(String firstName, String lastName, String address, String homeNumber, String mobileNumber,
-			int numberOfVisits, String nextVisit, ArrayList<Pet> myPets) {
+	public Customer(String firstName, String lastName, String address, String homeNumber, String mobileNumber)
+			 {
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.address = address;
 		this.homeNumber = homeNumber;
 		this.mobileNumber = mobileNumber;
-		this.numberOfVisits = numberOfVisits;
-		this.nextVisit = nextVisit;
-		this.myPets = myPets; 
+		//this.numberOfVisits = numberOfVisits;
+		//this.nextVisit = nextVisit;
+		//this.myPets = myPets; 
 		
 	}
 	

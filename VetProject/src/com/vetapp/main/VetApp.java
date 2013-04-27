@@ -19,7 +19,7 @@ public class VetApp {
 		//Just uncomment the line you want to test
 		
 		//new ShopGUI();				//Margaritis
-		//new CustomersGUI();			//Margaritis
+		new CustomersGUI();			//Margaritis
 		
 		//new CreateCustomerGUI();		//Margaritis
 		//new CustomerGUI();			//Partalis
