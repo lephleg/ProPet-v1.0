@@ -40,21 +40,25 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	
 	//JButton labels strings declared as constants
 	private static String NEW_BUTTON_LABEL = "New Customer";
+	private static String SELECT_BUTTON_LABEL = "Select Customer";
 	private static String BACK_BUTTON_LABEL = "Back";
 	
 	private JTextField searchTxt;
 	private JButton newBtn;
+	private JButton selectBtn;	//***temporary solution***
 	private JButton backBtn;
 	private JTable customerTbl;
 	
 	private JPanel upperPnl;	//containing controPnl
 	private JPanel tablePnl;	//containing customerTbl
-	private JPanel lowerPnl;	//containing backBtn
+	private JPanel lowerPnl;	//containing buttonPnl
+	private JPanel buttonPnl;	//containing selectBtn & backBtn
 	private JPanel controlPnl;	//containing searchTxt & newBtn
 	
 	private BorderLayout paneLayout;
 	private BoxLayout upperLayout; 
 	private BoxLayout lowerLayout;
+	private BoxLayout buttonLayout;
 	private BoxLayout tableLayout;
 	private BoxLayout controlLayout;
 	
@@ -143,23 +147,36 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	    tablePnl.add(scrollPane);
 	    tablePnl.add(Box.createRigidArea(new Dimension(30, 0)));
 
-	    //lowerPnl layout (vertical BoxLayout)
-	    backBtn = new JButton(BACK_BUTTON_LABEL);
+	    //buttonPnl layout (horizontal BoxLayout)					//
+	    backBtn = new JButton(BACK_BUTTON_LABEL);					//
+	    selectBtn = new JButton(SELECT_BUTTON_LABEL);				//	
+	    buttonPnl = new JPanel();									//
+	    buttonLayout = new BoxLayout(buttonPnl,BoxLayout.X_AXIS);	//	
+	    															//Proswrini lysi mexri na 
+	    buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	//diorthwthei to thema me to 
+	    buttonPnl.add(selectBtn);									//diplo click sto JTable.
+	    buttonPnl.add(Box.createRigidArea(new Dimension(15, 0)));	//
+	    buttonPnl.add(backBtn);										//
+	    buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	//
+   
+	    //lowerPnl layout (vertical BoxLayout)	    
 	    lowerLayout = new BoxLayout(lowerPnl,BoxLayout.Y_AXIS);
 	    lowerPnl.setLayout(lowerLayout);	    
 	    
 	    lowerPnl.add(Box.createRigidArea(new Dimension(0, 10)));
-	    lowerPnl.add(backBtn);
+	    lowerPnl.add(buttonPnl);
 	    lowerPnl.add(Box.createRigidArea(new Dimension(0, 10)));
 
-	    backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);	//set "Back" JButton alignment to CENTER
+	    //backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);	//set "Back" JButton alignment to CENTER
 	    
 	    //ActionListeners
 	    newBtn.addActionListener(this);
-	    //backBtn.addActionListener(this);
+	    selectBtn.addActionListener(this);
+	    backBtn.addActionListener(this);
 
+	    /*
 	    //MouseAdapter
-	    backBtn.addMouseListener(new MouseAdapter() {
+	    selectBtn.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 				System.out.println("Double click detected!");
@@ -173,6 +190,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			}
 		}
 		});
+		*/
 	
 	    //Pack, Center & Enable visibility for JFrame & all containers
 	    pack();
@@ -182,6 +200,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	    upperPnl.setVisible(true);
 		tablePnl.setVisible(true);
 		lowerPnl.setVisible(true);
+		buttonPnl.setVisible(true);
 		controlPnl.setVisible(true);
 	}
 
@@ -192,6 +211,10 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			this.dispose();
 		} else if (e.getActionCommand().equals(NEW_BUTTON_LABEL)) {
 			new CreateCustomerGUI();
+		} else if (e.getActionCommand().equals(SELECT_BUTTON_LABEL)) {
+			int row = customerTbl.getSelectedRow();
+			new CustomerGUI();
+			this.dispose();
 		}
 	}
 
