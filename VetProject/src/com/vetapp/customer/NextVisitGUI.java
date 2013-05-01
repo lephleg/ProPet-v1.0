@@ -32,37 +32,19 @@ public class NextVisitGUI extends JFrame {
 	public NextVisitGUI() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 169);
+		setBounds(100, 100, 404, 170);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblCreatrNewAppointment = new JLabel("Create New Appointment");
-		lblCreatrNewAppointment.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		lblCreatrNewAppointment.setBounds(138, 0, 170, 14);
+		lblCreatrNewAppointment.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCreatrNewAppointment.setBounds(115, 0, 170, 20);
 		contentPane.add(lblCreatrNewAppointment);
 		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 57, 414, 40);
-		contentPane.add(separator);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setOrientation(SwingConstants.VERTICAL);
-		separator_1.setBounds(10, 57, 1, 42);
-		contentPane.add(separator_1);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(10, 97, 414, 2);
-		contentPane.add(separator_2);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setOrientation(SwingConstants.VERTICAL);
-		separator_3.setBounds(423, 56, 1, 43);
-		contentPane.add(separator_3);
-		
 		JLabel lblNextVisit = new JLabel("Next Visit:");
-		lblNextVisit.setBounds(10, 70, 58, 14);
+		lblNextVisit.setBounds(21, 69, 58, 14);
 		contentPane.add(lblNextVisit);
 		
 		txtDd = new JTextField();
@@ -100,12 +82,20 @@ public class NextVisitGUI extends JFrame {
 		txtHh_1.setColumns(10);
 		
 		
-		btnSet.setBounds(88, 107, 89, 23);
+		btnSet.setBounds(98, 107, 89, 23);
 		contentPane.add(btnSet);
 		
 		
-		btnCancel.setBounds(278, 107, 89, 23);
+		btnCancel.setBounds(208, 107, 89, 23);
 		contentPane.add(btnCancel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(0, 57, 398, 2);
+		contentPane.add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(0, 94, 398, 2);
+		contentPane.add(separator_1);
 		this.setVisible(true);
 	}
 }
