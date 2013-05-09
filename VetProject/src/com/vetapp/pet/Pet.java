@@ -107,6 +107,9 @@ public class Pet {
 
 	//Other Methods
 	
+	public void editPet() { //Edits any properties of class Pet.
+		//to be written
+	}
 	
 
 
