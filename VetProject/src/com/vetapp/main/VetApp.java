@@ -1,20 +1,7 @@
 package com.vetapp.main;
 
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import com.vetapp.util.DB;
-import com.vetapp.customer.Customer;
-
-import com.vetapp.customer.CreateCustomerGUI;
-import com.vetapp.customer.CustomerGUI;
-import com.vetapp.customer.CustomersGUI;
-import com.vetapp.customer.NextVisitGUI;
-import com.vetapp.customer.createPetGUI;
-import com.vetapp.pet.Pet;
-import com.vetapp.pet.PetGUI;
 import com.vetapp.shop.ShopGUI;
 
 
