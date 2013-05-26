@@ -13,8 +13,6 @@ import com.vetapp.customer.CustomerGUI;
 import com.vetapp.customer.CustomersGUI;
 import com.vetapp.customer.NextVisitGUI;
 import com.vetapp.customer.createPetGUI;
-import com.vetapp.customer.editCustomerGUI;
-import com.vetapp.history.BirthGUI;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
 import com.vetapp.shop.ShopGUI;
