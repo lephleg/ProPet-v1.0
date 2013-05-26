@@ -1,21 +1,26 @@
 package com.vetapp.pet;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.vetapp.history.MedHistory;
 
 public class Pet {
 
+	private int pid = 0;
 	private String species;
 	private String name;
 	private String gender;
-	private String birthDay;
+	private Calendar birthDay;
 	private String furColour;
 	private String specialChars;
 	private String chipNumber;
 	private MedHistory history;
+	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 	
 	//Constructors (#2)
 	
-	public Pet(String species, String name, String gender, String birthDay, String furColour, String specialChars,
+	public Pet(String species, String name, String gender, Calendar birthDay, String furColour, String specialChars,
 			String chipNumber) {
 		
 		this.species = species;
@@ -39,6 +44,9 @@ public class Pet {
 
 	//Getters
 	
+	public int getPID() {
+		return pid;
+	}
 	public String getSpecies() {
 		return species;
 	}
@@ -51,7 +59,7 @@ public class Pet {
 		return gender;
 	}
 
-	public String getBirthDay() {
+	public Calendar getBirthDay() {
 		return birthDay;
 	}
 
@@ -72,6 +80,10 @@ public class Pet {
 	}
 
 	//Setters
+	
+	public void setPID(int pid) {
+		this.pid = pid;
+	}
 
 	public void setSpecies(String species) {
 		this.species = species;
@@ -85,7 +97,7 @@ public class Pet {
 		this.gender = gender;
 	}
 
-	public void setBirthDay(String birthDay) {
+	public void setBirthDay(Calendar birthDay) {
 		this.birthDay = birthDay;
 	}
 

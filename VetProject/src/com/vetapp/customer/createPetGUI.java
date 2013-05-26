@@ -199,7 +199,7 @@ public class createPetGUI extends JFrame {
 			  else
 				gender ="Female";
 			String birthDate =  birthDay+"/"+birthMonth+"/"+birthYear;
-			aCustomer.addPet(new Pet(species,name,gender,birthDate,furColour,special,chip));
+			//aCustomer.addPet(new Pet(species,name,gender,birthDate,furColour,special,chip));
 			JOptionPane information = new JOptionPane();
 			information.showMessageDialog(null,"Pet Added !");   // Emfanish mhnymatos epityxias
 			createPetGUI.this.dispose();    // Kleisimo tou frame

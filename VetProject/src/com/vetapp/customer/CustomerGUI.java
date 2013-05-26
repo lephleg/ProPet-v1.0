@@ -3,19 +3,34 @@ package com.vetapp.customer;
 import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.customer.createPetGUI.cancelButtonListener;
+import com.vetapp.main.VetApp;
+import com.vetapp.pet.Pet;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,11 +38,14 @@ import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
-public class CustomerGUI extends JFrame {
+public class CustomerGUI extends JFrame implements ActionListener {
 	//Simeiosi: xrisimopoio tin default grammatoseira, i opoia stin ektelesi fainetai ligo megaluteri ap' oti i8ela. 
 
 	private JPanel contentPane;
 	private JTable petTable;
+	private Customer customer;
+	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
+
 	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -42,14 +60,15 @@ public class CustomerGUI extends JFrame {
 		});
 	}*/
 
-	public CustomerGUI() {
+	public CustomerGUI(Customer cus) {
+		customer = new Customer();
+		customer = cus;
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
 		setBounds(100, 100, 530, 380);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		
 		//-------------------- CUSTOMER INFO PANEL ------------------------
 		
@@ -77,19 +96,19 @@ public class CustomerGUI extends JFrame {
 				RowSpec.decode("14px"),}));
 		
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
-		JLabel firstName = new JLabel("<firstName>");
+		JLabel firstName = new JLabel(customer.getFirstName());
 		customerInfo_panel.add(firstName, "3, 4, 2, 1, left, center");
 		
-		JLabel lastName = new JLabel("<lastName>");
+		JLabel lastName = new JLabel(customer.getLastName());
 		customerInfo_panel.add(lastName, "5, 4, 2, 1, left, center");
 		
-		JLabel address = new JLabel("<address>");
+		JLabel address = new JLabel(customer.getAddress());
 		customerInfo_panel.add(address, "3, 6, 2, 1, left, center");
 		
-		JLabel homeNumber = new JLabel("<homeNumber>");
+		JLabel homeNumber = new JLabel(customer.getHomeNumber());
 		customerInfo_panel.add(homeNumber, "3, 8, 2, 1, left, center");
 		
-		JLabel mobileNumber = new JLabel("<mobileNumber>");
+		JLabel mobileNumber = new JLabel(customer.getMobileNumber());
 		customerInfo_panel.add(mobileNumber, "3, 10, 2, 1, left, center");
 		
 		
@@ -105,7 +124,7 @@ public class CustomerGUI extends JFrame {
 		visitNumberLabel.setBounds(15, 11, 122, 39);
 		visits_panel.add(visitNumberLabel);
 		
-		JLabel numberOfVisits = new JLabel("<numberOfVisits>"); 	//antikatathistatai me metriti
+		JLabel numberOfVisits = new JLabel(Integer.toString(customer.getNumberOfVisits()));
 		numberOfVisits.setBounds(118, 11, 114, 39);
 		visits_panel.add(numberOfVisits);
 		
@@ -121,26 +140,17 @@ public class CustomerGUI extends JFrame {
 		
 		
 		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
-		createcancelAppointmentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		createcancelAppointmentButton.addActionListener(this);
 		createcancelAppointmentButton.setBounds(71, 263, 194, 28);
 		contentPane.add(createcancelAppointmentButton);
 		
 		JButton deleteCustomerButton = new JButton("Delete Customer (!)");			//Delete customer button (8elei auction listener)
-		deleteCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		deleteCustomerButton.addActionListener(this);
 		deleteCustomerButton.setBounds(10, 304, 160, 28);
 		contentPane.add(deleteCustomerButton);
 		
 		JButton editCustomerButton = new JButton("Edit Customer");					//Edit customer button (8elei auction listener)
-		editCustomerButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		editCustomerButton.addActionListener(this);
 		editCustomerButton.setBounds(180, 304, 130, 28);
 		contentPane.add(editCustomerButton);
 		
@@ -156,26 +166,257 @@ public class CustomerGUI extends JFrame {
 		scrollPane.setViewportView(petTable);
 		
 		JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
-		newPetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		newPetButton.addActionListener(this);
 		newPetButton.setBounds(367, 192, 89, 28);
 		contentPane.add(newPetButton);
 		
 		JButton backButton = new JButton("Back");			//Back button (8elei auction listener)
-		backButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		backButton.addActionListener(this);
 		backButton.setBounds(367, 304, 89, 28);
 		contentPane.add(backButton);
 		
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		if (e.getActionCommand().equals("Create/Cancel Appointment")) {
+			new NextVisitGUI();
+		} else if (e.getActionCommand().equals("Delete Customer (!)")) {
+			
+			JOptionPane.showMessageDialog(null,
+    			    "Database file was not found!",
+    			    "Customer Deletion",
+    			    JOptionPane.WARNING_MESSAGE);
+			VetApp.db.DBDeleteCustomer(customer);
+			this.dispose();
+		} else if (e.getActionCommand().equals("Edit Customer")) {
+			new editCustomerGUI();
+			CustomerGUI.this.dispose();
+		} else if (e.getActionCommand().equals("New Pet")) {
+			new createPetGUI_Beta(customer);
+		} else if (e.getActionCommand().equals("Back")) {
+			this.dispose();
+		}
+	}
+	
+
+
+//Odhgia pros synaderfous : Dhmiourghsa to parakatw frame me font times new Roman 14
+public class createPetGUI_Beta extends JFrame implements ActionListener {
+
+	private JPanel contentPane;
+	private JTextField speciesField;   //Species
+	private JTextField nameField; //Name
+	private	JRadioButton rdbtnMale;  // Gender
+	private	JRadioButton rdbtnFemale;// Gender
+	private JTextField birthDateField;    // Birth Day
+	private JTextField birthMonthField;   // Birth Month
+	private JTextField birthYearField; // Birth Year
+	private JTextField furField; // Fur Colour
+	private JTextField specialField;  // Special Characteristics
+	private JTextField chipField;  // Chip Number
+	private JButton btnNewButton = new JButton("Create");
+	private JButton btnCancel = new JButton("Cancel");
+	private Customer cust ; //  Deikths pelath ston opoio tha anhkei to pet
+
+	
+
+	public createPetGUI_Beta(Customer aCustomer) {
+	
+		cust = new Customer();
+		cust = aCustomer;
+		setBounds(100, 100, 300, 495);
+		contentPane = new JPanel();
+		contentPane.setBackground(UIManager.getColor("menu")); //Background colour
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Create New Pet");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel.setBounds(92, 11, 226, 19);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblSpecies = new JLabel("Species*:");
+		lblSpecies.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblSpecies.setBounds(10, 89, 67, 19);
+		contentPane.add(lblSpecies);
+		
+		speciesField = new JTextField();
+		speciesField.setBounds(132, 89, 118, 17);
+		contentPane.add(speciesField);
+		speciesField.setColumns(10);
+		
+		JLabel lblName = new JLabel("Name*:");
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblName.setBounds(10, 150, 77, 14);
+		contentPane.add(lblName);
+		
+		nameField = new JTextField();
+		nameField.setBounds(132, 149, 118, 15);
+		contentPane.add(nameField);
+		nameField.setColumns(10);
+		
+		JLabel lblGender = new JLabel("Gender*:");
+		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblGender.setBounds(10, 198, 67, 14);
+		contentPane.add(lblGender);
+		
+		JRadioButton rdbtnMale = new JRadioButton("Male");
+		rdbtnMale.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		rdbtnMale.setBounds(130, 194, 67, 23);
+		contentPane.add(rdbtnMale);
+		
+		JRadioButton rdbtnFemale = new JRadioButton("Female");
+		rdbtnFemale.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		rdbtnFemale.setBounds(199, 194, 119, 23);
+		contentPane.add(rdbtnFemale);
+		
+		JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
+		lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblDateOfBirth.setBounds(10, 240, 67, 14);
+		contentPane.add(lblDateOfBirth);
+		
+		birthDateField = new JTextField();
+		birthDateField.setText("DD");
+		birthDateField.setBounds(118, 237, 25, 20);
+		contentPane.add(birthDateField);
+		birthDateField.setColumns(10);
+		
+		JLabel label = new JLabel("/");
+		label.setBounds(144, 240, 10, 14);
+		contentPane.add(label);
+		
+		birthMonthField = new JTextField();
+		birthMonthField.setText("MM");
+		birthMonthField.setBounds(153, 237, 25, 20);
+		contentPane.add(birthMonthField);
+		birthMonthField.setColumns(10);
+		
+		JLabel label_1 = new JLabel("/");
+		label_1.setBounds(188, 240, 46, 14);
+		contentPane.add(label_1);
+		
+		birthYearField = new JTextField();
+		birthYearField.setText("YYYY");
+		birthYearField.setBounds(204, 237, 46, 20);
+		contentPane.add(birthYearField);
+		birthYearField.setColumns(10);
+		
+		JLabel lblFurColour = new JLabel("Fur Colour:");
+		lblFurColour.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblFurColour.setBounds(10, 284, 100, 14);
+		contentPane.add(lblFurColour);
+		
+		furField = new JTextField();
+		furField.setBounds(131, 284, 119, 14);
+		contentPane.add(furField);
+		furField.setColumns(10);
+		
+		JLabel lblSpecialCharacteristics = new JLabel("Special Characteristics:");
+		lblSpecialCharacteristics.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblSpecialCharacteristics.setBounds(10, 330, 176, 14);
+		contentPane.add(lblSpecialCharacteristics);
+		
+		specialField = new JTextField();
+		specialField.setBounds(131, 330, 118, 14);
+		contentPane.add(specialField);
+		specialField.setColumns(10);
+		
+		JLabel lblChipNumber = new JLabel("Chip Number:");
+		lblChipNumber.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblChipNumber.setBounds(10, 381, 114, 19);
+		contentPane.add(lblChipNumber);
+		
+		chipField = new JTextField();
+		chipField.setBounds(132, 380, 118, 17);
+		contentPane.add(chipField);
+		chipField.setColumns(10);
+		
+		
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnNewButton.setBounds(10, 435, 89, 23);
+		contentPane.add(btnNewButton);
+		
+		
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnCancel.setBounds(199, 435, 89, 23);
+		contentPane.add(btnCancel);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 53, 419, 2);
+		contentPane.add(separator);
+		this.setVisible(true);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		
+		//Group the radio buttons.
+	    ButtonGroup group = new ButtonGroup();
+	    group.add(rdbtnFemale);
+	    group.add(rdbtnMale);
+
+//		  if(rdbtnMale.isSelected())
+//			   rdbtnFemale.setSelected(false);       // Kwdikas gia apofygh tautoxronhs epiloghs male + female
+//		 
+//		  if(rdbtnFemale.isSelected())
+//			  rdbtnMale.setSelected(false);
+		
+		btnNewButton.addActionListener(this);
+		btnCancel.addActionListener(this);
 		
 	}
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		// Dhmiourgia Pet
+		if (e.getActionCommand().equals("Create")) {
+			String species = speciesField.getText();
+			String name = nameField.getText();
+			String birthDay =  birthDateField.getText();
+			String birthMonth = birthMonthField.getText();
+			String birthYear =  birthYearField.getText();
+			String furColour = furField.getText();
+			String special = specialField.getText();
+			String chip =  chipField.getText();
+			String gender;
+			//if(rdbtnMale.isSelected()) {
+				gender = "Male";
+			//} else {
+			//	gender ="Female";
+			//}
+			String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
+			Date date = null;
+			try {
+				date = ft.parse(birthDate);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+                System.out.println("Error parsing pet birth date: " + e1.getMessage());
+			}
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(date);
+			
+			Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
+			cust.addPet(pet);
+
+			VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+			
+			JOptionPane information = new JOptionPane();
+			information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+			createPetGUI_Beta.this.dispose();    					// Kleisimo tou frame
+
+		} else if (e.getActionCommand().equals("Cancel")) {
+			this.dispose();
+			
+		}
+		}
+	}
 }

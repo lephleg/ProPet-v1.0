@@ -8,13 +8,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
  // Xrhsimopoihsa Grammatoseira Tahoma 11 Paraklw na apofasisoume apo edw kai sto ekshs ti tha xrhsimopoipume!
 
-public class NextVisitGUI extends JFrame {
+public class NextVisitGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtDd;  // Day textfield
@@ -31,7 +34,7 @@ public class NextVisitGUI extends JFrame {
 	 */
 	public NextVisitGUI() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 404, 170);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,10 +84,8 @@ public class NextVisitGUI extends JFrame {
 		contentPane.add(txtHh_1);
 		txtHh_1.setColumns(10);
 		
-		
 		btnSet.setBounds(98, 107, 89, 23);
 		contentPane.add(btnSet);
-		
 		
 		btnCancel.setBounds(208, 107, 89, 23);
 		contentPane.add(btnCancel);
@@ -96,6 +97,24 @@ public class NextVisitGUI extends JFrame {
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(0, 94, 398, 2);
 		contentPane.add(separator_1);
+		setLocationRelativeTo(null);
 		this.setVisible(true);
+		
+		btnSet.addActionListener(this);
+		btnCancel.addActionListener(this);
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getActionCommand().equals("Set")) {
+			
+		} else if (e.getActionCommand().equals("Cancel")) {
+			dispose();
+		}
+
+
 	}
 }
