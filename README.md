@@ -9,6 +9,7 @@ Release branch
 Package & Class compression
 
 •  com.vetapp.customer
+
     	Customer.java
     	CustomerGUI.java
       	createPetGUI
@@ -19,19 +20,24 @@ Package & Class compression
       	createCustomerGUI
       	MyTableModel
 •	com.vetapp.pet
+
     	Pet.java
     	PetGUI.java
       	editPetGUI
 •	com.vetapp.history
+
     	MedHistory.java (may not needed)
       	HistoryFemale
       	Birth
     	MedHistoryGUI.java
       	editMedHistoryGUI
       	BirthsGUI
+      
 •	com.vetapp.util
+
     	DB.java
 •	com.vetapp.main
+
     	ShopGUI.java
     	VetApp.java
 
