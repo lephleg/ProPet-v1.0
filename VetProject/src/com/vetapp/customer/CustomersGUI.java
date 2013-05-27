@@ -82,7 +82,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		customers = resList;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("");	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 		upperPnl = new JPanel();	
 		lowerPnl = new JPanel();	
@@ -350,7 +350,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			//Frame configuration
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setTitle("");	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 			//contentPane layout (horizontal BoxLayout)
 			mainPnl = new JPanel();

@@ -67,6 +67,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 		//-------------------- CUSTOMER INFO PANEL ------------------------
 
@@ -350,6 +351,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+
 
 			JLabel lblNewLabel = new JLabel("Create New Pet");
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
@@ -554,6 +557,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 			
 			
 			//-------------------- CUSTOMER INFO PANEL ------------------------
@@ -750,6 +754,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			
 			
 			JLabel lblCreatrNewAppointment = new JLabel("Create New Appointment");
 			lblCreatrNewAppointment.setFont(new Font("Tahoma", Font.PLAIN, 14));
