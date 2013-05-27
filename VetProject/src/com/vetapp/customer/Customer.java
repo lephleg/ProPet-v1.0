@@ -1,5 +1,4 @@
 package com.vetapp.customer;
-
  
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -151,8 +150,8 @@ public class Customer {
 		this.nextVisit = nextVisit;
 	}
 	
-	public void setMyPets(ArrayList<Pet> myPets) {
-		this.myPets = myPets;
+	public void setMyPets(List<Pet> list) {
+		this.myPets = list;
 	}
 	
 	//Other Methods

@@ -15,10 +15,11 @@ public class Pet {
 	private String furColour;
 	private String specialChars;
 	private String chipNumber;
+	private String photoPath;
 	private MedHistory history;
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 	
-	//Constructors (#2)
+	//Constructors (#3)
 	
 	public Pet(String species, String name, String gender, Calendar birthDay, String furColour, String specialChars,
 			String chipNumber) {
@@ -30,6 +31,7 @@ public class Pet {
 		this.furColour = furColour;
 		this.specialChars = specialChars;
 		this.chipNumber = chipNumber;
+		this.setPhotoPath("");
 		//this.history = history;    // Pisteuw pws to medical history den prepei na vrisketai sto constructor
 		
 	}
@@ -39,9 +41,26 @@ public class Pet {
 		this.species = species;
 		this.name = name;
 		this.gender = gender;
+		this.birthDay = null;
+		this.furColour = "";
+		this.specialChars = "";
+		this.chipNumber = "";
+		this.setPhotoPath("");
 		
 	}
 
+	public Pet() {
+		
+		this.species = "";
+		this.name = "";
+		this.gender = "";
+		this.birthDay = null;
+		this.furColour = "";
+		this.specialChars = "";
+		this.chipNumber = "";
+		this.setPhotoPath("");
+	}
+	
 	//Getters
 	
 	public int getPID() {
@@ -77,6 +96,10 @@ public class Pet {
 
 	public MedHistory getHistory() {
 		return history;
+	}
+	
+	public String getPhotoPath() {
+		return photoPath;
 	}
 
 	//Setters
@@ -116,13 +139,18 @@ public class Pet {
 	public void setHistory(MedHistory history) {
 		this.history = history;
 	}
+	
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
 
 	//Other Methods
 	
 	public void editPet() { //Edits any properties of class Pet.
 		//to be written
 	}
-	
+
+
 
 
 

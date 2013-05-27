@@ -1,4 +1,4 @@
-package com.vetapp.shop;
+package com.vetapp.main;
 
 /*
  * ShopGUI.java
@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomersGUI;
-import com.vetapp.main.VetApp;
 
 public class ShopGUI extends JFrame implements ActionListener {
 

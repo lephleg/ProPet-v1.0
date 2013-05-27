@@ -35,8 +35,9 @@ import javax.swing.SortOrder;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.vetapp.main.ShopGUI;
 import com.vetapp.main.VetApp;
-import com.vetapp.shop.ShopGUI;
 
 //import com.vetapp.customer.CreateCustomerGUI.cancelButtonListener;
 //import com.vetapp.customer.CreateCustomerGUI.createButtonListener;
@@ -67,11 +68,12 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	private BoxLayout buttonLayout;
 	private BoxLayout tableLayout;
 	private BoxLayout controlLayout;
-	private List <Customer> customers = new ArrayList <Customer> () ; //Dhmiourgia listas pelatwn
+	public List <Customer> customers = new ArrayList <Customer> () ; //Dhmiourgia listas pelatwn
 
-	private MyTableModel model;
-	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-	public SimpleDateFormat displayDateFormat = new SimpleDateFormat ("EEE dd-MM-yyyy 'at' hh:mm");
+	public static MyTableModel model = new MyTableModel();
+
+	public static SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+	public static SimpleDateFormat displayDateFormat = new SimpleDateFormat ("EEE dd-MM-yyyy 'at' hh:mm");
 
 	public CustomersGUI(List<Customer> resList) {
 
@@ -116,8 +118,6 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		controlPnl.add(Box.createRigidArea(new Dimension(10, 0)));
 
 		//JTable configuration
-
-		model = new MyTableModel();
 
 		customerTbl = new JTable(model);
 		model.reloadJTable(customers);
@@ -183,7 +183,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 					for(int i=0; i< customers.size(); i++){
 						if (customers.get(i).getLastName()==customerTbl.getValueAt(row, 0) 
 								&& customers.get(i).getFirstName()==customerTbl.getValueAt(row, 1)) {
-							new CustomerGUI(customers.get(i));
+							new CustomerGUI(customers.get(i),customers);
 						}
 					}
 				}
@@ -220,13 +220,13 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			new ShopGUI();
 			this.dispose();
 		} else if (e.getActionCommand().equals(NEW_BUTTON_LABEL)) {
-			new CreateCustomerGUI_Beta();
+			new CreateCustomerGUI();
 		} else if (e.getActionCommand().equals(SELECT_BUTTON_LABEL)) {
 			int row = customerTbl.getSelectedRow();
 			for(int i=0; i< customers.size(); i++){
 				if (customers.get(i).getLastName()==customerTbl.getValueAt(row, 0) 
 						&& customers.get(i).getFirstName()==customerTbl.getValueAt(row, 1)) {
-					new CustomerGUI(customers.get(i));
+					new CustomerGUI(customers.get(i), customers);
 				}
 			}
 			
@@ -247,10 +247,10 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 	//-------------------- CUSTOMER JTABLE MODEL ------------------------
 
-	class MyTableModel extends DefaultTableModel {
+	public static class MyTableModel extends DefaultTableModel {
 
 		private String[] columnNames = {"Last Name","First Name","Next Visit"};		//column header labels
-		Object[][] data = new Object[100][3];
+		private Object[][] data = new Object[100][3];
 
 		public void reloadJTable(List<Customer> list) {
 			clearJTable();
@@ -310,7 +310,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 	//====================== CREATE CUSTOMER GUI CLASS ====================== 
 
-	public class CreateCustomerGUI_Beta extends JFrame implements ActionListener {         
+	public class CreateCustomerGUI extends JFrame implements ActionListener {         
 
 		//Title and JButton label strings declared as constants
 		private static final String CREATE_BUTTON_LABEL = "Create";
@@ -345,7 +345,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		private Customer aCustomer;
 		private boolean flag = true;
 
-		public CreateCustomerGUI_Beta() {
+		public CreateCustomerGUI() {
 
 			//Frame configuration
 			setResizable(false);

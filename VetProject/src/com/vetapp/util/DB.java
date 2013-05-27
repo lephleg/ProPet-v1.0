@@ -1,5 +1,6 @@
 package com.vetapp.util;
 import java.sql.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class DB
     public static final String URL = "jdbc:sqlite:propetdb.db";
     public static final String DB_NAME = "propetdb.db";
     public SimpleDateFormat dbDateFormat = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
-
+    public SimpleDateFormat dbPetDateFormat = new SimpleDateFormat ("yyyy-MM-dd");
 
     	public DB() {
     	}
@@ -220,8 +221,24 @@ public class DB
     	//open connection
     	Connection con = DBConnect();
     	
+    	
     	//SQL Statement
-        //Delete record
+        //Delete Pets related to this customer
+        Statement stmt0 = null;
+        try
+        { String sql2 = "DELETE FROM Pet " +
+        		"WHERE cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() +"');";
+	    stmt0 = con.createStatement();
+        stmt0.executeUpdate(sql2);
+	    System.out.println("Pet records deleted!");
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating or running PET DELETE statement: " + e.toString());
+        }
+        
+    	//SQL Statement
+        //Delete Customer Record
         Statement stmt = null;
         try
         {
@@ -233,7 +250,7 @@ public class DB
         }
         catch(SQLException e)
         {
-            System.out.println("Error creating or running UPDATE statement: " + e.toString());
+            System.out.println("Error creating or running CUSTOMER DELETE statement: " + e.toString());
         }
 	    
 	    //Close statement & connection
@@ -291,6 +308,56 @@ public class DB
         				tempCal.setTime(dbDateFormat.parse(res.getString("next_visit")));
         				tempCus.setNextVisit(tempCal);
         			}
+        			//SQL statement for getting Customers Pets by matching cid
+        	    	Statement stmt0 = null;
+        	        ResultSet res0 = null;
+        	        try
+        	        {
+        	            String sql0 = "SELECT * FROM Pet " +
+        	            				"WHERE cid='" + res.getInt("cid") + "';";
+        	            stmt0 = con.createStatement();
+        	            res0 = stmt0.executeQuery(sql0);
+        	        }
+        	        catch(SQLException e)
+        	        {
+        	            System.out.println("Error creating or running PET LIST statement: " + e.toString());
+        	        }
+        	        
+        	      //Analyzing result and parsing the records to ArrayList
+        	        List<Pet> petList = new ArrayList<Pet>();    	
+        	        try
+        	        {
+        	        	if (!res0.next()) {
+        	        		System.out.println("No pets found");
+        	        	} else {
+        	        		do {
+        	        			Pet tempPet = new Pet();
+        	        			tempPet.setSpecies(res0.getString("species"));
+        	        			tempPet.setName(res0.getString("pet_name"));
+        	        			tempPet.setGender(res0.getString("gender"));
+        	        			String tmp = res0.getString("birthday");
+        	        			if (tmp==null) {
+        	        				//System.out.println("next_visit was not set");
+            	        			tempPet.setBirthDay(null);
+        	        			} else {
+        	        				//System.out.println("Date object retrieved: " + res.getString("next_visit"));
+        	        				//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
+        	        				Calendar tmpCal = new GregorianCalendar();
+        	        				tmpCal.setTime(dbPetDateFormat.parse(tmp));
+        	        				tempPet.setBirthDay(tmpCal);
+        	        			}
+        	        			tempPet.setFurColour(res0.getString("fur_colour"));
+        	        			tempPet.setSpecialChars(res0.getString("special_chars"));
+        	        			tempPet.setChipNumber(res0.getString("chip_number"));
+        	        			tempPet.setPhotoPath(res0.getString("photo_path"));
+        	        			tempCus.addPet(tempPet);
+        	        		} while (res0.next());
+        	        	}
+        	        }
+        	        catch(SQLException e)
+        	        {
+        	        	System.out.println("Error analyzing PET LIST statement: " + e.toString());
+        	        }
         			fullList.add(tempCus);
         		} while (res.next());
         	}
@@ -301,7 +368,7 @@ public class DB
         {
         	System.out.println("Error processing results: " + e.toString());
         }
-
+        
     	//Close connection
         try {
         	stmt.close();
@@ -405,5 +472,67 @@ public class DB
         }
     	
     } 
+    
+    public List<Pet> DBGetAllPets(Customer cus) {
+        List<Pet> petList = new ArrayList<Pet>();   
+
+    	//open connection
+    	Connection con = DBConnect();
+    	   	
+    	//SQL statement for getting Customers Pets by matching cid
+    	Statement stmt0 = null;
+        ResultSet res = null;
+        try
+        {
+            String sql0 = "SELECT * FROM Pet " +
+            				"WHERE cid=(SELECT cid FROM Customer WHERE last_name = '" + cus.getLastName() + "' AND  first_name='" + cus.getFirstName() + "');";
+            stmt0 = con.createStatement();
+            res = stmt0.executeQuery(sql0);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating or running PET LIST statement: " + e.toString());
+        }
+        
+      //Analyzing result and parsing the records to ArrayList
+    	try
+        {
+    		if (!res.next()) {
+    			System.out.println("No pets found");
+    		} else {
+    			do {
+    				Pet tempPet = new Pet();
+    				tempPet.setSpecies(res.getString("species"));
+    				tempPet.setName(res.getString("pet_name"));
+    				tempPet.setGender(res.getString("gender"));
+    				String tmp = res.getString("birthday");
+    				if (tmp==null) {
+    					//System.out.println("next_visit was not set");
+    					tempPet.setBirthDay(null);
+    				} else {
+    					//System.out.println("Date object retrieved: " + res.getString("next_visit"));
+    					//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
+    					Calendar tmpCal = new GregorianCalendar();
+    					tmpCal.setTime(dbPetDateFormat.parse(tmp));
+    					tempPet.setBirthDay(tmpCal);
+    				}
+    				tempPet.setFurColour(res.getString("fur_colour"));
+    				tempPet.setSpecialChars(res.getString("special_chars"));
+    				tempPet.setChipNumber(res.getString("chip_number"));
+    				tempPet.setPhotoPath(res.getString("photo_path"));
+    				petList.add(tempPet);
+    			} while (res.next());
+    		}
+        }
+    	catch(SQLException e)
+    	{
+        	System.out.println("Error analyzing PET LIST statement: " + e.toString());
+        } catch (ParseException e1) {
+        	System.out.println("Error parsing DATE: " + e1.toString());
+		}
+    	
+    	return petList;
+    }
+
 }
 

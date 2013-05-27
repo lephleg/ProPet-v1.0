@@ -8,8 +8,6 @@ public class MedHistory {
 	private String Surgeries;
 	private String MedicalTreatment;
 	
-	
-	
 	//Getters 
 	public String getGrafts() {
 		return Grafts;
@@ -18,9 +16,7 @@ public class MedHistory {
 	public String getAllergies() {
 		return Allergies;
 	}
-	
-	
-	
+
 	public String getDiseases() {
 		return Diseases;
 	}
@@ -60,4 +56,65 @@ public class MedHistory {
 		//to be written
 	}
 
+	//============================================================================================
+	//----------------------------------- HistoryFemale SUBCLASS ---------------------------------
+	//============================================================================================
+	
+	public class HistoryFemale extends MedHistory {
+	  
+	  private Birth births;
+
+	  //Other Methods
+		@Override
+		public void editMeHistory() {
+				//to be written
+		}
+		
+		public void addBirth() {
+			//to be written
+		}
+
+	}
+	
+	//============================================================================================
+	//------------------------------------- Birth CLASS ------------------------------------------
+	//============================================================================================
+
+	public class Birth {
+
+		private String Date;
+		private String Complications;
+		private int NumberOfChildren;
+		
+		
+		//Getters
+		
+		public String getDate() {
+			return Date;
+		}
+		public String getComplications() {
+			return Complications;
+		}
+		public int getNumberOfChildren() {
+			return NumberOfChildren;
+		}
+		
+		//Setters
+		
+		public void setDate(String date) {
+			Date = date;
+		}
+		public void setComplications(String complications) {
+			Complications = complications;
+		}
+		public void setNumberOfChildren(int numberOfChildren) {
+			NumberOfChildren = numberOfChildren;
+		}
+		
+	}
+	
+
+
+
+	
 }

@@ -2,6 +2,7 @@ package com.vetapp.customer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultRowSorter;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -9,28 +10,37 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.customer.CustomersGUI.*;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
+import com.vetapp.pet.PetGUI;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -41,25 +51,16 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	private JPanel contentPane;
 	private JTable petTable;
 	private Customer customer;
+	private List<Customer> cusList = new ArrayList<Customer>();		
+	private List<Pet> petList = new ArrayList<Pet>();		
+	public MyPetTableModel petModel = new MyPetTableModel();
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 
-	/*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CustomerGUI frame = new CustomerGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	public CustomerGUI(Customer cus) {
+	public CustomerGUI(Customer cus, List<Customer> list) {
+		cusList = list;
 		customer = new Customer();
 		customer = cus;
+		petList = customer.getMyPets();
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
 		setBounds(100, 100, 530, 380);
 		contentPane = new JPanel();
@@ -153,13 +154,27 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		//-------------------- PET TABLE --------------------
 
-		String[] columnNames = {"Photo","Name"};
-		Object[][] petData = { {"<pic0>", "Rex"}, {"<pic1>", "Epameinwndas"} };	 //Ta dedomena ton pet lamvanontai apo alli klasi kata tin dimiourgia tou frame
+		//String[] columnNames = {"Photo","Name"};
+		//Object[][] petData = { {"<pic0>", "Rex"}, {"<pic1>", "Epameinwndas"} };	 //Ta dedomena ton pet lamvanontai apo alli klasi kata tin dimiourgia tou frame
 
+		
+		petTable = new JTable(petModel);
+		
+		petModel.reloadPetJTable(customer.getMyPets());
+		petTable.setAutoCreateRowSorter(true);									//enable row sorters						
+
+		DefaultRowSorter sorter = ((DefaultRowSorter)petTable.getRowSorter());	//default sort by Last Name
+		ArrayList sortlist = new ArrayList();
+		sortlist.add( new RowSorter.SortKey(1, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortlist);
+		sorter.sort();
+		
+		petTable.getColumnModel().getColumn(0).setPreferredWidth(100);	//set Photo column preferred width
+		petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
+	
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(320, 11, 184, 170);
 		contentPane.add(scrollPane);
-		petTable = new JTable(petData, columnNames);
 		scrollPane.setViewportView(petTable);
 
 		JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
@@ -171,6 +186,24 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		backButton.addActionListener(this);
 		backButton.setBounds(367, 304, 89, 28);
 		contentPane.add(backButton);
+		
+		
+		//MouseAdapter gia JTable
+		petTable.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						if (e.getClickCount() == 2) {
+							//System.out.println("Double click detected!");
+							//System.out.println("Customer on " + customerTbl.getSelectedRow() + " row selected!");
+							int row = petTable.getSelectedRow();
+							for(int i=0; i< petList.size(); i++){
+								if (petList.get(i).getName()==petTable.getValueAt(row, 1) ) {
+									new PetGUI(petList.get(i));
+								}
+							}
+						}
+					}
+				});
+		
 
 		this.setResizable(false);
 		this.setVisible(true);
@@ -178,6 +211,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 	}
 
+	//----------------------------- CustomerGUI ACTION LISTENERS ------------------------------------------
+
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -197,26 +233,97 @@ public class CustomerGUI extends JFrame implements ActionListener {
 							options,  //the titles of buttons
 							options[0]); //default button title
 			if (n == JOptionPane.YES_OPTION) {
-				//
-				//	Code to delete Customer from Database
-				//
 				VetApp.db.DBDeleteCustomer(customer);
+				for(int i=0; i< cusList.size(); i++){
+					if ((cusList.get(i).getLastName() == customer.getLastName()) && 
+							(cusList.get(i).getFirstName() == customer.getFirstName())) {
+						cusList.remove(i);
+					}
+				}
+				com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);
 				this.dispose();
 			}
 		} else if (e.getActionCommand().equals("Edit Customer")) {
 			new editCustomerGUI();
 			CustomerGUI.this.dispose();
 		} else if (e.getActionCommand().equals("New Pet")) {
-			new createPetGUI_Beta(customer);
+			new createPetGUI(customer);
 		} else if (e.getActionCommand().equals("Back")) {
 			this.dispose();
 		}
 	}
 
+	//-------------------- PET JTABLE MODEL ------------------------
+
+	public static class MyPetTableModel extends DefaultTableModel {
+
+		private String[] columnNames = {"Photo","Pet Name"};		//column header labels
+		private Object[][] data = new Object[100][2];
+
+		public void reloadPetJTable(List<Pet> list) {
+			//System.out.println("loading pet table #2: " + list.get(0).getName());
+			
+			clearJTable();
+			for(int i=0; i<list.size(); i++){
+				if (list.get(i).getPhotoPath() == null) {
+					data[i][0] = "NO_PHOTO";
+				} else {
+					data[i][0] = list.get(i).getPhotoPath();
+				}
+				data[i][1] = list.get(i).getName();
+				System.out.println("loading pet table #3");
+				this.addRow(data);
+			}
+		}
+
+		public void clearJTable() {
+			this.setRowCount(0);
+		}
+
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+
+		public Object getValueAt(int row, int col) {
+			return data[row][col];
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+		/*
+		 * JTable uses this method to determine the default renderer/
+		 * editor for each cell.  If we didn't implement this method,
+		 * then the last column would contain text ("true"/"false"),
+		 * rather than a check box.
+		 */
+		//        public Class getColumnClass(int c) {
+		//            return getValueAt(0, c).getClass();
+		//        }
+
+		/*
+		 * Don't need to implement this method unless your table's
+		 * editable.
+		 */ 
+		public boolean isCellEditable(int row, int col) {
+			//Note that the data/cell address is constant,
+			//no matter where the cell appears onscreen.
+			if (col < 2) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	
+	//============================================================================================
+	//--------------------------------- createPetGUI CLASS ---------------------------------------
+	//============================================================================================
 
 
 	//Odhgia pros synaderfous : Dhmiourghsa to parakatw frame me font times new Roman 14
-	public class createPetGUI_Beta extends JFrame implements ActionListener {
+	public class createPetGUI extends JFrame implements ActionListener {
 
 		private JPanel contentPane;
 		private JTextField speciesField;   //Species
@@ -233,9 +340,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private JButton btnCancel = new JButton("Cancel");
 		private Customer cust ; //  Deikths pelath ston opoio tha anhkei to pet
 
-
-
-		public createPetGUI_Beta(Customer aCustomer) {
+		public createPetGUI(Customer aCustomer) {
 
 			cust = new Customer();
 			cust = aCustomer;
@@ -364,7 +469,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.setResizable(false);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-
 			//Group the radio buttons.
 			ButtonGroup group = new ButtonGroup();
 			group.add(rdbtnFemale);
@@ -380,6 +484,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			btnCancel.addActionListener(this);
 
 		}
+
+		//----------------------------- createPetGUI ACTION LISTENERS ------------------------------------------
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -417,7 +523,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 				JOptionPane information = new JOptionPane();
 				information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
-				createPetGUI_Beta.this.dispose();    					// Kleisimo tou frame
+				createPetGUI.this.dispose();    					// Kleisimo tou frame
 
 			} else if (e.getActionCommand().equals("Cancel")) {
 				this.dispose();
@@ -425,6 +531,10 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
+	//============================================================================================
+	//------------------------------ editCustomerGUI CLASS ---------------------------------------
+	//============================================================================================
 	
 	public class editCustomerGUI extends JFrame implements ActionListener {
 
@@ -564,15 +674,25 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			//-------------------- PET TABLE --------------------
 			
-			String[] columnNames = {"Photo","Name"};
-			Object[][] petData = { {"<pic0>", "Rex"}, {"<pic1>", "Epameinwndas"} };	 //Ta dedomena ton pet lamvanontai apo alli klasi kata tin dimiourgia tou frame
+			petTable = new JTable(petModel);
 			
+			petModel.reloadPetJTable(customer.getMyPets());
+			petTable.setAutoCreateRowSorter(true);									//enable row sorters						
+
+			DefaultRowSorter sorter = ((DefaultRowSorter)petTable.getRowSorter());	//default sort by Last Name
+			ArrayList sortlist = new ArrayList();
+			sortlist.add( new RowSorter.SortKey(1, SortOrder.ASCENDING));
+			sorter.setSortKeys(sortlist);
+			sorter.sort();
+			
+			petTable.getColumnModel().getColumn(0).setPreferredWidth(100);	//set Photo column preferred width
+			petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
+		
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(320, 11, 184, 170);
 			contentPane.add(scrollPane);
-			petTable = new JTable(petData, columnNames);
 			scrollPane.setViewportView(petTable);
-			
+
 			JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
 			newPetButton.setEnabled(false);
 			newPetButton.setBounds(367, 192, 89, 28);
@@ -588,18 +708,24 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		}
 
+		
+		//----------------------------- editCustomerGUI ACTION LISTENERS ------------------------------------------
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Save Changes")) {
-				
+				//TODO
 			} else if (e.getActionCommand().equals("Cancel")) {
-				new CustomerGUI(customer);
+				new CustomerGUI(customer, cusList);
 				this.dispose();
 			}
 		}
 	}
+	
+	//============================================================================================
+	//--------------------------------- NextVisitGUI CLASS ---------------------------------------
+	//============================================================================================
 
-	 // Xrhsimopoihsa Grammatoseira Tahoma 11 Paraklw na apofasisoume apo edw kai sto ekshs ti tha xrhsimopoipume!
 	public class NextVisitGUI extends JFrame implements ActionListener {
 
 		private JPanel contentPane;
@@ -611,6 +737,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	    private  JButton btnSet = new JButton("Set");
 	    private  JButton btnCancel = new JButton("Cancel");
 
+		 // Xrhsimopoihsa Grammatoseira Tahoma 11 Paraklw na apofasisoume apo edw kai sto ekshs ti tha xrhsimopoipume!
 
 		/**
 		 * Create the frame.
@@ -687,6 +814,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			btnCancel.addActionListener(this);
 		}
 
+		//----------------------------- NextVisitGUI ACTION LISTENERS ------------------------------------------
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
