@@ -652,6 +652,41 @@ public void DBUpdatePet(Customer cus, Pet oldPet, Pet newPet) {
         	System.out.println("Error closing connection: " + e1.toString());
         }
     	
+    }
+    
+    public void DBUpdateMedHistory(Customer cus, MedHistory newMedHist) {
+    	
+    	//open connection
+    	Connection con = DBConnect();
+  
+        //SQL Statement
+        //Update record
+        Statement stmt = null;
+        try
+        {
+            String sql1 = "UPDATE Medical_History " +
+					"SET allergies='" + newMedHist.getAllergies() + "', grafts='" + newMedHist.getGrafts() + "', diseases='" + newMedHist.getDiseases() + 
+					"', surgeries='" + newMedHist.getSurgeries() + "', treatments='" + newMedHist.getMedicalTreatment() + "' " +
+					"WHERE pid=(SELECT pid FROM Pet WHERE cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "'));";
+            stmt = con.createStatement();
+            int rows = stmt.executeUpdate(sql1);
+    	    System.out.println("Medical History record updated! rows: " + rows);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating or running MEDICAL HISTORY UPDATE statement: " + e.toString());
+           
+        }
+	    
+	    //Close statement & connection
+        try {
+        	stmt.close();
+            con.close();
+            System.out.println("Connection closed succesfully!");
+        }
+        catch (Exception e1) {
+        	System.out.println("Error closing connection: " + e1.toString());
+        }
     } 
 
 }
