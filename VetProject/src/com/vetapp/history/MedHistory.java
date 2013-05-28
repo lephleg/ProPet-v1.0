@@ -2,59 +2,78 @@ package com.vetapp.history;
 
 public class MedHistory {
   
-	private String Grafts;
-	private String Allergies;
-	private String Diseases;
-	private String Surgeries;
-	private String MedicalTreatment;
-	
+	private String grafts;
+	private String allergies;
+	private String diseases;
+	private String surgeries;
+	private String medicalTreatment;
+
+	//Constructors (#2)
+
+	public MedHistory(String allergies, String diseases, String grafts,
+			String treatments, String surgeries) {
+		this.allergies=allergies;
+		this.diseases=diseases;
+		this.grafts=grafts;
+		this.medicalTreatment=treatments;
+		this.surgeries=surgeries;
+	}
+
+	public MedHistory() {
+		this.allergies="";
+		this.diseases="";
+		this.grafts="";
+		this.medicalTreatment="";
+		this.surgeries="";
+	}
+
 	//Getters 
 	public String getGrafts() {
-		return Grafts;
+		return grafts;
 	}
 	
 	public String getAllergies() {
-		return Allergies;
+		return allergies;
 	}
 
 	public String getDiseases() {
-		return Diseases;
+		return diseases;
 	}
 	
 	public String getSurgeries() {
-		return Surgeries;
+		return surgeries;
 	}
 	
 	public String getMedicalTreatment() {
-		return MedicalTreatment;
+		return medicalTreatment;
 	}
 	
 	//Setters 
 	
 	public void setGrafts(String grafts) {
-		Grafts = grafts;
+		this.grafts = grafts;
 	}
 	
 	public void setAllergies(String allergies) {
-		Allergies = allergies;
+		this.allergies = allergies;
 	}
 	
 	public void setDiseases(String diseases) {
-		Diseases = diseases;
+		this.diseases = diseases;
 	}
 	
 	public void setSurgeries(String surgeries) {
-		Surgeries = surgeries;
+		this.surgeries = surgeries;
 	}
 	
 	public void setMedicalTreatment(String medicalTreatment) {
-		MedicalTreatment = medicalTreatment;
+		this.medicalTreatment = medicalTreatment;
 	}
 	
-	//Other Methods
-	public void editMeHistory() {
-		//to be written
-	}
+//	//Other Methods
+//	public void editMeHistory() {
+//		//to be written
+//	}
 
 	//============================================================================================
 	//----------------------------------- HistoryFemale SUBCLASS ---------------------------------
@@ -64,12 +83,12 @@ public class MedHistory {
 	  
 	  private Birth births;
 
-	  //Other Methods
-		@Override
-		public void editMeHistory() {
-				//to be written
-		}
-		
+//	  //Other Methods
+//		@Override
+//		public void editMeHistory() {
+//				//to be written
+//		}
+//		
 		public void addBirth() {
 			//to be written
 		}
@@ -82,33 +101,33 @@ public class MedHistory {
 
 	public class Birth {
 
-		private String Date;
-		private String Complications;
-		private int NumberOfChildren;
+		private String date;
+		private String complications;
+		private int numberOfChildren;
 		
 		
 		//Getters
 		
-		public String getDate() {
-			return Date;
+		public String getdate() {
+			return date;
 		}
-		public String getComplications() {
-			return Complications;
+		public String getcomplications() {
+			return complications;
 		}
 		public int getNumberOfChildren() {
-			return NumberOfChildren;
+			return numberOfChildren;
 		}
 		
 		//Setters
 		
-		public void setDate(String date) {
-			Date = date;
+		public void setdate(String date) {
+			this.date = date;
 		}
-		public void setComplications(String complications) {
-			Complications = complications;
+		public void setcomplications(String complications) {
+			this.complications = complications;
 		}
 		public void setNumberOfChildren(int numberOfChildren) {
-			NumberOfChildren = numberOfChildren;
+			this.numberOfChildren = numberOfChildren;
 		}
 		
 	}

@@ -7,6 +7,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import com.vetapp.customer.Customer;
+import com.vetapp.history.MedHistory;
 import com.vetapp.pet.Pet;
 
 /**
@@ -324,7 +325,8 @@ public class DB
         	        }
         	        
         	      //Analyzing result and parsing the records to ArrayList
-        	        List<Pet> petList = new ArrayList<Pet>();    	
+        	        List<Pet> petList = new ArrayList<Pet>();  
+        	        petList.clear();  	
         	        try
         	        {
         	        	if (!res0.next()) {
@@ -533,6 +535,124 @@ public class DB
     	
     	return petList;
     }
+
+public void DBUpdatePet(Customer cus, Pet oldPet, Pet newPet) {
+    	
+    	//open connection
+    	Connection con = DBConnect();
+  
+        //SQL Statement
+        //Update record
+        Statement stmt = null;
+        try
+        {
+            String sql1 = "UPDATE Pet " +
+					"SET species='" + newPet.getSpecies() + "', pet_name='" + newPet.getName() + "', gender='" + newPet.getGender() + "', birthday='" + dbPetDateFormat.format(newPet.getBirthDay().getTime()) +
+						 "', fur_colour='" + newPet.getFurColour() + "', special_chars='" + newPet.getSpecialChars() + "', chip_number='" + newPet.getChipNumber() + "', photo_path='" + newPet.getPhotoPath() + "' " +
+					"WHERE cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "') AND pet_name='" + oldPet.getName() + "';";
+            stmt = con.createStatement();
+            int rows = stmt.executeUpdate(sql1);
+    	    System.out.println("Pet record updated! rows: " + rows);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating or running PET UPDATE statement: " + e.toString());
+           
+        }
+	    
+	    //Close statement & connection
+        try {
+        	stmt.close();
+            con.close();
+            System.out.println("Connection closed succesfully!");
+        }
+        catch (Exception e1) {
+        	System.out.println("Error closing connection: " + e1.toString());
+        }
+    }
+    
+    public void DBDeletePet(Customer cus, Pet pet) {
+    	
+    	//open connection
+    	Connection con = DBConnect();
+    	
+    	//TODO: delete related MedHistories
+    	
+    	//SQL Statement
+        //Delete Pet
+        Statement stmt0 = null;
+        try
+        { String sql2 = "DELETE FROM Pet " +
+        		"WHERE cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() +"') AND pet_name='" + pet.getName() + ";";
+	    stmt0 = con.createStatement();
+        stmt0.executeUpdate(sql2);
+	    System.out.println("Pet record deleted!");
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Error creating or running PET DELETE statement: " + e.toString());
+        }
+	    
+	    //Close statement & connection
+        try {
+        	stmt0.close();
+            con.close();
+            System.out.println("Connection closed succesfully!");
+        }
+        catch (Exception e1) {
+        	System.out.println("Error closing connection: " + e1.toString());
+        }
+    }
+
+    //============================== MEDICAL HISTORY DB CONNECTIVITY =============================
+
+    public void DBCreateMedHistory(Customer cus, Pet pet, MedHistory history) {
+    	//open connection
+    	Connection con = DBConnect();
+    	
+    	//SQL statement
+    	Statement stmt;
+    	ResultSet rs;
+        System.out.println("Creating pet history:");
+        System.out.println(history.getAllergies());
+        System.out.println(history.getDiseases());
+        System.out.println(history.getGrafts());
+        System.out.println(history.getMedicalTreatment());
+        System.out.println(history.getSurgeries());
+        System.out.print("of Pet: ");
+        System.out.println(pet.getName());
+
+        try {
+        	String sql = "INSERT INTO Medical_History (pid, grafts, allergies,  diseases, surgeries, treatments)" +
+    				"SELECT pid, '" + history.getGrafts() + "', '" + history.getAllergies()  + "', '" + history.getDiseases() + "', '" + history.getSurgeries() + "', '" + history.getMedicalTreatment() + "' " +
+    				"FROM Pet " +
+    				"WHERE pet_name='" + pet.getName()+ "' AND " +
+          				"cid=(SELECT cid " +
+               			"FROM Customer " +
+               			"WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "' " +
+              			");";
+        	stmt = con.createStatement();
+        	stmt.executeUpdate(sql);
+        	rs = stmt.getGeneratedKeys();
+            System.out.println("Statement Executed!");
+            System.out.println("PID:" + rs.getInt("last_insert_rowid()"));
+            pet.setPID(rs.getInt("last_insert_rowid()"));
+        }
+        catch(SQLException e0)
+        {
+            System.out.println("Error creating statement: " + e0.toString());
+        }
+        
+        //close connection
+        try {
+            con.close();
+            System.out.println("Connection Closed!");
+        }
+        catch (Exception e1) {
+        	System.out.println("Error closing connection: " + e1.toString());
+        }
+    	
+    } 
 
 }
 
