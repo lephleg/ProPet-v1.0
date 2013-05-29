@@ -145,12 +145,11 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		tablePnl.add(scrollPane);
 		tablePnl.add(Box.createRigidArea(new Dimension(30, 0)));
 
-		//buttonPnl layout (horizontal BoxLayout)					//
+		//buttonPnl layout (horizontal BoxLayout)					
 		backBtn = new JButton(BACK_BUTTON_LABEL);					//
 		selectBtn = new JButton(SELECT_BUTTON_LABEL);				//	
 		buttonPnl = new JPanel();									//
-		buttonLayout = new BoxLayout(buttonPnl,BoxLayout.X_AXIS);	//	
-		//Proswrini lysi mexri na 
+		buttonLayout = new BoxLayout(buttonPnl,BoxLayout.X_AXIS);	//																		//Proswrini lysi mexri na 
 		buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	//diorthwthei to thema me to 
 		buttonPnl.add(selectBtn);									//diplo click sto JTable.
 		buttonPnl.add(Box.createRigidArea(new Dimension(15, 0)));	//
@@ -350,7 +349,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			//Frame configuration
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 			//contentPane layout (horizontal BoxLayout)
 			mainPnl = new JPanel();

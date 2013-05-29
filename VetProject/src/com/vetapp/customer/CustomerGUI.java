@@ -652,6 +652,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			JFormattedTextField nextVisit = new JFormattedTextField(ft);
 			nextVisit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			nextVisit.setEditable(false);
 			
 			if (customer.getNextVisit()==null) {
 				nextVisit.setText("dd-MM-yyyy hh:mm");
