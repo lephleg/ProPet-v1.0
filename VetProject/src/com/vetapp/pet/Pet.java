@@ -31,7 +31,7 @@ public class Pet {
 		this.furColour = furColour;
 		this.specialChars = specialChars;
 		this.chipNumber = chipNumber;
-		this.setPhotoPath("");
+		this.setPhotoPath(null);
 		//this.history = history;    // Pisteuw pws to medical history den prepei na vrisketai sto constructor
 		
 	}
@@ -45,7 +45,7 @@ public class Pet {
 		this.furColour = "";
 		this.specialChars = "";
 		this.chipNumber = "";
-		this.setPhotoPath("");
+		this.setPhotoPath(null);
 		
 	}
 
@@ -58,7 +58,7 @@ public class Pet {
 		this.furColour = "";
 		this.specialChars = "";
 		this.chipNumber = "";
-		this.setPhotoPath("");
+		this.setPhotoPath(null);
 	}
 	
 	//Getters

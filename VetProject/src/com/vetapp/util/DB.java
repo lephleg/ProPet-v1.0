@@ -8,6 +8,7 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import com.vetapp.customer.Customer;
+import com.vetapp.history.Birth;
 import com.vetapp.history.MedHistory;
 import com.vetapp.pet.Pet;
 
@@ -98,7 +99,10 @@ public class DB
 
 	//=============================== CUSTOMER DB CONNECTIVITY =============================
 
-	public void DBCreateCustomer(Customer cus) {
+	public Customer DBCreateCustomer(Customer cus) {
+		Customer temp = new Customer();
+		temp = cus;
+	
 		//open connection
 		Connection con = DBConnect();
 
@@ -121,7 +125,7 @@ public class DB
 			rs = stmt.getGeneratedKeys();
 			System.out.println("Statement Executed!");
 			System.out.println("CID:" + rs.getInt("last_insert_rowid()"));
-			cus.setCID(rs.getInt("last_insert_rowid()"));
+			temp.setCID(rs.getInt("last_insert_rowid()"));
 		}
 		catch(SQLException e0)
 		{
@@ -136,6 +140,7 @@ public class DB
 		catch (Exception e1) {
 			System.out.println("Error closing connection: " + e1.toString());
 		}
+		return temp;
 	}
 
 	public Customer DBGetCustomer(String lastName, String firstName) { 		
@@ -166,6 +171,7 @@ public class DB
 			if (!res.next()) {
 				System.out.println("No records found");
 			} else {
+				cus.setCID(res.getInt("cid"));
 				cus.setFirstName(res.getString("first_name"));
 				cus.setLastName(res.getString("last_name"));
 				cus.setAddress(res.getString("address"));
@@ -245,8 +251,8 @@ public class DB
 		Connection con = DBConnect();
 
 
-		//SQL Statement
-		//Delete Pets related to this customer
+//		//SQL Statement
+//		//Delete Pets related to this customer
 		Statement stmt0 = null;
 		try
 		{ String sql2 = "DELETE FROM Pet " +
@@ -288,6 +294,9 @@ public class DB
 	}
 
 	public List<Customer> DBGetAllCustomers() {
+
+		List<Customer> fullList = new ArrayList<Customer>();    	
+
 		//open connection
 		Connection con = DBConnect();
 
@@ -305,7 +314,6 @@ public class DB
 			System.out.println("Error creating or running statement: " + e.toString());
 		}
 		//Analyzing result and parsing the records to ArrayList
-		List<Customer> fullList = new ArrayList<Customer>();    	
 		try
 		{
 			if (!res.next()) {
@@ -331,57 +339,57 @@ public class DB
 						tempCal.setTime(dbDateFormat.parse(res.getString("next_visit")));
 						tempCus.setNextVisit(tempCal);
 					}
-					//SQL statement for getting Customers Pets by matching cid
-					Statement stmt0 = null;
-					ResultSet res0 = null;
-					try
-					{
-						String sql0 = "SELECT * FROM Pet " +
-								"WHERE cid='" + res.getInt("cid") + "';";
-						stmt0 = con.createStatement();
-						res0 = stmt0.executeQuery(sql0);
-					}
-					catch(SQLException e)
-					{
-						System.out.println("Error creating or running PET LIST statement: " + e.toString());
-					}
-
-					//Analyzing result and parsing the records to ArrayList
-					List<Pet> petList = new ArrayList<Pet>();  
-					petList.clear();  	
-					try
-					{
-						if (!res0.next()) {
-							System.out.println("No pets found");
-						} else {
-							do {
-								Pet tempPet = new Pet();
-								tempPet.setSpecies(res0.getString("species"));
-								tempPet.setName(res0.getString("pet_name"));
-								tempPet.setGender(res0.getString("gender"));
-								String tmp = res0.getString("birthday");
-								if (tmp==null) {
-									//System.out.println("next_visit was not set");
-									tempPet.setBirthDay(null);
-								} else {
-									//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-									//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
-									Calendar tmpCal = new GregorianCalendar();
-									tmpCal.setTime(dbPetDateFormat.parse(tmp));
-									tempPet.setBirthDay(tmpCal);
-								}
-								tempPet.setFurColour(res0.getString("fur_colour"));
-								tempPet.setSpecialChars(res0.getString("special_chars"));
-								tempPet.setChipNumber(res0.getString("chip_number"));
-								tempPet.setPhotoPath(res0.getString("photo_path"));
-								tempCus.addPet(tempPet);
-							} while (res0.next());
-						}
-					}
-					catch(SQLException e)
-					{
-						System.out.println("Error analyzing PET LIST statement: " + e.toString());
-					}
+//					//SQL statement for getting Customers Pets by matching cid
+//					Statement stmt0 = null;
+//					ResultSet res0 = null;
+//					try
+//					{
+//						String sql0 = "SELECT * FROM Pet " +
+//								"WHERE cid='" + res.getInt("cid") + "';";
+//						stmt0 = con.createStatement();
+//						res0 = stmt0.executeQuery(sql0);
+//					}
+//					catch(SQLException e)
+//					{
+//						System.out.println("Error creating or running PET LIST statement: " + e.toString());
+//					}
+//
+//					//Analyzing result and parsing the records to ArrayList
+//					List<Pet> petList = new ArrayList<Pet>();  
+//					petList.clear();  	
+//					try
+//					{
+//						if (!res0.next()) {
+//							System.out.println("No pets found");
+//						} else {
+//							do {
+//								Pet tempPet = new Pet();
+//								tempPet.setSpecies(res0.getString("species"));
+//								tempPet.setName(res0.getString("pet_name"));
+//								tempPet.setGender(res0.getString("gender"));
+//								String tmp = res0.getString("birthday");
+//								if (tmp==null) {
+//									//System.out.println("next_visit was not set");
+//									tempPet.setBirthDay(null);
+//								} else {
+//									//System.out.println("Date object retrieved: " + res.getString("next_visit"));
+//									//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
+//									Calendar tmpCal = new GregorianCalendar();
+//									tmpCal.setTime(dbPetDateFormat.parse(tmp));
+//									tempPet.setBirthDay(tmpCal);
+//								}
+//								tempPet.setFurColour(res0.getString("fur_colour"));
+//								tempPet.setSpecialChars(res0.getString("special_chars"));
+//								tempPet.setChipNumber(res0.getString("chip_number"));
+//								tempPet.setPhotoPath(res0.getString("photo_path"));
+//								tempCus.addPet(tempPet);
+//							} while (res0.next());
+//						}
+//					}
+//					catch(SQLException e)
+//					{
+//						System.out.println("Error analyzing PET LIST statement: " + e.toString());
+//					}
 					fullList.add(tempCus);
 				} while (res.next());
 			}
@@ -407,23 +415,15 @@ public class DB
 
 	//============================== PET DB CONNECTIVITY =============================
 
-	public void DBCreatePet(Customer cus, Pet pet) {
+	public Pet DBCreatePet(Customer cus, Pet pet) {
+		Pet temp = new Pet();
+		temp = pet;
 		//open connection
 		Connection con = DBConnect();
 
 		//SQL statement
 		Statement stmt;
 		ResultSet rs;
-		System.out.println("Creating pet:");
-		System.out.println(pet.getSpecies());
-		System.out.println(pet.getName());
-		System.out.println(pet.getGender());
-		System.out.println(dbDateFormat.format(pet.getBirthDay().getTime()));
-		System.out.println(pet.getFurColour());
-		System.out.println(pet.getSpecialChars());
-		System.out.println(pet.getChipNumber());
-		System.out.print("of Customer: ");
-		System.out.println(cus.getFirstName() + " " + cus.getLastName());
 
 		try {
 			String sql = "INSERT INTO Pet (cid, species, pet_name, gender, birthday, fur_colour, special_chars, chip_number) " +
@@ -435,7 +435,7 @@ public class DB
 			rs = stmt.getGeneratedKeys();
 			System.out.println("Statement Executed!");
 			System.out.println("PID:" + rs.getInt("last_insert_rowid()"));
-			pet.setPID(rs.getInt("last_insert_rowid()"));
+			temp.setPID(rs.getInt("last_insert_rowid()"));
 		}
 		catch(SQLException e0)
 		{
@@ -450,6 +450,7 @@ public class DB
 		catch (Exception e1) {
 			System.out.println("Error closing connection: " + e1.toString());
 		}
+		return temp;	
 	} 
 
 	public List<Pet> DBGetAllPets(Customer cus) {
@@ -481,6 +482,7 @@ public class DB
 			} else {
 				do {
 					Pet tempPet = new Pet();
+					tempPet.setPID(res.getInt("pid"));
 					tempPet.setSpecies(res.getString("species"));
 					tempPet.setName(res.getString("pet_name"));
 					tempPet.setGender(res.getString("gender"));
@@ -592,8 +594,10 @@ public class DB
 			System.out.println("Error closing connection: " + e1.toString());
 		}
 	}
-	
+
 	public Pet DBGetPet(Customer cus, String petName) { 
+
+		Pet pet = new Pet();
 
 		//open connection
 		Connection con = DBConnect();
@@ -604,8 +608,7 @@ public class DB
 		try
 		{
 			String sql = "SELECT * FROM Pet " 
-					+ "WHERE pet_name='" + petName + "' AND cid=(SELECT cid " +
-					"FROM Customer " +
+					+ "WHERE pet_name='" + petName + "' AND cid=(SELECT cid FROM Customer " +
 					"WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "'); ";
 			stmt = con.createStatement();
 			res = stmt.executeQuery(sql);
@@ -616,7 +619,6 @@ public class DB
 		}
 
 		//Analyzing result and parsing the records to ArrayList
-		Pet pet = new Pet();
 		try
 		{
 			if (!res.next()) {
@@ -655,41 +657,30 @@ public class DB
 		}
 		return pet;
 	}
-	
+
 
 	//============================== MEDICAL HISTORY DB CONNECTIVITY =============================
 
-	public void DBCreateMedHistory(Customer cus, Pet pet, MedHistory history) {
+	public MedHistory DBCreateMedHistory(Pet pet, MedHistory history) {
+		MedHistory med = new MedHistory();
+		med = history;
 		//open connection
 		Connection con = DBConnect();
 
 		//SQL statement
 		Statement stmt;
 		ResultSet rs;
-		System.out.println("Creating pet history:");
-		System.out.println(history.getAllergies());
-		System.out.println(history.getDiseases());
-		System.out.println(history.getGrafts());
-		System.out.println(history.getMedicalTreatment());
-		System.out.println(history.getSurgeries());
-		System.out.print("of Pet: ");
-		System.out.println(pet.getName());
 
 		try {
-			String sql = "INSERT INTO Medical_History (pid, grafts, allergies,  diseases, surgeries, treatments)" +
-					"SELECT pid, '" + history.getGrafts() + "', '" + history.getAllergies()  + "', '" + history.getDiseases() + "', '" + history.getSurgeries() + "', '" + history.getMedicalTreatment() + "' " +
-					"FROM Pet " +
-					"WHERE pet_name='" + pet.getName()+ "' AND " +
-					"cid=(SELECT cid " +
-					"FROM Customer " +
-					"WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "' " +
-					");";
+			String sql = "INSERT INTO Medical_History (pid, grafts, allergies, diseases, surgeries, treatments)" +
+					"VALUES ('" + pet.getPID() + "', '" + history.getGrafts() + "', '" + history.getAllergies()  + "', '" + 
+					history.getDiseases() + "', '" + history.getSurgeries() + "', '" + history.getMedicalTreatment() + "' " + ");";
 			stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 			rs = stmt.getGeneratedKeys();
 			System.out.println("Statement Executed!");
-			System.out.println("PID:" + rs.getInt("last_insert_rowid()"));
-			pet.setPID(rs.getInt("last_insert_rowid()"));
+			System.out.println("MID:" + rs.getInt("last_insert_rowid()"));
+			med.setMID(rs.getInt("last_insert_rowid()"));
 		}
 		catch(SQLException e0)
 		{
@@ -704,10 +695,10 @@ public class DB
 		catch (Exception e1) {
 			System.out.println("Error closing connection: " + e1.toString());
 		}
-
+		return med;
 	}
 
-	public void DBUpdateMedHistory(Customer cus, MedHistory newMedHist) {
+	public void DBUpdateMedHistory(MedHistory oldMedHist, MedHistory newMedHist) {
 
 		//open connection
 		Connection con = DBConnect();
@@ -715,12 +706,14 @@ public class DB
 		//SQL Statement
 		//Update record
 		Statement stmt = null;
+		String sql1 = null;
 		try
-		{
-			String sql1 = "UPDATE Medical_History " +
+		{	
+			sql1 = "UPDATE Medical_History " +
 					"SET allergies='" + newMedHist.getAllergies() + "', grafts='" + newMedHist.getGrafts() + "', diseases='" + newMedHist.getDiseases() + 
 					"', surgeries='" + newMedHist.getSurgeries() + "', treatments='" + newMedHist.getMedicalTreatment() + "' " +
-					"WHERE pid=(SELECT pid FROM Pet WHERE cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() + "'));";
+					"WHERE mid='" + oldMedHist.getMID() + "';";
+
 			stmt = con.createStatement();
 			int rows = stmt.executeUpdate(sql1);
 			System.out.println("Medical History record updated! rows: " + rows);
@@ -728,7 +721,6 @@ public class DB
 		catch(SQLException e)
 		{
 			System.out.println("Error creating or running MEDICAL HISTORY UPDATE statement: " + e.toString());
-
 		}
 
 		//Close statement & connection
@@ -742,7 +734,7 @@ public class DB
 		}
 	} 
 
-	public void DBDeleteMedHistory(Customer cus, Pet pet) {
+	public void DBDeleteMedHistory(Pet pet) {
 
 		//open connection
 		Connection con = DBConnect();
@@ -750,7 +742,7 @@ public class DB
 		Statement stmt0 = null;
 		try
 		{ String sql2 = "DELETE FROM Medical_History " +
-				"WHERE pid=(SELECT pid FROM Pet WHERE pet_name='" + pet.getName() + "' AND cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() +"'));";
+					"WHERE pid='" + pet.getPID() + "';";
 		stmt0 = con.createStatement();
 		stmt0.executeUpdate(sql2);
 		System.out.println("Medical History record deleted!");
@@ -770,9 +762,9 @@ public class DB
 			System.out.println("Error closing connection: " + e1.toString());
 		}
 	}
-	
-	public MedHistory DBGetMedHistory(Customer cus, Pet pet) {
-	
+
+	public MedHistory DBGetMedHistory(Pet pet) {
+
 		//open connection
 		Connection con = DBConnect();
 
@@ -782,8 +774,7 @@ public class DB
 		try
 		{
 			String sql = "SELECT * FROM Medical_History " 
-					+ "WHERE pid=(SELECT pid FROM Pet WHERE pet_name='" + pet.getName() +  
-					"' AND cid=(SELECT cid FROM Customer WHERE last_name='" + cus.getLastName() + "' AND first_name='" + cus.getFirstName() +"'));";
+					+ "WHERE pid='" + pet.getPID() + "'));";
 			stmt = con.createStatement();
 			res = stmt.executeQuery(sql);
 		}
@@ -791,7 +782,7 @@ public class DB
 		{
 			System.out.println("Error creating or running SELECT MED HISTORY statement: " + e.toString());
 		}
-		
+
 		//Analyzing result and parsing the records to ArrayList
 		MedHistory history = new MedHistory();
 		try
@@ -804,6 +795,7 @@ public class DB
 				history.setDiseases(res.getString("diseases"));
 				history.setSurgeries(res.getString("surgeries"));
 				history.setMedicalTreatment(res.getString("treatments"));
+				history.setMID(res.getInt("mid"));
 				System.out.println("Data analysis successfull!");
 			}
 		}
@@ -811,11 +803,213 @@ public class DB
 		{
 			System.out.println("Error processing results: " + e.toString());
 		}
-		
+
 		return history;
 	}
 
+	//============================== BIRTH DB CONNECTIVITY =============================
 
+	public Birth DBCreateBirth(MedHistory history, Birth birth) {
+		Birth temp = new Birth();
+		temp = birth;
+
+		//open connection
+		Connection con = DBConnect();
+
+		//SQL statement
+		Statement stmt;
+		ResultSet rs;
+
+		try {
+			String sql = "INSERT INTO Birth (mid, date, compilations,  children)" +
+					"VALUES ('" + history.getMID() + "', '" + dbDateFormat.format(temp.getDate().getTime()) + "', '" 
+					+ temp.getComplications() + "', '" + temp.getNumberOfChildren() + "');";
+			stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+			rs = stmt.getGeneratedKeys();
+			System.out.println("Statement Executed!");
+			System.out.println("BID:" + rs.getInt("last_insert_rowid()"));
+			temp.setBID(rs.getInt("last_insert_rowid()"));
+		}
+		catch(SQLException e0)
+		{
+			System.out.println("Error creating statement: " + e0.toString());
+		}
+
+		//close connection
+		try {
+			con.close();
+			System.out.println("Connection Closed!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
+		}
+		return temp;
+	}
+
+
+	public void DBDeleteBirth(Birth birth) {
+
+		//open connection
+		Connection con = DBConnect();
+
+		Statement stmt0 = null;
+		try
+		{ String sql2 = "DELETE FROM Birth " +
+				"WHERE bid='" + birth.getBID() + "';";
+		stmt0 = con.createStatement();
+		stmt0.executeUpdate(sql2);
+		System.out.println("Birth record deleted!");
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error creating or running BIRTH DELETE statement: " + e.toString());
+		}
+
+		//Close statement & connection
+		try {
+			stmt0.close();
+			con.close();
+			System.out.println("Connection closed succesfully!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
+		}
+	}
+
+	public Birth DBGetBirth(MedHistory med, Calendar cal) {
+
+		//open connection
+		Connection con = DBConnect();
+
+		//SQL statement
+		Statement stmt = null;
+		ResultSet res = null;
+		try
+		{
+			String sql = "SELECT * FROM Birth " 
+					+ "WHERE mid='" + med.getMID() + "' AND date='" +  dbDateFormat.format(cal.getTime())+ "';";
+			stmt = con.createStatement();
+			res = stmt.executeQuery(sql);
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error creating or running SELECT BIRTH statement: " + e.toString());
+		}
+
+		//Analyzing result and parsing the records to ArrayList
+		Birth birth = new Birth();
+		try
+		{
+			if (!res.next()) {
+				System.out.println("No Medical History found");
+			} else {
+				birth.setBID(res.getInt("bid"));
+				birth.setComplications(res.getString("compilations"));
+				birth.setNumberOfChildren(res.getInt("children"));
+				String temp = res.getString("date");
+				Calendar tmpCal = new GregorianCalendar();
+				tmpCal.setTime(dbPetDateFormat.parse(temp));
+				birth.setDate(tmpCal);
+				System.out.println("Data analysis successfull!");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Error processing results: " + e.toString());
+		}
+		return birth;
+	}
+	public void DBUpdateBirth(Birth oldBirth, Birth newBirth) {
+
+		//open connection
+		Connection con = DBConnect();
+
+		//SQL Statement
+		//Update record
+		Statement stmt = null;
+		String sql1 = null;
+		try
+		{	
+			sql1 = "UPDATE Birth " +
+					"SET compilations='" + newBirth.getComplications() + "', children='" + newBirth.getNumberOfChildren() + 
+					"', date='" +  dbPetDateFormat.format(newBirth.getDate().getTime()) + "' " +
+					"WHERE bid='" + oldBirth.getBID() + "';";
+
+			stmt = con.createStatement();
+			int rows = stmt.executeUpdate(sql1);
+			System.out.println("Birth record updated! rows: " + rows);
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error creating or running BIRTH UPDATE statement: " + e.toString());
+		}
+
+		//Close statement & connection
+		try {
+			stmt.close();
+			con.close();
+			System.out.println("Connection closed succesfully!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
+		}
+	} 
+
+public List<Birth> DBGetAllBirths(MedHistory med) {
+		List<Birth> birthList = new ArrayList<Birth>();   
+
+		//open connection
+		Connection con = DBConnect();
+
+		//SQL statement for getting Customers Pets by matching cid
+		Statement stmt0 = null;
+		ResultSet res = null;
+		try
+		{
+			String sql0 = "SELECT * FROM Birth " +
+					"WHERE mid='" + med.getMID() + "';";
+			stmt0 = con.createStatement();
+			res = stmt0.executeQuery(sql0);
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error creating or running SELECT BIRTH statement: " + e.toString());
+		}
+
+		//Analyzing result and parsing the records to ArrayList
+		try
+		{
+			if (!res.next()) {
+				System.out.println("No births found");
+			} else {
+				do {
+					Birth tempBirth = new Birth();
+					tempBirth.setBID(res.getInt("bid"));
+					tempBirth.setComplications(res.getString("compilations"));
+					tempBirth.setNumberOfChildren(res.getInt("children"));
+					String tmp = res.getString("date");
+					if (tmp==null) {
+						//System.out.println("next_visit was not set");
+						tempBirth.setDate(null);
+					} else {
+						//System.out.println("Date object retrieved: " + res.getString("next_visit"));
+						//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
+						Calendar tmpCal = new GregorianCalendar();
+						tmpCal.setTime(dbPetDateFormat.parse(tmp));
+						tempBirth.setDate(tmpCal);
+					}
+					birthList.add(tempBirth);
+				} while (res.next());
+			}
+		}
+		catch(SQLException e)
+		{
+			System.out.println("Error analyzing PET LIST statement: " + e.toString());
+		} catch (ParseException e1) {
+			System.out.println("Error parsing DATE: " + e1.toString());
+		}
+		return birthList;
+	}
 
 }
-

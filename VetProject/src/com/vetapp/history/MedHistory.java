@@ -2,6 +2,7 @@ package com.vetapp.history;
 
 public class MedHistory {
 
+	private int mid;
 	private String grafts;
 	private String allergies;
 	private String diseases;
@@ -17,6 +18,7 @@ public class MedHistory {
 		this.grafts=grafts;
 		this.medicalTreatment=treatments;
 		this.surgeries=surgeries;
+		this.mid = 0;
 	}
 
 	public MedHistory() {
@@ -25,9 +27,15 @@ public class MedHistory {
 		this.grafts="";
 		this.medicalTreatment="";
 		this.surgeries="";
+		this.mid = 0;
+		
 	}
 
 	//Getters 
+	public int getMID() {
+		return this.mid;
+	}
+	
 	public String getGrafts() {
 		return grafts;
 	}
@@ -49,6 +57,10 @@ public class MedHistory {
 	}
 
 	//Setters 
+
+	public void setMID(int mid) {
+		this.mid=mid;
+	}
 
 	public void setGrafts(String grafts) {
 		this.grafts = grafts;

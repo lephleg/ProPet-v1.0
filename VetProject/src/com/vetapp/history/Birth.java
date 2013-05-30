@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 public class Birth {
 
+		private int bid;
 		private Calendar date;
 		private String complications;
 		private int numberOfChildren;
@@ -15,6 +16,7 @@ public class Birth {
 			this.date=cal;
 			this.complications=compilations;
 			this.numberOfChildren=numberOfChildren;
+			this.bid=0;
 		}
 
 		public Birth() {
@@ -22,9 +24,14 @@ public class Birth {
 			this.date=null;
 			this.complications= "";
 			this.numberOfChildren=0;
+			this.bid =0 ;
 		}
 
 		//Getters
+
+		public int getBID() {
+			return this.bid;
+		}
 
 		public Calendar getDate() {
 			return date;
@@ -35,9 +42,13 @@ public class Birth {
 		public int getNumberOfChildren() {
 			return numberOfChildren;
 		}
-		
+
 		//Setters
-		
+
+		public void setBID(int bid) {
+			this.bid=bid;
+		}
+
 		public void setDate(Calendar date) {
 			this.date = date;
 		}
@@ -47,5 +58,6 @@ public class Birth {
 		public void setNumberOfChildren(int numberOfChildren) {
 			this.numberOfChildren = numberOfChildren;
 		}
+
 		
 	}

@@ -60,7 +60,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		cusList = list;
 		customer = new Customer();
 		customer = cus;
-		petList = customer.getMyPets();
+		petList = VetApp.db.DBGetAllPets(customer);
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
 		setBounds(100, 100, 530, 380);
 		contentPane = new JPanel();
@@ -161,7 +161,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		
 		petTable = new JTable(petModel);
 		
-		petModel.reloadPetJTable(customer.getMyPets());
+		petModel.reloadPetJTable(customer);
 		petTable.setAutoCreateRowSorter(true);									//enable row sorters						
 
 		DefaultRowSorter sorter = ((DefaultRowSorter)petTable.getRowSorter());	//default sort by Last Name
@@ -194,12 +194,11 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					public void mouseClicked(MouseEvent e) {
 						if (e.getClickCount() == 2) {
 							//System.out.println("Double click detected!");
-							//System.out.println("Customer on " + customerTbl.getSelectedRow() + " row selected!");
+							//System.out.println("Customer on " + petTable.getSelectedRow() + " row selected!");
 							int row = petTable.getSelectedRow();
 							for(int i=0; i< petList.size(); i++){
-								if (petList.get(i).getName()==petTable.getValueAt(row, 1) ) {
 									new PetGUI(petList.get(i));
-								}
+									//System.out.println("Pet PID: " + petList.get(i).getPID());
 							}
 						}
 					}
@@ -261,9 +260,10 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private String[] columnNames = {"Photo","Pet Name"};		//column header labels
 		private Object[][] data = new Object[100][2];
 
-		public void reloadPetJTable(List<Pet> list) {
+		public void reloadPetJTable(Customer cus) {
 			//System.out.println("loading pet table #2: " + list.get(0).getName());
-			
+			List<Pet> list = new ArrayList<Pet>();
+			list = VetApp.db.DBGetAllPets(cus);
 			clearJTable();
 			for(int i=0; i<list.size(); i++){
 				if (list.get(i).getPhotoPath() == null) {
@@ -681,7 +681,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			petTable = new JTable(petModel);
 			
-			petModel.reloadPetJTable(customer.getMyPets());
+			petModel.reloadPetJTable(customer);
 			petTable.setAutoCreateRowSorter(true);									//enable row sorters						
 
 			DefaultRowSorter sorter = ((DefaultRowSorter)petTable.getRowSorter());	//default sort by Last Name
