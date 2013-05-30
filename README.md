@@ -26,9 +26,8 @@ Package & Class compression
       	editPetGUI
 •	com.vetapp.history
 
-    	MedHistory.java (may not needed)
-      	HistoryFemale
-      	Birth
+    	MedHistory.java
+    	Birth
     	MedHistoryGUI.java
       	editMedHistoryGUI
       	BirthsGUI
@@ -47,11 +46,10 @@ Developers
 
 People who are currently working on this project:
 
--
--
--
--
--
--
-
+- Margaritis Argyris
+- Kakalelis Iwsif
+- Partalis Nikos
+- Gemenetzi Ariadni
+- Mavroudis Dimitris
+- Tsitsiridakis Giwrgos
 
