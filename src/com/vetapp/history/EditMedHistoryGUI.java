@@ -8,6 +8,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class EditMedHistoryGUI extends JFrame {
 	public EditMedHistoryGUI() {
@@ -64,7 +66,7 @@ public class EditMedHistoryGUI extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblMedicalHistory = new JLabel("Medical History");
+		JLabel lblMedicalHistory = new JLabel("Edit Medical History");
 		getContentPane().add(lblMedicalHistory, "6, 2, 1, 2, center, default");
 		
 		JLabel VaccineLbl = new JLabel("   Vaccinated:");
@@ -115,11 +117,24 @@ public class EditMedHistoryGUI extends JFrame {
 		MedTreatmentTxtFld.setText(MedicalTreatment);
 		
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
-		getContentPane().add(NeuteringLbl, "6, 27, 1, 3, left, center");
+		getContentPane().add(NeuteringLbl, "6, 27, left, default");
 		
 		ButtonGroup BtnGroup = new ButtonGroup();
 		getContentPane().add(NeutBtnYes, "8, 27, center, top");
 		BtnGroup.add(NeutBtnYes);
+		
+		JButton BirthsBtn = new JButton("Births");
+		BirthsBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new BirthGUI();
+			}
+		});
+		if(Female ){
+			BirthsBtn.setEnabled(true);
+		} else {
+			BirthsBtn.setEnabled(false);
+		}
+		getContentPane().add(BirthsBtn, "6, 29");
 		
 		JRadioButton NeutBtnNo = new JRadioButton("No");
 		NeutBtnNo.setSelected(true);
@@ -127,9 +142,19 @@ public class EditMedHistoryGUI extends JFrame {
 		BtnGroup.add(NeutBtnNo);
 		
 		JButton btnSaveChanges = new JButton("Save Changes");
+		btnSaveChanges.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Saves the changes in the DB
+			}
+		});
 		getContentPane().add(btnSaveChanges, "6, 33");
 		
 		JButton btnNewButton = new JButton("Cancel");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditMedHistoryGUI.super.dispose();
+			}
+		});
 		getContentPane().add(btnNewButton, "8, 33, 2, 1");
 		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
 	    

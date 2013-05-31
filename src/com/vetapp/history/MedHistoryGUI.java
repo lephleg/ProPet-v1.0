@@ -128,8 +128,13 @@ public class MedHistoryGUI extends JFrame {
 		JLabel NeuValLbl = new JLabel("No");//metavliti apo db anti gia no
 		getContentPane().add(NeuValLbl, "8, 27, center, default");
 		
-		JButton SaveBtn = new JButton("Save Changes");
-		getContentPane().add(SaveBtn, "6, 31");
+		JButton EditBtn = new JButton("Edit Medical History");
+		EditBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new EditMedHistoryGUI();
+			}
+		});
+		getContentPane().add(EditBtn, "6, 31");
 		
 		JButton CancelBtn = new JButton("Cancel");
 		CancelBtn.addActionListener(new ActionListener() {

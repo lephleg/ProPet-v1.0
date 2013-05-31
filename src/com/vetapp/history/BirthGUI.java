@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 
 
 public class BirthGUI extends JFrame {
-	private JTable table;
+	private JTable BirthsList;
 	private JButton back_button ;
 	public BirthGUI() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -19,8 +19,8 @@ public class BirthGUI extends JFrame {
 		
 		JPanel  panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		BirthsList = new JTable();
+		BirthsList.setModel(new DefaultTableModel(
 			new Object[][] {
 				{"", ""},
 				{"", ""},
@@ -54,19 +54,24 @@ public class BirthGUI extends JFrame {
 				return columnEditables[column];
 			}
 		});
-		table.getColumnModel().getColumn(0).setPreferredWidth(164);
-		table.getColumnModel().getColumn(1).setPreferredWidth(161);
-		table.setBounds(49, 85, 336, 201);
-		JScrollPane scroller = new JScrollPane(table );   // Xwris JScrollPane den emfanizontai ta headers
+		BirthsList.getColumnModel().getColumn(0).setPreferredWidth(164);
+		BirthsList.getColumnModel().getColumn(1).setPreferredWidth(161);
+		BirthsList.setBounds(49, 85, 336, 201);
+		JScrollPane scroller = new JScrollPane(BirthsList );   // Xwris JScrollPane den emfanizontai ta headers
 		panel.add(scroller,BorderLayout.CENTER );
-		JLabel label = new JLabel("                                                                   Births Given");
-		label.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel.add(label ,BorderLayout.NORTH);
+		JLabel BirthsLbl = new JLabel("                                                                   Births Given");
+		BirthsLbl.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panel.add(BirthsLbl ,BorderLayout.NORTH);
 		back_button = new JButton("Back");   
+		back_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BirthGUI.super.dispose();
+			}
+		});
 		//panel.add(back_button, BorderLayout.SOUTH);
-		JPanel panel_1 =new JPanel();  // Voithitiko panel 
-		panel_1.add(back_button);
-		panel.add(panel_1 , BorderLayout.SOUTH);
+		JPanel ButtonsPanel =new JPanel();  // Voithitiko panel 
+		ButtonsPanel.add(back_button);
+		panel.add(ButtonsPanel , BorderLayout.SOUTH);
 	    this.setContentPane(panel );
 	    
 		this.setVisible(true);
