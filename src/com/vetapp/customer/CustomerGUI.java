@@ -884,7 +884,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				
 				 Calendar cl = Calendar.getInstance();
 				
-					if(year/1000 !=0 || month/100 !=0 || month>12 || day/100 !=0 || hour/100 !=0 || minutes/100 !=0) 
+					if(year/1000 !=0 ||year <=0 || month/100 !=0 || month>12 || month <=0 || day/100 !=0 || day <=0|| day >31 ||  hour/100 !=0 || hour < 0 ||hour >24 || minutes/100 !=0 || minutes <0 || minutes >59) 
 					{
 						JOptionPane error = new JOptionPane();
 						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
