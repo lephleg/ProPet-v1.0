@@ -520,11 +520,33 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				String special = spCharactTxt.getText();
 				String chip =  chipNumTxt.getText();
 				String gender;
-				//if(rdbtnMale.isSelected()) {
-				gender = "Male";
-				//} else {
-				//	gender ="Female";
-				//}
+				// Kwdikas gia apaloifh twn kenwn
+				species.trim();
+				name.trim();
+				birthDay.trim();
+				birthMonth.trim();
+				birthYear.trim();
+				furColour.trim();
+				special.trim();
+				chip.trim();
+				
+				
+				
+				
+				
+				if(species.equals("")||name.equals("")||(maleRButton.isSelected()==false && femaleRButton.isSelected()==false))
+				{
+					JOptionPane error = new JOptionPane();
+				 	error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else 
+				{
+				
+				 if(maleRButton.isSelected()) 
+				      gender = "Male";
+				  else 
+					gender ="Female";
+				
 				String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
 				Date date = null;
 				try {
@@ -543,8 +565,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				JOptionPane information = new JOptionPane();
 				petModel.reloadPetJTable(cust);
 				information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
-				createPetGUI.this.dispose();    					// Kleisimo tou frame
+				createPetGUI.this.dispose();     // Kleisimo tou frame
 
+				}                          
 			} else if (e.getActionCommand().equals("Cancel")) {
 				this.dispose();
 
@@ -759,7 +782,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	    private  JButton btnSet = new JButton("Set");
 	    private  JButton btnCancel = new JButton("Cancel");
 
-		 // Xrhsimopoihsa Grammatoseira Tahoma 11 Paraklw na apofasisoume apo edw kai sto ekshs ti tha xrhsimopoipume!
+	
 
 		/**
 		 * Create the frame.
@@ -844,7 +867,38 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getActionCommand().equals("Set")) {
+			  if(txtYyyy.getText().equals("")||txtMm.getText().equals("")||txtDd.getText().equals("")||txtHh.getText().equals("")||txtHh_1.getText().equals(""))	
+			  {
+				  JOptionPane error = new JOptionPane();
+					error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+			  }
+			  else {
+		     	Customer cus;
+			    cus = customer;
+				 
+				int year = Integer.parseInt(txtYyyy.getText());
+				int month = Integer.parseInt(txtMm.getText());
+				int day = Integer.parseInt(txtDd.getText());
+				int hour = Integer.parseInt(txtHh.getText());
+				int minutes = Integer.parseInt(txtHh_1.getText());
 				
+				 Calendar cl = Calendar.getInstance();
+				
+					if(year/1000 !=0 || month/100 !=0 || month>12 || day/100 !=0 || hour/100 !=0 || minutes/100 !=0) 
+					{
+						JOptionPane error = new JOptionPane();
+						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				
+					else
+					{
+					     cl.set(year,month,day,hour,minutes);
+					     customer.setNextVisit(cl);
+					     VetApp.db.DBUpdateCustomer(cus, customer);
+					
+					}
+				
+			  }	
 			} else if (e.getActionCommand().equals("Cancel")) {
 				dispose();
 			}
