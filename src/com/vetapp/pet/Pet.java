@@ -1,21 +1,27 @@
 package com.vetapp.pet;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.vetapp.history.MedHistory;
 
 public class Pet {
 
+	private int pid = 0;
 	private String species;
 	private String name;
 	private String gender;
-	private String birthDay;
+	private Calendar birthDay;
 	private String furColour;
 	private String specialChars;
 	private String chipNumber;
+	private String photoPath;
 	private MedHistory history;
+	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 	
-	//Constructors (#2)
+	//Constructors (#3)
 	
-	public Pet(String species, String name, String gender, String birthDay, String furColour, String specialChars,
+	public Pet(String species, String name, String gender, Calendar birthDay, String furColour, String specialChars,
 			String chipNumber) {
 		
 		this.species = species;
@@ -25,6 +31,7 @@ public class Pet {
 		this.furColour = furColour;
 		this.specialChars = specialChars;
 		this.chipNumber = chipNumber;
+		this.setPhotoPath(null);
 		//this.history = history;    // Pisteuw pws to medical history den prepei na vrisketai sto constructor
 		
 	}
@@ -34,11 +41,31 @@ public class Pet {
 		this.species = species;
 		this.name = name;
 		this.gender = gender;
+		this.birthDay = null;
+		this.furColour = "";
+		this.specialChars = "";
+		this.chipNumber = "";
+		this.setPhotoPath(null);
 		
 	}
 
+	public Pet() {
+		
+		this.species = "";
+		this.name = "";
+		this.gender = "";
+		this.birthDay = null;
+		this.furColour = "";
+		this.specialChars = "";
+		this.chipNumber = "";
+		this.setPhotoPath(null);
+	}
+	
 	//Getters
 	
+	public int getPID() {
+		return pid;
+	}
 	public String getSpecies() {
 		return species;
 	}
@@ -51,7 +78,7 @@ public class Pet {
 		return gender;
 	}
 
-	public String getBirthDay() {
+	public Calendar getBirthDay() {
 		return birthDay;
 	}
 
@@ -70,8 +97,16 @@ public class Pet {
 	public MedHistory getHistory() {
 		return history;
 	}
+	
+	public String getPhotoPath() {
+		return photoPath;
+	}
 
 	//Setters
+	
+	public void setPID(int pid) {
+		this.pid = pid;
+	}
 
 	public void setSpecies(String species) {
 		this.species = species;
@@ -85,7 +120,7 @@ public class Pet {
 		this.gender = gender;
 	}
 
-	public void setBirthDay(String birthDay) {
+	public void setBirthDay(Calendar birthDay) {
 		this.birthDay = birthDay;
 	}
 
@@ -104,13 +139,18 @@ public class Pet {
 	public void setHistory(MedHistory history) {
 		this.history = history;
 	}
+	
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
 
 	//Other Methods
 	
 	public void editPet() { //Edits any properties of class Pet.
 		//to be written
 	}
-	
+
+
 
 
 
