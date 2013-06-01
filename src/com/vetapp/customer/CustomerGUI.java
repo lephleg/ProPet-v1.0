@@ -12,6 +12,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -57,6 +58,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 
 	public CustomerGUI(Customer cus, List<Customer> list) {
+		
 		cusList = list;
 		customer = new Customer();
 		customer = cus;
@@ -327,25 +329,26 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	public class createPetGUI extends JFrame implements ActionListener {
 
 		private JPanel contentPane;
-		private JTextField speciesField;   //Species
-		private JTextField nameField; //Name
-		private	JRadioButton rdbtnMale;  // Gender
-		private	JRadioButton rdbtnFemale;// Gender
-		private JTextField birthDateField;    // Birth Day
-		private JTextField birthMonthField;   // Birth Month
-		private JTextField birthYearField; // Birth Year
-		private JTextField furField; // Fur Colour
-		private JTextField specialField;  // Special Characteristics
-		private JTextField chipField;  // Chip Number
-		private JButton btnNewButton = new JButton("Create");
-		private JButton btnCancel = new JButton("Cancel");
+		private JTextField speciesTxt;   //Species
+		private JTextField nameTxt; //Name
+		private	JRadioButton maleRButton;  // Gender
+		private	JRadioButton femaleRButton;// Gender
+		private JTextField txtDd;    // Birth Day
+		private JTextField txtMm;   // Birth Month
+		private JTextField txtYyyy; // Birth Year
+		private JTextField furColorTxt; // Fur Colour
+		private JTextField spCharactTxt;  // Special Characteristics
+		private JTextField chipNumTxt;  // Chip Number
+		private JButton createButton = new JButton("Create");
+		private JButton cancelButton = new JButton("Cancel");
 		private Customer cust ; //  Deikths pelath ston opoio tha anhkei to pet
 
 		public createPetGUI(Customer aCustomer) {
+			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 
 			cust = new Customer();
 			cust = aCustomer;
-			setBounds(100, 100, 300, 495);
+			setBounds(100, 100, 337, 320);
 			contentPane = new JPanel();
 			contentPane.setBackground(UIManager.getColor("menu")); //Background colour
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -354,137 +357,150 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 
-			JLabel lblNewLabel = new JLabel("Create New Pet");
-			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
-			lblNewLabel.setBounds(92, 11, 226, 19);
-			contentPane.add(lblNewLabel);
-
+			JLabel createPetLabel = new JLabel("Create New Pet");
+			createPetLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			createPetLabel.setBounds(10, 11, 301, 9);
+			contentPane.add(createPetLabel);
+			
+			createButton.setBounds(77, 246, 78, 25);
+			contentPane.add(createButton);
+			
+			cancelButton.setBounds(165, 246, 78, 25);
+			contentPane.add(cancelButton);
+			
+			JPanel petInfoPane = new JPanel();
+			petInfoPane.setBounds(10, 31, 300, 202);
+			petInfoPane.setBorder(BorderFactory.createTitledBorder(loweredetched));
+			contentPane.add(petInfoPane);
+			petInfoPane.setLayout(new FormLayout(new ColumnSpec[] {
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					ColumnSpec.decode("default:grow"),
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					ColumnSpec.decode("default:grow"),
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,
+					FormFactory.RELATED_GAP_COLSPEC,
+					FormFactory.DEFAULT_COLSPEC,},
+				new RowSpec[] {
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					RowSpec.decode("default:grow"),
+					FormFactory.RELATED_GAP_ROWSPEC,
+					RowSpec.decode("default:grow"),
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,
+					FormFactory.RELATED_GAP_ROWSPEC,
+					FormFactory.DEFAULT_ROWSPEC,}));
+			
+			
+			
 			JLabel lblSpecies = new JLabel("Species*:");
-			lblSpecies.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblSpecies.setBounds(10, 89, 67, 19);
-			contentPane.add(lblSpecies);
-
-			speciesField = new JTextField();
-			speciesField.setBounds(132, 89, 118, 17);
-			contentPane.add(speciesField);
-			speciesField.setColumns(10);
-
+			petInfoPane.add(lblSpecies, "2, 2");
+			
+			speciesTxt = new JTextField();
+			petInfoPane.add(speciesTxt, "6, 2, 13, 1");
+			speciesTxt.setColumns(10);
+			
 			JLabel lblName = new JLabel("Name*:");
-			lblName.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblName.setBounds(10, 150, 77, 14);
-			contentPane.add(lblName);
-
-			nameField = new JTextField();
-			nameField.setBounds(132, 149, 118, 15);
-			contentPane.add(nameField);
-			nameField.setColumns(10);
-
+			petInfoPane.add(lblName, "2, 4");
+			
+			nameTxt = new JTextField();
+			petInfoPane.add(nameTxt, "6, 4, 13, 1");
+			nameTxt.setColumns(10);
+			
 			JLabel lblGender = new JLabel("Gender*:");
-			lblGender.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblGender.setBounds(10, 198, 67, 14);
-			contentPane.add(lblGender);
-
-			JRadioButton rdbtnMale = new JRadioButton("Male");
-			rdbtnMale.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			rdbtnMale.setBounds(130, 194, 67, 23);
-			contentPane.add(rdbtnMale);
-
-			JRadioButton rdbtnFemale = new JRadioButton("Female");
-			rdbtnFemale.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			rdbtnFemale.setBounds(199, 194, 119, 23);
-			contentPane.add(rdbtnFemale);
-
+			petInfoPane.add(lblGender, "2, 6");
+			
+			JRadioButton maleRButton = new JRadioButton("Male");
+			petInfoPane.add(maleRButton, "6, 6, 4, 1");
+			
+			JRadioButton femaleRButton = new JRadioButton("Female");
+			petInfoPane.add(femaleRButton, "10, 6, 11, 1");
+			
+			ButtonGroup group = new ButtonGroup();
+			group.add(maleRButton);
+			group.add(femaleRButton);
+			
 			JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
-			lblDateOfBirth.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblDateOfBirth.setBounds(10, 240, 67, 14);
-			contentPane.add(lblDateOfBirth);
-
-			birthDateField = new JTextField();
-			birthDateField.setText("DD");
-			birthDateField.setBounds(118, 237, 25, 20);
-			contentPane.add(birthDateField);
-			birthDateField.setColumns(10);
-
-			JLabel label = new JLabel("/");
-			label.setBounds(144, 240, 10, 14);
-			contentPane.add(label);
-
-			birthMonthField = new JTextField();
-			birthMonthField.setText("MM");
-			birthMonthField.setBounds(153, 237, 25, 20);
-			contentPane.add(birthMonthField);
-			birthMonthField.setColumns(10);
-
-			JLabel label_1 = new JLabel("/");
-			label_1.setBounds(188, 240, 46, 14);
-			contentPane.add(label_1);
-
-			birthYearField = new JTextField();
-			birthYearField.setText("YYYY");
-			birthYearField.setBounds(204, 237, 46, 20);
-			contentPane.add(birthYearField);
-			birthYearField.setColumns(10);
-
+			petInfoPane.add(lblDateOfBirth, "2, 8");
+			
+			JPanel panel = new JPanel();
+			petInfoPane.add(panel, "6, 7, 13, 4, fill, fill");
+			panel.setLayout(null);
+			
+			txtDd = new JTextField();
+			txtDd.setHorizontalAlignment(SwingConstants.CENTER);
+			txtDd.setBounds(0, 2, 25, 20);
+			panel.add(txtDd);
+			txtDd.setText("dd");
+			txtDd.setColumns(10);
+			
+			txtMm = new JTextField();
+			txtMm.setHorizontalAlignment(SwingConstants.CENTER);
+			txtMm.setBounds(35, 2, 31, 20);
+			panel.add(txtMm);
+			txtMm.setText("mm");
+			txtMm.setColumns(10);
+			
+			txtYyyy = new JTextField();
+			txtYyyy.setHorizontalAlignment(SwingConstants.CENTER);
+			txtYyyy.setBounds(77, 2, 44, 20);
+			panel.add(txtYyyy);
+			txtYyyy.setText("yyyy");
+			txtYyyy.setColumns(10);
+			
 			JLabel lblFurColour = new JLabel("Fur Colour:");
-			lblFurColour.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblFurColour.setBounds(10, 284, 100, 14);
-			contentPane.add(lblFurColour);
-
-			furField = new JTextField();
-			furField.setBounds(131, 284, 119, 14);
-			contentPane.add(furField);
-			furField.setColumns(10);
-
+			petInfoPane.add(lblFurColour, "2, 11");
+			
+			furColorTxt = new JTextField();
+			petInfoPane.add(furColorTxt, "6, 11, 13, 1");
+			furColorTxt.setColumns(10);
+			
 			JLabel lblSpecialCharacteristics = new JLabel("Special Characteristics:");
-			lblSpecialCharacteristics.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblSpecialCharacteristics.setBounds(10, 330, 176, 14);
-			contentPane.add(lblSpecialCharacteristics);
-
-			specialField = new JTextField();
-			specialField.setBounds(131, 330, 118, 14);
-			contentPane.add(specialField);
-			specialField.setColumns(10);
-
+			petInfoPane.add(lblSpecialCharacteristics, "2, 13");
+			
+			spCharactTxt = new JTextField();
+			petInfoPane.add(spCharactTxt, "6, 13, 13, 1");
+			spCharactTxt.setColumns(10);
+			
 			JLabel lblChipNumber = new JLabel("Chip Number:");
-			lblChipNumber.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			lblChipNumber.setBounds(10, 381, 114, 19);
-			contentPane.add(lblChipNumber);
-
-			chipField = new JTextField();
-			chipField.setBounds(132, 380, 118, 17);
-			contentPane.add(chipField);
-			chipField.setColumns(10);
-
-
-			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			btnNewButton.setBounds(10, 435, 89, 23);
-			contentPane.add(btnNewButton);
-
-
-			btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-			btnCancel.setBounds(199, 435, 89, 23);
-			contentPane.add(btnCancel);
-
-			JSeparator separator = new JSeparator();
-			separator.setBounds(10, 53, 419, 2);
-			contentPane.add(separator);
+			petInfoPane.add(lblChipNumber, "2, 15");
+			
+			chipNumTxt = new JTextField();
+			petInfoPane.add(chipNumTxt, "6, 15, 13, 1");
+			chipNumTxt.setColumns(10);
 			this.setVisible(true);
 			this.setResizable(false);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-			//Group the radio buttons.
-			ButtonGroup group = new ButtonGroup();
-			group.add(rdbtnFemale);
-			group.add(rdbtnMale);
-
-			//		  if(rdbtnMale.isSelected())
-			//			   rdbtnFemale.setSelected(false);       // Kwdikas gia apofygh tautoxronhs epiloghs male + female
+			//		  if(maleRButton.isSelected())
+			//			   femaleRButton.setSelected(false);       // Kwdikas gia apofygh tautoxronhs epiloghs male + female
 			//		 
-			//		  if(rdbtnFemale.isSelected())
-			//			  rdbtnMale.setSelected(false);
+			//		  if(femaleRButton.isSelected())
+			//			  maleRButton.setSelected(false);
 
-			btnNewButton.addActionListener(this);
-			btnCancel.addActionListener(this);
+			createButton.addActionListener(this);
+			cancelButton.addActionListener(this);
 
 		}
 
@@ -495,14 +511,14 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 			// Dhmiourgia Pet
 			if (e.getActionCommand().equals("Create")) {
-				String species = speciesField.getText();
-				String name = nameField.getText();
-				String birthDay =  birthDateField.getText();
-				String birthMonth = birthMonthField.getText();
-				String birthYear =  birthYearField.getText();
-				String furColour = furField.getText();
-				String special = specialField.getText();
-				String chip =  chipField.getText();
+				String species = speciesTxt.getText();
+				String name = nameTxt.getText();
+				String birthDay =  txtDd.getText();
+				String birthMonth = txtMm.getText();
+				String birthYear =  txtYyyy.getText();
+				String furColour = furColorTxt.getText();
+				String special = spCharactTxt.getText();
+				String chip =  chipNumTxt.getText();
 				String gender;
 				//if(rdbtnMale.isSelected()) {
 				gender = "Male";
@@ -525,6 +541,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
 
 				JOptionPane information = new JOptionPane();
+				petModel.reloadPetJTable(cust);
 				information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
 				createPetGUI.this.dispose();    					// Kleisimo tou frame
 
