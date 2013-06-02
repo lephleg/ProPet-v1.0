@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.vetapp.util.PropetJMenuBar;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomersGUI;
 
@@ -41,6 +42,7 @@ public class ShopGUI extends JFrame implements ActionListener {
 	private JButton customersBtn;
 	private JButton quitBtn;
 	private ImageIcon logo;	//ImageIcon object for logoLbl image
+	private PropetJMenuBar bar = new PropetJMenuBar();
 
 	public ShopGUI() {
 
@@ -48,6 +50,9 @@ public class ShopGUI extends JFrame implements ActionListener {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(com.vetapp.main.VetApp.MAIN_WINDOW_TITLE);	//gets window title from constant in com.vetapp.main.VetApp
+		
+		//JMenuBar
+		setJMenuBar(bar.drawJMenuBar());
 
 		//getContentPane() layout (horizontal BoxLayout)
 		shopPnl = new JPanel();
