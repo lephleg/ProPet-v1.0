@@ -474,15 +474,29 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
+			//fixed this
 			if (e.getActionCommand().equals(CREATE_BUTTON_LABEL)) {
-				aCustomer = new Customer( fNameTxt.getText(),lNameTxt.getText(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
-				//flag = false;
-				JOptionPane information = new JOptionPane();
-				information.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
-				VetApp.db.DBCreateCustomer(aCustomer);						// Eisagwgh tou pelath sth vasi
-				CustomersGUI.this.setCustomer(aCustomer);     				// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
-				model.reloadJTable(customers);								// Epanafortwsi tis listas pelatwn tou CustomersGUI
-				this.dispose();												// Kleisimo frame
+				if  ((fNameTxt.getText().trim()!=null)&&(!fNameTxt.getText().trim().isEmpty())&&(lNameTxt.getText().trim()!=null)&&(!lNameTxt.getText().trim().isEmpty())) {
+					//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
+					//h methodos trim() afairei leading kai trailing kena apo ta strings
+					aCustomer = new Customer( fNameTxt.getText().trim(),lNameTxt.getText().trim(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
+					//flag = false;
+					JOptionPane information = new JOptionPane();
+					information.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
+					VetApp.db.DBCreateCustomer(aCustomer);				// Eisagwgh tou pelath sth vasi
+					CustomersGUI.this.setCustomer(aCustomer);     			// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
+					model.reloadJTable(customers);					// Epanafortwsi tis listas pelatwn tou CustomersGUI
+					this.dispose();							// Kleisimo frame
+				}
+				else
+				{
+					JOptionPane error = new JOptionPane();				// Emfanish mhnymatos sfalmatos
+					error.showMessageDialog(null,
+						    "First and Last name are required",
+						    "Warning",
+						    JOptionPane.WARNING_MESSAGE);
+				}
+				//end of fix								// Kleisimo frame
 
 			} else if (e.getActionCommand().equals(CANCEL_BUTTON_LABEL)) {
 				this.dispose();
