@@ -45,6 +45,13 @@ import java.awt.event.MouseEvent;
 import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+
+import org.jdesktop.xswingx.PromptSupport;
+import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
+
+import java.awt.GridLayout;
+
 
 public class CustomerGUI extends JFrame implements ActionListener {
 	//Simeiosi: xrisimopoio tin default grammatoseira, i opoia stin ektelesi fainetai ligo megaluteri ap' oti i8ela. 
@@ -64,7 +71,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		customer = cus;
 		petList = VetApp.db.DBGetAllPets(customer);
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
-		setBounds(100, 100, 530, 380);
+		setBounds(100, 100, 420, 336);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,85 +81,61 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		//-------------------- CUSTOMER INFO PANEL ------------------------
 
 		JPanel customerInfo_panel = new JPanel(); 		
-		customerInfo_panel.setBounds(10, 11, 300, 130);
+		customerInfo_panel.setBounds(10, 11, 191, 150);
 		customerInfo_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Customer Info"));
 		contentPane.add(customerInfo_panel);
-		customerInfo_panel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("1px"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("83px"),
-				ColumnSpec.decode("65px"),
-				ColumnSpec.decode("60px"),
-				ColumnSpec.decode("50dlu"),},
-				new RowSpec[] {
-				RowSpec.decode("1px"),
-				RowSpec.decode("max(1dlu;default)"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("14px"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("14px"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("14px"),
-				FormFactory.PARAGRAPH_GAP_ROWSPEC,
-				RowSpec.decode("14px"),}));
+		customerInfo_panel.setLayout(new GridLayout(5, 0, 0, 0));
+		
+				JLabel lastName = new JLabel(customer.getLastName());
+				customerInfo_panel.add(lastName);
 
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
 		JLabel firstName = new JLabel(customer.getFirstName());
-		customerInfo_panel.add(firstName, "3, 4, 2, 1, left, center");
-
-		JLabel lastName = new JLabel(customer.getLastName());
-		customerInfo_panel.add(lastName, "5, 4, 2, 1, left, center");
+		customerInfo_panel.add(firstName);
 
 		JLabel address = new JLabel(customer.getAddress());
-		customerInfo_panel.add(address, "3, 6, 2, 1, left, center");
+		customerInfo_panel.add(address);
 
 		JLabel homeNumber = new JLabel(customer.getHomeNumber());
-		customerInfo_panel.add(homeNumber, "3, 8, 2, 1, left, center");
+		customerInfo_panel.add(homeNumber);
 
 		JLabel mobileNumber = new JLabel(customer.getMobileNumber());
-		customerInfo_panel.add(mobileNumber, "3, 10, 2, 1, left, center");
+		customerInfo_panel.add(mobileNumber);
 
 
 		//-------------------- VISITS PANEL ------------------------
 
 		JPanel visits_panel = new JPanel();				
-		visits_panel.setBounds(10, 152, 300, 100);
-		visits_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Visits"));
+		visits_panel.setBounds(10, 172, 191, 60);
+		visits_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Next/Last Visit"));
 		contentPane.add(visits_panel);
 		visits_panel.setLayout(null);
 
-		JLabel visitNumberLabel = new JLabel("Number of visits:");
-		visitNumberLabel.setBounds(15, 11, 122, 39);
-		visits_panel.add(visitNumberLabel);
-
-		JLabel numberOfVisits = new JLabel(Integer.toString(customer.getNumberOfVisits()));
-		numberOfVisits.setBounds(118, 11, 114, 39);
-		visits_panel.add(numberOfVisits);
-
 		JFormattedTextField nextVisit = new JFormattedTextField(new SimpleDateFormat("dd/MM/yyyy"));
 		nextVisit.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		nextVisit.setText("_ _ - _ _ - _ _ _ _      _ _ : _ _");	//antikathistatai apo tin klasi nextVisitGUI
-		nextVisit.setBounds(78, 55, 198, 26);
+		if (customer.getNextVisit()==null)
+			nextVisit.setText("_ _ /_ _ /_ _ _ _ ,  _ _ : _ _");
+		else
+			nextVisit.setText(ft.format(customer.getNextVisit().getTime()));
+		nextVisit.setEditable(false);
+		nextVisit.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		nextVisit.setBounds(10, 23, 170, 26);
 		visits_panel.add(nextVisit);
-
-		JLabel nextVisitLabel = new JLabel("Next visit:");
-		nextVisitLabel.setBounds(15, 55, 74, 27);
-		visits_panel.add(nextVisitLabel);
 
 
 		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
 		createcancelAppointmentButton.addActionListener(this);
-		createcancelAppointmentButton.setBounds(71, 263, 194, 28);
+		createcancelAppointmentButton.setBounds(10, 235, 191, 28);
 		contentPane.add(createcancelAppointmentButton);
 
 		JButton deleteCustomerButton = new JButton("Delete Customer (!)");			//Delete customer button (8elei auction listener)
 		deleteCustomerButton.addActionListener(this);
-		deleteCustomerButton.setBounds(10, 304, 160, 28);
+		deleteCustomerButton.setBounds(10, 271, 145, 28);
 		contentPane.add(deleteCustomerButton);
 
 		JButton editCustomerButton = new JButton("Edit Customer");					//Edit customer button (8elei auction listener)
 		editCustomerButton.addActionListener(this);
-		editCustomerButton.setBounds(180, 304, 130, 28);
+		editCustomerButton.setBounds(165, 271, 130, 28);
 		contentPane.add(editCustomerButton);
 
 		//-------------------- PET TABLE --------------------
@@ -176,18 +159,18 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
 	
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(320, 11, 184, 170);
+		scrollPane.setBounds(211, 11, 184, 150);
 		contentPane.add(scrollPane);
 		scrollPane.setViewportView(petTable);
 
 		JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
 		newPetButton.addActionListener(this);
-		newPetButton.setBounds(367, 192, 89, 28);
+		newPetButton.setBounds(258, 165, 89, 28);
 		contentPane.add(newPetButton);
 
 		JButton backButton = new JButton("Back");			//Back button (8elei auction listener)
 		backButton.addActionListener(this);
-		backButton.setBounds(367, 304, 89, 28);
+		backButton.setBounds(305, 271, 89, 28);
 		contentPane.add(backButton);
 		
 		
@@ -333,9 +316,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private JTextField nameTxt; //Name
 		private	JRadioButton maleRButton;  // Gender
 		private	JRadioButton femaleRButton;// Gender
-		private JTextField txtDd;    // Birth Day
-		private JTextField txtMm;   // Birth Month
-		private JTextField txtYyyy; // Birth Year
+		private JTextField dayTxt;    // Birth Day
+		private JTextField monthTxt;   // Birth Month
+		private JTextField yearTxt; // Birth Year
 		private JTextField furColorTxt; // Fur Colour
 		private JTextField spCharactTxt;  // Special Characteristics
 		private JTextField chipNumTxt;  // Chip Number
@@ -440,6 +423,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			ButtonGroup group = new ButtonGroup();
 			group.add(maleRButton);
 			group.add(femaleRButton);
+			maleRButton.setSelected(true);	//to default gender 8a einai male
 			
 			JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
 			petInfoPane.add(lblDateOfBirth, "2, 8");
@@ -448,26 +432,29 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			petInfoPane.add(panel, "6, 7, 13, 4, fill, fill");
 			panel.setLayout(null);
 			
-			txtDd = new JTextField();
-			txtDd.setHorizontalAlignment(SwingConstants.CENTER);
-			txtDd.setBounds(0, 2, 25, 20);
-			panel.add(txtDd);
-			txtDd.setText("dd");
-			txtDd.setColumns(10);
+			dayTxt = new JTextField();
+			dayTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			dayTxt.setBounds(0, 2, 25, 20);
+			panel.add(dayTxt);
+			PromptSupport.setPrompt("dd", dayTxt); 		//prompt text - using xswingx library
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, dayTxt);
+			dayTxt.setColumns(10);
 			
-			txtMm = new JTextField();
-			txtMm.setHorizontalAlignment(SwingConstants.CENTER);
-			txtMm.setBounds(35, 2, 31, 20);
-			panel.add(txtMm);
-			txtMm.setText("mm");
-			txtMm.setColumns(10);
+			monthTxt = new JTextField();
+			monthTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			monthTxt.setBounds(35, 2, 31, 20);
+			panel.add(monthTxt);
+			PromptSupport.setPrompt("mm", monthTxt); 		//prompt text - using xswingx library
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, monthTxt);
+			monthTxt.setColumns(10);
 			
-			txtYyyy = new JTextField();
-			txtYyyy.setHorizontalAlignment(SwingConstants.CENTER);
-			txtYyyy.setBounds(77, 2, 44, 20);
-			panel.add(txtYyyy);
-			txtYyyy.setText("yyyy");
-			txtYyyy.setColumns(10);
+			yearTxt = new JTextField();
+			yearTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			yearTxt.setBounds(77, 2, 44, 20);
+			panel.add(yearTxt);
+			PromptSupport.setPrompt("yyyy", yearTxt); 		//prompt text - using xswingx library
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, yearTxt);
+			yearTxt.setColumns(10);
 			
 			JLabel lblFurColour = new JLabel("Fur Colour:");
 			petInfoPane.add(lblFurColour, "2, 11");
@@ -493,12 +480,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.setResizable(false);
 			this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-			//		  if(maleRButton.isSelected())
-			//			   femaleRButton.setSelected(false);       // Kwdikas gia apofygh tautoxronhs epiloghs male + female
-			//		 
-			//		  if(femaleRButton.isSelected())
-			//			  maleRButton.setSelected(false);
-
 			createButton.addActionListener(this);
 			cancelButton.addActionListener(this);
 
@@ -506,74 +487,72 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		//----------------------------- createPetGUI ACTION LISTENERS ------------------------------------------
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
+				@Override
+				public void actionPerformed(ActionEvent e) {
 
-			// Dhmiourgia Pet
-			if (e.getActionCommand().equals("Create")) {
-				String species = speciesTxt.getText();
-				String name = nameTxt.getText();
-				String birthDay =  txtDd.getText();
-				String birthMonth = txtMm.getText();
-				String birthYear =  txtYyyy.getText();
-				String furColour = furColorTxt.getText();
-				String special = spCharactTxt.getText();
-				String chip =  chipNumTxt.getText();
-				String gender;
-				// Kwdikas gia apaloifh twn kenwn
-				species.trim();
-				name.trim();
-				birthDay.trim();
-				birthMonth.trim();
-				birthYear.trim();
-				furColour.trim();
-				special.trim();
-				chip.trim();
-				
-				
-				
-				
-				
-				if(species.equals("")||name.equals("")||(maleRButton.isSelected()==false && femaleRButton.isSelected()==false))
-				{
-					JOptionPane error = new JOptionPane();
-				 	error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+					// Dhmiourgia Pet
+					if (e.getActionCommand().equals("Create")) {
+						String species = speciesTxt.getText();
+						String name = nameTxt.getText();
+						String birthDay =  dayTxt.getText();
+						String birthMonth = monthTxt.getText();
+						String birthYear =  yearTxt.getText();
+						String furColour = furColorTxt.getText();
+						String special = spCharactTxt.getText();
+						String chip =  chipNumTxt.getText();
+						String gender;
+						
+						// Kwdikas gia apaloifh twn kenwn
+						species.trim();
+						name.trim();
+						birthDay.trim();
+						birthMonth.trim();
+						birthYear.trim();
+						furColour.trim();
+						special.trim();
+						chip.trim();
+
+						if (maleRButton.isSelected()) 
+						     gender = "Male";
+						 else 
+							 gender ="Female";
+
+						if(species.equals("")||name.equals(""))
+						{
+							JOptionPane error = new JOptionPane();
+						 	error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+						else 
+						{
+
+						String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
+						Date date = null;
+						try {
+							date = ft.parse(birthDate);
+						} catch (ParseException e1) {
+							System.out.println("Error parsing pet birth date: " + e1.getMessage());
+						}
+						Calendar cal = new GregorianCalendar();
+						cal.setTime(date);
+
+						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
+						cust.addPet(pet);
+
+						VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+
+						JOptionPane information = new JOptionPane();
+						petModel.reloadPetJTable(cust);
+						information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+						createPetGUI.this.dispose();     // Kleisimo tou frame
+
+						}                          
+					} else if (e.getActionCommand().equals("Cancel")) {
+						this.dispose();
+
+					}
 				}
-				else 
-				{
-				
-				 if(maleRButton.isSelected()) 
-				      gender = "Male";
-				  else 
-					gender ="Female";
-				
-				String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
-				Date date = null;
-				try {
-					date = ft.parse(birthDate);
-				} catch (ParseException e1) {
-					System.out.println("Error parsing pet birth date: " + e1.getMessage());
-				}
-				Calendar cal = new GregorianCalendar();
-				cal.setTime(date);
-
-				Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
-				cust.addPet(pet);
-
-				VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
-
-				JOptionPane information = new JOptionPane();
-				petModel.reloadPetJTable(cust);
-				information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
-				createPetGUI.this.dispose();     // Kleisimo tou frame
-
-				}                          
-			} else if (e.getActionCommand().equals("Cancel")) {
-				this.dispose();
-
 			}
-		}
-	}
+
 	
 	//============================================================================================
 	//------------------------------ editCustomerGUI CLASS ---------------------------------------
@@ -592,7 +571,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		
 		public editCustomerGUI() {
 			Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
-			setBounds(100, 100, 530, 410);
+			setBounds(100, 100, 465, 360);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
@@ -603,22 +582,21 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			//-------------------- CUSTOMER INFO PANEL ------------------------
 			
 			JPanel customerInfo_panel = new JPanel(); 		
-			customerInfo_panel.setBounds(10, 11, 300, 170);
+			customerInfo_panel.setBounds(10, 11, 274, 170);
 			customerInfo_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Customer Info"));
 			contentPane.add(customerInfo_panel);
 			customerInfo_panel.setLayout(new FormLayout(new ColumnSpec[] {
 					FormFactory.RELATED_GAP_COLSPEC,
 					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.RELATED_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
+					ColumnSpec.decode("max(5dlu;default)"),
 					FormFactory.RELATED_GAP_COLSPEC,
 					ColumnSpec.decode("max(8dlu;default)"),
 					FormFactory.RELATED_GAP_COLSPEC,
 					FormFactory.DEFAULT_COLSPEC,
 					FormFactory.RELATED_GAP_COLSPEC,
-					ColumnSpec.decode("max(69dlu;default):grow"),
+					ColumnSpec.decode("max(57dlu;default):grow"),
 					FormFactory.RELATED_GAP_COLSPEC,
-					ColumnSpec.decode("default:grow"),},
+					ColumnSpec.decode("max(0dlu;default):grow"),},
 				new RowSpec[] {
 					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,
@@ -633,20 +611,19 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			//ta textfields pairnoun ta dedomena tou customer kata tin dimiourgia tou para8urou, eno apo8ukeuontai oi allages me to "save changes"
 			JLabel firstNameLabel = new JLabel("First Name*:");
-			customerInfo_panel.add(firstNameLabel, "2, 2, 3, 1");
+			customerInfo_panel.add(firstNameLabel, "2, 2");
 			
 			firstNameTxt = new JTextField();
-
 			firstNameTxt.setText(customer.getFirstName());
-			customerInfo_panel.add(firstNameTxt, "8, 2, 3, 1, fill, default");
+			customerInfo_panel.add(firstNameTxt, "4, 2, 7, 1, fill, default");
 			firstNameTxt.setColumns(10);
 			
 			JLabel lastNameLabel = new JLabel("Last Name*:");
-			customerInfo_panel.add(lastNameLabel, "2, 4, 3, 1");
+			customerInfo_panel.add(lastNameLabel, "2, 4");
 			
 			lastNameTxt = new JTextField();
 			lastNameTxt.setText(customer.getLastName());
-			customerInfo_panel.add(lastNameTxt, "8, 4, 3, 1, fill, default");
+			customerInfo_panel.add(lastNameTxt, "4, 4, 7, 1, fill, default");
 			lastNameTxt.setColumns(10);
 			
 			JLabel addressLabel = new JLabel("Address:");
@@ -654,15 +631,15 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			addressTxt = new JTextField();
 			addressTxt.setText(customer.getAddress());
-			customerInfo_panel.add(addressTxt, "8, 6, 3, 1, fill, default");
+			customerInfo_panel.add(addressTxt, "4, 6, 7, 1, fill, default");
 			addressTxt.setColumns(10);
 			
 			JLabel homePhoneLabel = new JLabel("Home Phone:");
-			customerInfo_panel.add(homePhoneLabel, "2, 8, 3, 1");
+			customerInfo_panel.add(homePhoneLabel, "2, 8");
 			
 			homePhoneTxt = new JTextField();
 			homePhoneTxt.setText(customer.getHomeNumber());
-			customerInfo_panel.add(homePhoneTxt, "8, 8, 3, 1, fill, default");
+			customerInfo_panel.add(homePhoneTxt, "4, 8, 7, 1, fill, default");
 			homePhoneTxt.setColumns(10);
 			
 			JLabel mobilePhoneLabel = new JLabel("Mobile Phone:");
@@ -670,51 +647,40 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 			mobilePhoneTxt = new JTextField();
 			mobilePhoneTxt.setText(customer.getMobileNumber());
-			customerInfo_panel.add(mobilePhoneTxt, "8, 10, 3, 1, fill, default");
+			customerInfo_panel.add(mobilePhoneTxt, "4, 10, 7, 1, fill, default");
 			mobilePhoneTxt.setColumns(10);
 			
 			
 			//-------------------- VISITS PANEL ------------------------
 			
 			JPanel visits_panel = new JPanel();				
-			visits_panel.setBounds(10, 192, 300, 100);
-			visits_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Visits"));
+			visits_panel.setBounds(10, 185, 274, 62);
+			visits_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Next/Last Visit"));
 			contentPane.add(visits_panel);
-			visits_panel.setLayout(null);
-			
-			JLabel visitNumberLabel = new JLabel("Number of visits:");
-			visitNumberLabel.setBounds(15, 11, 122, 39);
-			visits_panel.add(visitNumberLabel);
-			
-			JTextField numberOfVisits = new JTextField(Integer.toString(customer.getNumberOfVisits())); 	//antikatathistatai me metriti
-			numberOfVisits.setBounds(118, 11, 114, 39);
-			visits_panel.add(numberOfVisits);
 			
 			JFormattedTextField nextVisit = new JFormattedTextField(ft);
+			nextVisit.setBounds(10, 22, 254, 29);
 			nextVisit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			nextVisit.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 			nextVisit.setEditable(false);
 			
-			if (customer.getNextVisit()==null) {
-				nextVisit.setText("dd-MM-yyyy hh:mm");
-			} else {
-				nextVisit.setText(ft.format(customer.getNextVisit().getTime()));	//antikathistatai apo tin klasi nextVisitGUI
-			}
-			nextVisit.setBounds(78, 55, 198, 26);
-			visits_panel.add(nextVisit);
+			if (customer.getNextVisit()==null)
+				nextVisit.setText("_ _ /_ _ /_ _ _ _ ,  _ _ : _ _");
+			else
+				nextVisit.setText(ft.format(customer.getNextVisit().getTime()));
 			
-			JLabel nextVisitLabel = new JLabel("Next visit:");
-			nextVisitLabel.setBounds(15, 55, 74, 27);
-			visits_panel.add(nextVisitLabel);
+			visits_panel.setLayout(null);
+			visits_panel.add(nextVisit);
 			
 			
 			JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
 			createcancelAppointmentButton.setEnabled(false);
-			createcancelAppointmentButton.setBounds(70, 300, 194, 28);
+			createcancelAppointmentButton.setBounds(10, 250, 273, 28);
 			contentPane.add(createcancelAppointmentButton);
 			
 			JButton saveChangesButton = new JButton("Save Changes");					//Edit customer button (8elei auction listener)
 			saveChangesButton.addActionListener(this);
-			saveChangesButton.setBounds(180, 333, 130, 28);
+			saveChangesButton.setBounds(147, 285, 136, 28);
 			contentPane.add(saveChangesButton);
 			
 			//-------------------- PET TABLE --------------------
@@ -734,21 +700,21 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
 		
 			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(320, 11, 184, 170);
+			scrollPane.setBounds(294, 10, 145, 170);
 			contentPane.add(scrollPane);
 			scrollPane.setViewportView(petTable);
 
 			JButton newPetButton = new JButton("New Pet");      //New Pet button (8elei auction listener)
 			newPetButton.setEnabled(false);
-			newPetButton.setBounds(367, 192, 89, 28);
+			newPetButton.setBounds(322, 185, 89, 28);
 			contentPane.add(newPetButton);
 			
 			JButton cancelButton = new JButton("Cancel");			//Back button (8elei auction listener)
 			cancelButton.addActionListener(this);
-			cancelButton.setBounds(320, 332, 89, 28);
+			cancelButton.setBounds(314, 285, 105, 28);
 			contentPane.add(cancelButton);
 			
-			this.setResizable(false);
+			//this.setResizable(false);
 			this.setVisible(true);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		}
@@ -778,82 +744,86 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private JTextField txtMm;   // Month Textfield
 		private JTextField txtYyyy; // Year Textfield
 		private JTextField txtHh;   // Hours Textfield
-		private JTextField txtHh_1; // Year Textfield
+		private JTextField txtMin; // Minutes Textfield
 	    private  JButton btnSet = new JButton("Set");
 	    private  JButton btnCancel = new JButton("Cancel");
+	    Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+	    
 
-	
-
-		/**
-		 * Create the frame.
-		 */
-		public NextVisitGUI() {
+	    public NextVisitGUI() {
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 404, 170);
+			setBounds(100, 100, 404, 152);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
-			contentPane.setLayout(null);
 			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			contentPane.setLayout(null);
 			
 			
 			JLabel lblCreatrNewAppointment = new JLabel("Create New Appointment");
-			lblCreatrNewAppointment.setFont(new Font("Tahoma", Font.PLAIN, 14));
-			lblCreatrNewAppointment.setBounds(115, 0, 170, 20);
-			contentPane.add(lblCreatrNewAppointment);
+			lblCreatrNewAppointment.setHorizontalAlignment(SwingConstants.CENTER);
+			lblCreatrNewAppointment.setBounds(0, 0, 398, 28);
+			JPanel datePanel = new JPanel();
+			datePanel.setBounds(33, 37, 328, 42);
+			datePanel.setBorder(BorderFactory.createTitledBorder(loweredetched));
+			contentPane.add(datePanel);
+			datePanel.setLayout(null);
 			
 			JLabel lblNextVisit = new JLabel("Next Visit:");
-			lblNextVisit.setBounds(21, 69, 58, 14);
-			contentPane.add(lblNextVisit);
+			lblNextVisit.setBounds(10, 14, 58, 14);
+			datePanel.add(lblNextVisit);
 			
 			txtDd = new JTextField();
-			txtDd.setText("DD");
-			txtDd.setBounds(78, 66, 27, 20);
-			contentPane.add(txtDd);
+			txtDd.setBounds(78, 11, 27, 20);
+			datePanel.add(txtDd);
 			txtDd.setColumns(10);
 			
 			txtMm = new JTextField();
-			txtMm.setText("MM");
-			txtMm.setBounds(115, 66, 27, 20);
-			contentPane.add(txtMm);
+			txtMm.setBounds(115, 11, 27, 20);
+			datePanel.add(txtMm);
 			txtMm.setColumns(10);
 			
 			txtYyyy = new JTextField();
-			txtYyyy.setText("YYYY");
-			txtYyyy.setBounds(155, 66, 32, 20);
-			contentPane.add(txtYyyy);
+			txtYyyy.setBounds(152, 11, 32, 20);
+			datePanel.add(txtYyyy);
 			txtYyyy.setColumns(10);
 			
 			JLabel lblTime = new JLabel("Time:");
-			lblTime.setBounds(262, 70, 46, 14);
-			contentPane.add(lblTime);
+			lblTime.setBounds(213, 14, 37, 14);
+			datePanel.add(lblTime);
 			
 			txtHh = new JTextField();
-			txtHh.setText("HH");
-			txtHh.setBounds(294, 66, 27, 20);
-			contentPane.add(txtHh);
+			txtHh.setBounds(248, 11, 27, 20);
+			datePanel.add(txtHh);
 			txtHh.setColumns(10);
 			
-			txtHh_1 = new JTextField();
-			txtHh_1.setText("MM");
-			txtHh_1.setBounds(327, 66, 27, 20);
-			contentPane.add(txtHh_1);
-			txtHh_1.setColumns(10);
-			
-			btnSet.setBounds(98, 107, 89, 23);
+			txtMin = new JTextField();
+			txtMin.setBounds(285, 11, 27, 20);
+			datePanel.add(txtMin);
+			txtMin.setColumns(10);
+			contentPane.add(lblCreatrNewAppointment);
+			//txtDd.setText("DD");
+			PromptSupport.setPrompt("dd", txtDd); 		//prompt text - using xswingx library
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtDd);
+			//txtMm.setText("MM");
+			PromptSupport.setPrompt("mm", txtMm);
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
+			//txtYyyy.setText("YYYY");
+			PromptSupport.setPrompt("yyyy", txtYyyy);
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtYyyy);
+			//txtHh.setText("HH");
+			PromptSupport.setPrompt("hh", txtHh);
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
+			//txtHh_1.setText("MM");
+			PromptSupport.setPrompt("mm", txtMin);
+			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
+			btnSet.setBounds(98, 90, 89, 23);
 			contentPane.add(btnSet);
-			
-			btnCancel.setBounds(208, 107, 89, 23);
+			btnCancel.setBounds(208, 90, 89, 23);
 			contentPane.add(btnCancel);
 			
-			JSeparator separator = new JSeparator();
-			separator.setBounds(0, 57, 398, 2);
-			contentPane.add(separator);
 			
-			JSeparator separator_1 = new JSeparator();
-			separator_1.setBounds(0, 94, 398, 2);
-			contentPane.add(separator_1);
 			setLocationRelativeTo(null);
 			this.setVisible(true);
 			
@@ -867,38 +837,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getActionCommand().equals("Set")) {
-			  if(txtYyyy.getText().equals("")||txtMm.getText().equals("")||txtDd.getText().equals("")||txtHh.getText().equals("")||txtHh_1.getText().equals(""))	
-			  {
-				  JOptionPane error = new JOptionPane();
-					error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
-			  }
-			  else {
-		     	Customer cus;
-			    cus = customer;
-				 
-				int year = Integer.parseInt(txtYyyy.getText());
-				int month = Integer.parseInt(txtMm.getText());
-				int day = Integer.parseInt(txtDd.getText());
-				int hour = Integer.parseInt(txtHh.getText());
-				int minutes = Integer.parseInt(txtHh_1.getText());
 				
-				 Calendar cl = Calendar.getInstance();
-				
-					if(year/1000 !=0 ||year <=0 || month/100 !=0 || month>12 || month <=0 || day/100 !=0 || day <=0|| day >31 ||  hour/100 !=0 || hour < 0 ||hour >24 || minutes/100 !=0 || minutes <0 || minutes >59) 
-					{
-						JOptionPane error = new JOptionPane();
-						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				
-					else
-					{
-					     cl.set(year,month,day,hour,minutes);
-					     customer.setNextVisit(cl);
-					     VetApp.db.DBUpdateCustomer(cus, customer);
-					
-					}
-				
-			  }	
 			} else if (e.getActionCommand().equals("Cancel")) {
 				dispose();
 			}
