@@ -95,7 +95,7 @@ public class Pet {
 		return chipNumber;
 	}
 
-	public MedHistory getHistory() {
+	public FemMedHistory getHistory() {
 		return history;
 	}
 	
