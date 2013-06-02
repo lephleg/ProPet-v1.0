@@ -218,31 +218,59 @@ public class DB
 		//SQL Statement
 		//Update record
 		Statement stmt = null;
-		try
-		{
-			String sql1 = "UPDATE Customer " +
-					"SET last_name='" + newCus.getLastName() + "', first_name='" + newCus.getFirstName() + "', address='" + newCus.getAddress() + 
-					"', home_phone='" + newCus.getHomeNumber() + "', mobile_phone='" + newCus.getMobileNumber() + 
-					"', next_visit='" + dbDateFormat.format(newCus.getNextVisit().getTime()) + "', num_of_visits='" + newCus.getNumberOfVisits() + "' " +
-					"WHERE last_name='" + oldCus.getLastName() + "' AND first_name='" + oldCus.getFirstName() +"';";
-			stmt = con.createStatement();
-			int rows = stmt.executeUpdate(sql1);
-			System.out.println("Customer record updated! rows: " + rows);
-		}
-		catch(SQLException e)
-		{
-			System.out.println("Error creating or running UPDATE statement: " + e.toString());
 
-		}
-
-		//Close statement & connection
-		try {
-			stmt.close();
-			con.close();
-			System.out.println("Connection closed succesfully!");
-		}
-		catch (Exception e1) {
-			System.out.println("Error closing connection: " + e1.toString());
+		//Check if next_visit was set to NULL
+		if (newCus.getNextVisit()==null) {
+			System.out.println("null next_visit date detected!");
+			try
+			{
+				String sql1 = "UPDATE Customer " +
+						"SET last_name='" + newCus.getLastName() + "', first_name='" + newCus.getFirstName() + "', address='" + newCus.getAddress() + 
+						"', home_phone='" + newCus.getHomeNumber() + "', mobile_phone='" + newCus.getMobileNumber() + 
+						"', next_visit=null, num_of_visits='" + newCus.getNumberOfVisits() + "' " +
+						"WHERE last_name='" + oldCus.getLastName() + "' AND first_name='" + oldCus.getFirstName() +"';";
+				stmt = con.createStatement();
+				int rows = stmt.executeUpdate(sql1);
+				System.out.println("Customer record updated! rows: " + rows);
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Error creating or running UPDATE statement: " + e.toString());
+			}
+			//Close statement & connection
+			try {
+				stmt.close();
+				con.close();
+				System.out.println("Connection closed succesfully!");
+			}
+			catch (Exception e1) {
+				System.out.println("Error closing connection: " + e1.toString());
+			}
+		} else {
+			try
+			{
+				String sql1 = "UPDATE Customer " +
+						"SET last_name='" + newCus.getLastName() + "', first_name='" + newCus.getFirstName() + "', address='" + newCus.getAddress() + 
+						"', home_phone='" + newCus.getHomeNumber() + "', mobile_phone='" + newCus.getMobileNumber() + 
+						"', next_visit='" + dbDateFormat.format(newCus.getNextVisit().getTime()) + "', num_of_visits='" + newCus.getNumberOfVisits() + "' " +
+						"WHERE last_name='" + oldCus.getLastName() + "' AND first_name='" + oldCus.getFirstName() +"';";
+				stmt = con.createStatement();
+				int rows = stmt.executeUpdate(sql1);
+				System.out.println("Customer record updated! rows: " + rows);
+			}
+			catch(SQLException e)
+			{
+				System.out.println("Error creating or running UPDATE statement: " + e.toString());
+			}
+			//Close statement & connection
+			try {
+				stmt.close();
+				con.close();
+				System.out.println("Connection closed succesfully!");
+			}
+			catch (Exception e1) {
+				System.out.println("Error closing connection: " + e1.toString());
+			}
 		}
 	}
 
