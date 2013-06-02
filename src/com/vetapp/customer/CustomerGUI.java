@@ -726,6 +726,33 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Save Changes")) {
 				//TODO
+				//edited this
+				if  ((firstNameTxt.getText().trim()!=null)&&(!firstNameTxt.getText().trim().isEmpty())&&(lastNameTxt.getText().trim()!=null)&&(!lastNameTxt.getText().trim().isEmpty())) {
+				//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
+				//h methodos trim() afairei leading kai trailing kena apo ta strings
+					JOptionPane information = new JOptionPane();
+					information.showMessageDialog(null,"Customer Edited!");   		// Emfanish mhnymatos epityxias
+					newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
+														//Dhmiourgia pelath
+					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
+					for(int i=0; i< cusList.size(); i++){ 					//Diagrafh tou pelath apo thn lista
+						if ((cusList.get(i).getLastName() == customer.getLastName()) && 
+							(cusList.get(i).getFirstName() == customer.getFirstName())) {
+							cusList.remove(i);
+							cusList.add(newCustomer); 				//Eisagwgh tou "edited" pelath sth lista
+						}
+					}		
+					com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		// Epanafortwsi tis listas pelatwn
+				}
+				else
+				{
+					JOptionPane error = new JOptionPane();					// Emfanish mhnymatos sfalmatos
+					error.showMessageDialog(null,
+						    "First and Last name are required",
+						    "Warning",
+						    JOptionPane.WARNING_MESSAGE);
+				}
+				//end of edit
 			} else if (e.getActionCommand().equals("Cancel")) {
 				new CustomerGUI(customer, cusList);
 				this.dispose();
