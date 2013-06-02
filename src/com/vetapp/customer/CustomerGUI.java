@@ -520,8 +520,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 				if(species.equals("")||name.equals(""))
 				{
-					JOptionPane error = new JOptionPane();
-					error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else 
 				{
@@ -733,7 +732,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				//h methodos trim() afairei leading kai trailing kena apo ta strings
 					JOptionPane information = new JOptionPane();
 					information.showMessageDialog(null,"Customer Edited!");   		// Emfanish mhnymatos epityxias
-					newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
+					Customer newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
 														//Dhmiourgia pelath
 					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
 					for(int i=0; i< cusList.size(); i++){ 					//Diagrafh tou pelath apo thn lista
@@ -743,12 +742,13 @@ public class CustomerGUI extends JFrame implements ActionListener {
 							cusList.add(newCustomer); 				//Eisagwgh tou "edited" pelath sth lista
 						}
 					}		
-					com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		// Epanafortwsi tis listas pelatwn
+					com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		//Epanafortwsi tis listas pelatwn
+					dispose();															//kleisimo tou editCustomerGUI
+					new CustomerGUI(newCustomer, cusList);								//epanafortwsi CustomerGUI
 				}
 				else
 				{
-					JOptionPane error = new JOptionPane();					// Emfanish mhnymatos sfalmatos
-					error.showMessageDialog(null,
+					JOptionPane.showMessageDialog(null,							// Emfanish mhnymatos sfalmatos
 						    "First and Last name are required",
 						    "Warning",
 						    JOptionPane.WARNING_MESSAGE);
@@ -904,6 +904,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				customer.setNextVisit(null);
 				VetApp.db.DBUpdateCustomer(customer, customer);
 				nextVisit.setText("_ _ /_ _ /_ _ _ _ ,  _ _ : _ _");
+				com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		// Epanafortwsi tis listas pelatwn
 				JOptionPane information = new JOptionPane();
 				information.showMessageDialog(null,"Appointment has been canceled!");
 				dispose();
