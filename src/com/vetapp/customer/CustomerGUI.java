@@ -524,7 +524,19 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				}
 				else 
 				{
+					int year = Integer.parseInt(birthYear);
+					int month = Integer.parseInt(birthMonth);
+					int day = Integer.parseInt(birthDay);
+					
+					Calendar cl = Calendar.getInstance();
 
+					if(year<1900 ||  month>12 || month <0 || day <=0|| day >31 ) 
+					{
+						JOptionPane error = new JOptionPane();
+						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						
 					String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
 					Date date = null;
 					try {
@@ -544,6 +556,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					petModel.reloadPetJTable(cust);
 					information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
 					createPetGUI.this.dispose();     // Kleisimo tou frame
+					}
 
 				}                          
 			} else if (e.getActionCommand().equals("Cancel")) {
