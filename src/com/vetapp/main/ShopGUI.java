@@ -30,8 +30,6 @@ import com.vetapp.customer.CustomersGUI;
 public class ShopGUI extends JFrame implements ActionListener {
 
 	//Icon URL/directory link & JButton label strings declared as constants
-	private static String LOGO_ICON_URL = "http://i.imgur.com/sn0luPx.jpg"; //(sti teliki ekdosi to URL
-																			//tha antikatastathei me topiko directory)
 	private static String CUSTOMERS_BUTTON_LABEL = "Customers";
 	private static String QUIT_BUTTON_LABEL = "Exit";
 
@@ -64,7 +62,7 @@ public class ShopGUI extends JFrame implements ActionListener {
 		getContentPane().add(Box.createRigidArea(new Dimension(40, 0)));
 
 		//shopPnl layout (vertical BoxLayout)
-		logo = setIcon(LOGO_ICON_URL);
+		logo = setIcon(com.vetapp.main.VetApp.LOGO_ICON_URL);
 		logoLbl = new JLabel(logo);
 		customersBtn = new JButton(CUSTOMERS_BUTTON_LABEL);
 		quitBtn = new JButton(QUIT_BUTTON_LABEL);
