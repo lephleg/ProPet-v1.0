@@ -24,6 +24,9 @@ public class PetGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	public static String MAIN_WINDOW_TITLE =" ProPet v0.5";
+	private Pet aPet; 								//edited this//
+	public SimpleDateFormat sdf1 = new SimpleDateFormat ("yyyy-MM-dd hh:mm"); 	//edited this//
+	public SimpleDateFormat sdf2 = new SimpleDateFormat ("yyyy-MM-dd"); 		//edited this//
 
 	public PetGUI(Pet pet) {
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
@@ -32,6 +35,8 @@ public class PetGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		aPet = new Pet();
+		aPet = pet;
 
 
 		//-------------------- PET INFO PANEL ------------------------
@@ -137,6 +142,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			//TODO 
 		} else if (e.getActionCommand().equals("Edit Pet")) {
 			//TODO
+			new editPetGUI();
 		} else if (e.getActionCommand().equals("Medical Histoty")) {
 			//TODO
 		} else if (e.getActionCommand().equals("Back")) {
@@ -218,7 +224,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(speciesLabel, "2, 2,3,1");
 
 			speciesTxt = new JTextField();
-			speciesTxt.setText("");
+			speciesTxt.setText(aPet.getSpecies());
 			petInfo_panel.add(speciesTxt, "8, 2, 3, 1, fill, default");
 			speciesTxt.setColumns(10);
 
@@ -226,7 +232,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(nameLabel, "2, 4,3,1");
 
 			nameTxt = new JTextField();
-			nameTxt.setText("");	
+			nameTxt.setText(aPet.getName());	
 			petInfo_panel.add(nameTxt, "8, 4, 3, 1, fill, default");
 			nameTxt.setColumns(10);
 
@@ -234,7 +240,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(genderLabel, "2, 6");
 
 			genderTxt = new JTextField();
-			genderTxt.setText("");
+			genderTxt.setText(aPet.getGender());
 			petInfo_panel.add(genderTxt, "8, 6, 3, 1, fill, default");
 			genderTxt.setColumns(10);
 
@@ -242,7 +248,9 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(birthDayLabel, "2, 8,3,1");
 
 			birthDayTxt = new JTextField();
-			birthDayTxt.setText("");
+			birthDayTxt.setText(sdf2.format(aPet.getBirthDay().getTime())); 
+			//epeleksa to sdf2 format giati thewrhsa oti h wra den exei nohma gia thn genna, 
+			//alla me xrhsh tou sdf1 tha empanizontai epishs wra kai lepta.
 			petInfo_panel.add(birthDayTxt, "8, 8, 3, 1, fill, default");
 			birthDayTxt.setColumns(10);
 
@@ -250,7 +258,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(furColorLabel, "2, 10");
 
 			furColorTxt = new JTextField();
-			furColorTxt.setText("");
+			furColorTxt.setText(aPet.getFurColour());
 			petInfo_panel.add(furColorTxt, "8, 10, 3, 1, fill, default");
 			furColorTxt.setColumns(10);
 
@@ -258,7 +266,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(specialCharsLabel, "2, 12");
 
 			specialCharsTxt = new JTextField();
-			specialCharsTxt.setText("");
+			specialCharsTxt.setText(aPet.getSpecialChars());
 			petInfo_panel.add(specialCharsTxt, "8, 12, 3, 1, fill, default");
 			specialCharsTxt.setColumns(10);
 
@@ -275,7 +283,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			electicchip_panel.add(electicchipLabel);
 
 			JTextField electicchipTxt = new JTextField();
-			electicchipTxt.setText("");
+			electicchipTxt.setText(aPet.getChipNumber());
 			electicchipTxt.setBounds(101, 25, 198, 26);
 			electicchip_panel.add(electicchipTxt);
 
