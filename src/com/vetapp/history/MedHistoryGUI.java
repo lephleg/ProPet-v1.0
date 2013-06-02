@@ -33,10 +33,13 @@ import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
 
 public class MedHistoryGUI extends JFrame {
-	private static FemMedHistory history;
+	private static MedHistory history;
 
 	public MedHistoryGUI(Pet aPet) {
-		history = aPet.getHistory();
+
+		//getting required history & passing it to private variable
+		history = VetApp.db.DBGetMedHistory(aPet);
+		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				
 				FormFactory.UNRELATED_GAP_COLSPEC,
@@ -429,10 +432,6 @@ public class MedHistoryGUI extends JFrame {
 				panel.setLayout(new BorderLayout());
 				table = new JTable();
 				table.setModel(myModel);
-				
-				
-			
-				
 				
 				table.getColumnModel().getColumn(0).setPreferredWidth(164);
 				table.getColumnModel().getColumn(1).setPreferredWidth(161);

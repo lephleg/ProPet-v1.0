@@ -58,19 +58,18 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTable petTable;
-	private Customer customer;
-	private List<Customer> cusList = new ArrayList<Customer>();		
+	private Customer customer = new Customer();
 	private List<Pet> petList = new ArrayList<Pet>();		
 	private JFormattedTextField nextVisit; 						//to be available in NextVisit & refresh on changes
 	public MyPetTableModel petModel = new MyPetTableModel();
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 
-	public CustomerGUI(Customer cus, List<Customer> list) {
+	public CustomerGUI(Customer cus) {
 
-		cusList = list;
-		customer = new Customer();
+		//passing & getting required objects
 		customer = cus;
 		petList = VetApp.db.DBGetAllPets(customer);
+		
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
 		setBounds(100, 100, 420, 336);
 		contentPane = new JPanel();
@@ -103,7 +102,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		JLabel mobileNumber = new JLabel(customer.getMobileNumber());
 		customerInfo_panel.add(mobileNumber);
 
-
 		//-------------------- VISITS PANEL ------------------------
 
 		JPanel visits_panel = new JPanel();				
@@ -122,7 +120,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		nextVisit.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		nextVisit.setBounds(10, 23, 170, 26);
 		visits_panel.add(nextVisit);
-
 
 		JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
 		createcancelAppointmentButton.addActionListener(this);
@@ -143,7 +140,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		//String[] columnNames = {"Photo","Name"};
 		//Object[][] petData = { {"<pic0>", "Rex"}, {"<pic1>", "Epameinwndas"} };	 //Ta dedomena ton pet lamvanontai apo alli klasi kata tin dimiourgia tou frame
-
 
 		petTable = new JTable(petModel);
 
@@ -174,17 +170,15 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		backButton.setBounds(305, 271, 89, 28);
 		contentPane.add(backButton);
 
-
 		//MouseAdapter gia JTable
 		petTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					//System.out.println("Double click detected!");
-					//System.out.println("Customer on " + petTable.getSelectedRow() + " row selected!");
 					int row = petTable.getSelectedRow();
 					for(int i=0; i< petList.size(); i++){
-						new PetGUI(petList.get(i));
-						//System.out.println("Pet PID: " + petList.get(i).getPID());
+						if (petList.get(i).getName().equals(petTable.getValueAt(row, 1).toString())) {
+							new PetGUI(customer, petList.get(i));
+						}
 					}
 				}
 			}
@@ -220,13 +214,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 							options[0]); //default button title
 			if (n == JOptionPane.YES_OPTION) {
 				VetApp.db.DBDeleteCustomer(customer);
-				for(int i=0; i< cusList.size(); i++){
-					if ((cusList.get(i).getLastName() == customer.getLastName()) && 
-							(cusList.get(i).getFirstName() == customer.getFirstName())) {
-						cusList.remove(i);
-					}
-				}
-				com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);
+				com.vetapp.customer.CustomersGUI.model.reloadJTable();
 				this.dispose();
 			}
 		} else if (e.getActionCommand().equals("Edit Customer")) {
@@ -748,16 +736,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					Customer newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
 					//Dhmiourgia pelath
 					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
-					for(int i=0; i< cusList.size(); i++){ 					//Diagrafh tou pelath apo thn lista
-						if ((cusList.get(i).getLastName() == customer.getLastName()) && 
-								(cusList.get(i).getFirstName() == customer.getFirstName())) {
-							cusList.remove(i);
-							cusList.add(newCustomer); 				//Eisagwgh tou "edited" pelath sth lista
-						}
-					}		
-					com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		//Epanafortwsi tis listas pelatwn
+					com.vetapp.customer.CustomersGUI.model.reloadJTable();		//Epanafortwsi tis listas pelatwn
 					dispose();															//kleisimo tou editCustomerGUI
-					new CustomerGUI(newCustomer, cusList);								//epanafortwsi CustomerGUI
+					new CustomerGUI(newCustomer);								//epanafortwsi CustomerGUI
 				}
 				else
 				{
@@ -768,7 +749,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				}
 				//end of edit
 			} else if (e.getActionCommand().equals("Cancel")) {
-				new CustomerGUI(customer, cusList);
+				new CustomerGUI(customer);
 				this.dispose();
 			}
 		}
@@ -789,7 +770,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private  JButton btnSet = new JButton("Set");
 		private  JButton btnCancel = new JButton("Cancel");
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-
 
 		public NextVisitGUI() {
 			setResizable(false);
@@ -864,7 +844,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			btnCancel.setBounds(208, 90, 89, 23);
 			contentPane.add(btnCancel);
 
-
 			setLocationRelativeTo(null);
 			this.setVisible(true);
 
@@ -917,7 +896,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				customer.setNextVisit(null);
 				VetApp.db.DBUpdateCustomer(customer, customer);
 				nextVisit.setText("_ _ /_ _ /_ _ _ _ ,  _ _ : _ _");
-				com.vetapp.customer.CustomersGUI.model.reloadJTable(cusList);		// Epanafortwsi tis listas pelatwn
+				com.vetapp.customer.CustomersGUI.model.reloadJTable();		// Epanafortwsi tis listas pelatwn
 				JOptionPane information = new JOptionPane();
 				information.showMessageDialog(null,"Appointment has been canceled!");
 				dispose();

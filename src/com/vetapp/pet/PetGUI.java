@@ -14,29 +14,35 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PetGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
+	private Customer customer = new Customer();
+	private Pet aPet = new Pet();
 	public static String MAIN_WINDOW_TITLE =" ProPet v0.5";
-	private Pet aPet; 								//edited this//
 	public SimpleDateFormat sdf1 = new SimpleDateFormat ("yyyy-MM-dd hh:mm"); 	//edited this//
 	public SimpleDateFormat sdf2 = new SimpleDateFormat ("yyyy-MM-dd"); 		//edited this//
 
-	public PetGUI(Pet pet) {
+	public PetGUI(Customer cus, Pet thePet) {
+		
+		//passing to private variables
+		customer = cus;
+		aPet = thePet;
+		
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
 		setBounds(100, 100, 400, 330);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		aPet = new Pet();
-		aPet = pet;
 
 
 		//-------------------- PET INFO PANEL ------------------------
@@ -162,7 +168,6 @@ public class PetGUI extends JFrame implements ActionListener {
 		}
 	}
 	
-
 	//============================================================================================
 	//--------------------------------- editPetGUI CLASS -----------------------------------------
 	//============================================================================================

@@ -109,9 +109,7 @@ public class ShopGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(CUSTOMERS_BUTTON_LABEL)) {
-			List<Customer> resList = new ArrayList<Customer>();
-			resList = VetApp.db.DBGetAllCustomers();				//Security issue maybe (?)
-			new CustomersGUI(resList);
+			new CustomersGUI();
 			this.dispose();
 		} else if (e.getActionCommand().equals(QUIT_BUTTON_LABEL)) {
 			System.exit(0);

@@ -68,18 +68,15 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	private BoxLayout buttonLayout;
 	private BoxLayout tableLayout;
 	private BoxLayout controlLayout;
-	public List <Customer> customers = new ArrayList <Customer> () ; //Dhmiourgia listas pelatwn
 
 	public static MyTableModel model = new MyTableModel();
 
 	public static SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
 	public static SimpleDateFormat displayDateFormat = new SimpleDateFormat ("EEE dd-MM-yyyy 'at' hh:mm");
 
-	public CustomersGUI(List<Customer> resList) {
+	public CustomersGUI() {
 
-		//List<Customer> list = resList;
 		//Frame configuration
-		customers = resList;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
@@ -120,7 +117,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		//JTable configuration
 
 		customerTbl = new JTable(model);
-		model.reloadJTable(customers);
+		model.reloadJTable();
 		customerTbl.setAutoCreateRowSorter(true);									//enable row sorters						
 
 		DefaultRowSorter sorter = ((DefaultRowSorter)customerTbl.getRowSorter());	//default sort by Last Name
@@ -145,16 +142,17 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		tablePnl.add(scrollPane);
 		tablePnl.add(Box.createRigidArea(new Dimension(30, 0)));
 
-		//buttonPnl layout (horizontal BoxLayout)					
-		backBtn = new JButton(BACK_BUTTON_LABEL);					//
-		selectBtn = new JButton(SELECT_BUTTON_LABEL);				//	
-		buttonPnl = new JPanel();									//
-		buttonLayout = new BoxLayout(buttonPnl,BoxLayout.X_AXIS);	//																		//Proswrini lysi mexri na 
-		buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	//diorthwthei to thema me to 
-		buttonPnl.add(selectBtn);									//diplo click sto JTable.
-		buttonPnl.add(Box.createRigidArea(new Dimension(15, 0)));	//
-		buttonPnl.add(backBtn);										//
-		buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	//
+		//buttonPnl layout (horizontal BoxLayout)			
+		backBtn = new JButton(BACK_BUTTON_LABEL);					
+		selectBtn = new JButton(SELECT_BUTTON_LABEL);				
+		buttonPnl = new JPanel();									
+		buttonLayout = new BoxLayout(buttonPnl,BoxLayout.X_AXIS);	
+		buttonPnl.setLayout(buttonLayout);
+		buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	
+		buttonPnl.add(selectBtn);									
+		buttonPnl.add(Box.createRigidArea(new Dimension(15, 0)));	
+		buttonPnl.add(backBtn);										
+		buttonPnl.add(Box.createRigidArea(new Dimension(50, 0)));	
 
 		//lowerPnl layout (vertical BoxLayout)	    
 		lowerLayout = new BoxLayout(lowerPnl,BoxLayout.Y_AXIS);
@@ -176,15 +174,10 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		customerTbl.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					//System.out.println("Double click detected!");
-					//System.out.println("Customer on " + customerTbl.getSelectedRow() + " row selected!");
 					int row = customerTbl.getSelectedRow();
-					for(int i=0; i< customers.size(); i++){
-						if (customers.get(i).getLastName()==customerTbl.getValueAt(row, 0) 
-								&& customers.get(i).getFirstName()==customerTbl.getValueAt(row, 1)) {
-							new CustomerGUI(customers.get(i),customers);
-						}
-					}
+					Customer cust = new Customer();
+					cust=VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
+					new CustomerGUI(cust);
 				}
 			}
 		});
@@ -201,16 +194,6 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		controlPnl.setVisible(true);
 	}
 
-	public void setCustomer(Customer aCustomer)
-	{
-		customers.add(aCustomer);
-	}
-
-	public List<Customer> getCustomersList() {
-		return customers;
-
-	}
-
 	//-------------------- ACTION LISTENERS (CUSTOMERS GUI) ------------------------
 
 	@Override
@@ -222,14 +205,9 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			new CreateCustomerGUI();
 		} else if (e.getActionCommand().equals(SELECT_BUTTON_LABEL)) {
 			int row = customerTbl.getSelectedRow();
-			for(int i=0; i< customers.size(); i++){
-				if (customers.get(i).getLastName()==customerTbl.getValueAt(row, 0) 
-						&& customers.get(i).getFirstName()==customerTbl.getValueAt(row, 1)) {
-					new CustomerGUI(customers.get(i), customers);
-				
-				}
-			}
-			
+			Customer cust = new Customer();
+			cust =VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
+			new CustomerGUI(cust);	
 		} else if (e.getSource()==searchTxt) {
 			String value = searchTxt.getText();
 			for (int row = 0; row <= customerTbl.getRowCount() - 1; row++) {
@@ -252,15 +230,18 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		private String[] columnNames = {"Last Name","First Name","Next Visit"};		//column header labels
 		private Object[][] data = new Object[100][3];
 
-		public void reloadJTable(List<Customer> list) {
+		public void reloadJTable() {
+			List<Customer> lista = new ArrayList<Customer>();
+			lista = VetApp.db.DBGetAllCustomers();
+
 			clearJTable();
-			for(int i=0; i< list.size(); i++){
-				data[i][0] = list.get(i).getLastName();
-				data[i][1] = list.get(i).getFirstName();
-				if (list.get(i).getNextVisit()==null) {
+			for(int i=0; i< lista.size(); i++){
+				data[i][0] = lista.get(i).getLastName();
+				data[i][1] = lista.get(i).getFirstName();
+				if (lista.get(i).getNextVisit()==null) {
 					data[i][2] = "NOT SET";
 				} else {
-					String date = displayDateFormat.format(list.get(i).getNextVisit().getTime());
+					String date = displayDateFormat.format(lista.get(i).getNextVisit().getTime());
 					data[i][2] = date;
 				}
 				model.addRow(data);
@@ -473,7 +454,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+
 			//fixed this
 			if (e.getActionCommand().equals(CREATE_BUTTON_LABEL)) {
 				if  ((fNameTxt.getText().trim()!=null)&&(!fNameTxt.getText().trim().isEmpty())&&(lNameTxt.getText().trim()!=null)&&(!lNameTxt.getText().trim().isEmpty())) {
@@ -481,20 +462,18 @@ public class CustomersGUI extends JFrame implements ActionListener {
 					//h methodos trim() afairei leading kai trailing kena apo ta strings
 					aCustomer = new Customer( fNameTxt.getText().trim(),lNameTxt.getText().trim(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
 					//flag = false;
-					JOptionPane information = new JOptionPane();
-					information.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
-					VetApp.db.DBCreateCustomer(aCustomer);				// Eisagwgh tou pelath sth vasi
-					CustomersGUI.this.setCustomer(aCustomer);     			// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
-					model.reloadJTable(customers);					// Epanafortwsi tis listas pelatwn tou CustomersGUI
-					this.dispose();							// Kleisimo frame
+					JOptionPane.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
+					aCustomer = VetApp.db.DBCreateCustomer(aCustomer);			// Eisagwgh tou pelath sth vasi
+					//CustomersGUI.this.setCustomer(aCustomer);     			// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
+					model.reloadJTable();										// Epanafortwsi tis listas pelatwn tou CustomersGUI
+					this.dispose();												// Kleisimo frame
 				}
 				else
 				{
-					JOptionPane error = new JOptionPane();				// Emfanish mhnymatos sfalmatos
-					error.showMessageDialog(null,
-						    "First and Last name are required",
-						    "Warning",
-						    JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,					// Emfanish mhnymatos sfalmatos
+							"First and Last name are required",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
 				//end of fix								// Kleisimo frame
 
