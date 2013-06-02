@@ -257,9 +257,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					data[i][0] = list.get(i).getPhotoPath();
 				}
 				data[i][1] = list.get(i).getName();
-				System.out.println("loading pet table #3");
 				this.addRow(data);
 			}
+			System.out.println("loading pet table..");
 		}
 
 		public void clearJTable() {
@@ -414,10 +414,10 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			JLabel lblGender = new JLabel("Gender*:");
 			petInfoPane.add(lblGender, "2, 6");
 			
-			JRadioButton maleRButton = new JRadioButton("Male");
+			maleRButton = new JRadioButton("Male");
 			petInfoPane.add(maleRButton, "6, 6, 4, 1");
 			
-			JRadioButton femaleRButton = new JRadioButton("Female");
+			femaleRButton = new JRadioButton("Female");
 			petInfoPane.add(femaleRButton, "10, 6, 11, 1");
 			
 			ButtonGroup group = new ButtonGroup();

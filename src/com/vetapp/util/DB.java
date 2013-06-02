@@ -102,7 +102,7 @@ public class DB
 	public Customer DBCreateCustomer(Customer cus) {
 		Customer temp = new Customer();
 		temp = cus;
-	
+
 		//open connection
 		Connection con = DBConnect();
 
@@ -251,8 +251,8 @@ public class DB
 		Connection con = DBConnect();
 
 
-//		//SQL Statement
-//		//Delete Pets related to this customer
+		//		//SQL Statement
+		//		//Delete Pets related to this customer
 		Statement stmt0 = null;
 		try
 		{ String sql2 = "DELETE FROM Pet " +
@@ -339,57 +339,57 @@ public class DB
 						tempCal.setTime(dbDateFormat.parse(res.getString("next_visit")));
 						tempCus.setNextVisit(tempCal);
 					}
-//					//SQL statement for getting Customers Pets by matching cid
-//					Statement stmt0 = null;
-//					ResultSet res0 = null;
-//					try
-//					{
-//						String sql0 = "SELECT * FROM Pet " +
-//								"WHERE cid='" + res.getInt("cid") + "';";
-//						stmt0 = con.createStatement();
-//						res0 = stmt0.executeQuery(sql0);
-//					}
-//					catch(SQLException e)
-//					{
-//						System.out.println("Error creating or running PET LIST statement: " + e.toString());
-//					}
-//
-//					//Analyzing result and parsing the records to ArrayList
-//					List<Pet> petList = new ArrayList<Pet>();  
-//					petList.clear();  	
-//					try
-//					{
-//						if (!res0.next()) {
-//							System.out.println("No pets found");
-//						} else {
-//							do {
-//								Pet tempPet = new Pet();
-//								tempPet.setSpecies(res0.getString("species"));
-//								tempPet.setName(res0.getString("pet_name"));
-//								tempPet.setGender(res0.getString("gender"));
-//								String tmp = res0.getString("birthday");
-//								if (tmp==null) {
-//									//System.out.println("next_visit was not set");
-//									tempPet.setBirthDay(null);
-//								} else {
-//									//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-//									//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
-//									Calendar tmpCal = new GregorianCalendar();
-//									tmpCal.setTime(dbPetDateFormat.parse(tmp));
-//									tempPet.setBirthDay(tmpCal);
-//								}
-//								tempPet.setFurColour(res0.getString("fur_colour"));
-//								tempPet.setSpecialChars(res0.getString("special_chars"));
-//								tempPet.setChipNumber(res0.getString("chip_number"));
-//								tempPet.setPhotoPath(res0.getString("photo_path"));
-//								tempCus.addPet(tempPet);
-//							} while (res0.next());
-//						}
-//					}
-//					catch(SQLException e)
-//					{
-//						System.out.println("Error analyzing PET LIST statement: " + e.toString());
-//					}
+					//					//SQL statement for getting Customers Pets by matching cid
+					//					Statement stmt0 = null;
+					//					ResultSet res0 = null;
+					//					try
+					//					{
+					//						String sql0 = "SELECT * FROM Pet " +
+					//								"WHERE cid='" + res.getInt("cid") + "';";
+					//						stmt0 = con.createStatement();
+					//						res0 = stmt0.executeQuery(sql0);
+					//					}
+					//					catch(SQLException e)
+					//					{
+					//						System.out.println("Error creating or running PET LIST statement: " + e.toString());
+					//					}
+					//
+					//					//Analyzing result and parsing the records to ArrayList
+					//					List<Pet> petList = new ArrayList<Pet>();  
+					//					petList.clear();  	
+					//					try
+					//					{
+					//						if (!res0.next()) {
+					//							System.out.println("No pets found");
+					//						} else {
+					//							do {
+					//								Pet tempPet = new Pet();
+					//								tempPet.setSpecies(res0.getString("species"));
+					//								tempPet.setName(res0.getString("pet_name"));
+					//								tempPet.setGender(res0.getString("gender"));
+					//								String tmp = res0.getString("birthday");
+					//								if (tmp==null) {
+					//									//System.out.println("next_visit was not set");
+					//									tempPet.setBirthDay(null);
+					//								} else {
+					//									//System.out.println("Date object retrieved: " + res.getString("next_visit"));
+					//									//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
+					//									Calendar tmpCal = new GregorianCalendar();
+					//									tmpCal.setTime(dbPetDateFormat.parse(tmp));
+					//									tempPet.setBirthDay(tmpCal);
+					//								}
+					//								tempPet.setFurColour(res0.getString("fur_colour"));
+					//								tempPet.setSpecialChars(res0.getString("special_chars"));
+					//								tempPet.setChipNumber(res0.getString("chip_number"));
+					//								tempPet.setPhotoPath(res0.getString("photo_path"));
+					//								tempCus.addPet(tempPet);
+					//							} while (res0.next());
+					//						}
+					//					}
+					//					catch(SQLException e)
+					//					{
+					//						System.out.println("Error analyzing PET LIST statement: " + e.toString());
+					//					}
 					fullList.add(tempCus);
 				} while (res.next());
 			}
@@ -510,6 +510,14 @@ public class DB
 			System.out.println("Error analyzing PET LIST statement: " + e.toString());
 		} catch (ParseException e1) {
 			System.out.println("Error parsing DATE: " + e1.toString());
+		}
+		//close connection
+		try {
+			con.close();
+			System.out.println("Connection Closed!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
 		}
 		return petList;
 	}
@@ -742,7 +750,7 @@ public class DB
 		Statement stmt0 = null;
 		try
 		{ String sql2 = "DELETE FROM Medical_History " +
-					"WHERE pid='" + pet.getPID() + "';";
+				"WHERE pid='" + pet.getPID() + "';";
 		stmt0 = con.createStatement();
 		stmt0.executeUpdate(sql2);
 		System.out.println("Medical History record deleted!");
@@ -802,6 +810,15 @@ public class DB
 		catch(Exception e)
 		{
 			System.out.println("Error processing results: " + e.toString());
+		}
+		//Close statement & connection
+		try {
+			stmt.close();
+			con.close();
+			System.out.println("Connection closed succesfully!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
 		}
 
 		return history;
@@ -918,6 +935,17 @@ public class DB
 		{
 			System.out.println("Error processing results: " + e.toString());
 		}
+
+		//Close statement & connection
+		try {
+			stmt.close();
+			con.close();
+			System.out.println("Connection closed succesfully!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
+		}
+
 		return birth;
 	}
 	public void DBUpdateBirth(Birth oldBirth, Birth newBirth) {
@@ -956,7 +984,7 @@ public class DB
 		}
 	} 
 
-public List<Birth> DBGetAllBirths(MedHistory med) {
+	public List<Birth> DBGetAllBirths(MedHistory med) {
 		List<Birth> birthList = new ArrayList<Birth>();   
 
 		//open connection
@@ -1009,6 +1037,17 @@ public List<Birth> DBGetAllBirths(MedHistory med) {
 		} catch (ParseException e1) {
 			System.out.println("Error parsing DATE: " + e1.toString());
 		}
+
+		//Close statement & connection
+		try {
+			stmt0.close();
+			con.close();
+			System.out.println("Connection closed succesfully!");
+		}
+		catch (Exception e1) {
+			System.out.println("Error closing connection: " + e1.toString());
+		}
+
 		return birthList;
 	}
 
