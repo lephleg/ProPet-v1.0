@@ -482,20 +482,20 @@ public class CustomersGUI extends JFrame implements ActionListener {
 					//flag = false;
 					JOptionPane information = new JOptionPane();
 					information.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
-					VetApp.db.DBCreateCustomer(aCustomer);						// Eisagwgh tou pelath sth vasi
-					CustomersGUI.this.setCustomer(aCustomer);     				// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
-					model.reloadJTable(customers);								// Epanafortwsi tis listas pelatwn tou CustomersGUI
-					this.dispose();												// Kleisimo frame
+					VetApp.db.DBCreateCustomer(aCustomer);				// Eisagwgh tou pelath sth vasi
+					CustomersGUI.this.setCustomer(aCustomer);     			// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
+					model.reloadJTable(customers);					// Epanafortwsi tis listas pelatwn tou CustomersGUI
+					this.dispose();							// Kleisimo frame
 				}
 				else
 				{
-					JOptionPane error = new JOptionPane();						// Emfanish mhnymatos sfalmatos
+					JOptionPane error = new JOptionPane();				// Emfanish mhnymatos sfalmatos
 					error.showMessageDialog(null,
 						    "First and Last name are required",
 						    "Warning",
 						    JOptionPane.WARNING_MESSAGE);
 				}
-				//end of fix											// Kleisimo frame
+				//end of fix								// Kleisimo frame
 
 			} else if (e.getActionCommand().equals(CANCEL_BUTTON_LABEL)) {
 				this.dispose();
