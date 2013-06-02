@@ -3,6 +3,7 @@ package com.vetapp.pet;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.vetapp.history.FemMedHistory;
 import com.vetapp.history.MedHistory;
 
 public class Pet {
@@ -16,7 +17,7 @@ public class Pet {
 	private String specialChars;
 	private String chipNumber;
 	private String photoPath;
-	private MedHistory history;
+	private FemMedHistory history;
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 	
 	//Constructors (#3)
@@ -136,7 +137,7 @@ public class Pet {
 		this.chipNumber = chipNumber;
 	}
 
-	public void setHistory(MedHistory history) {
+	public void setHistory(FemMedHistory history) {
 		this.history = history;
 	}
 	

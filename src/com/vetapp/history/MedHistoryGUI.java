@@ -4,6 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -17,11 +26,19 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import com.vetapp.customer.Customer;
+import com.vetapp.customer.CustomerGUI;
+import com.vetapp.main.VetApp;
+import com.vetapp.pet.Pet;
+import com.vetapp.pet.PetGUI;
 
 public class MedHistoryGUI extends JFrame {
+	private static FemMedHistory history;
 
-	public MedHistoryGUI() {
+	public MedHistoryGUI(Pet aPet) {
+		history = aPet.getHistory();
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
+				
 				FormFactory.UNRELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.UNRELATED_GAP_COLSPEC,
@@ -395,49 +412,28 @@ public class MedHistoryGUI extends JFrame {
 		//============================================================================================
 
 		public class BirthGUI extends JFrame {
-			private JTable table;
+			private JTable table;  // BirthTable
 			private JButton back_button ;
+			private BirthTableModel myModel;
+
+			
+		    private	 List<Birth> birthlist = new ArrayList<Birth>();
+		
 			public BirthGUI() {
+				birthlist = VetApp.db.DBGetAllBirths(history); // Klhsh ths database
+				myModel = new  BirthTableModel(birthlist);
 				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				setAutoRequestFocus(false);
 
 				JPanel  panel = new JPanel();
 				panel.setLayout(new BorderLayout());
 				table = new JTable();
-				table.setModel(new DefaultTableModel(
-						new Object[][] {
-								{"", ""},
-								{"", ""},
-								{"", ""},
-								{"", ""},
-								{null, null},
-								{null, null},                    //Data
-								{null, null},
-								{null, null},
-								{null, null},
-								{null, null},
-								{null, null},
-								{null, null},
-								{null, null},
-								{null, null},
-						},
-						new String[] {
-								"Date", "Complications/Comments"
-						}
-						) {
-					Class[] columnTypes = new Class[] {
-							String.class, String.class
-					};
-					public Class getColumnClass(int columnIndex) {
-						return columnTypes[columnIndex];
-					}
-					boolean[] columnEditables = new boolean[] {
-							false, false
-					};
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
-				});
+				table.setModel(myModel);
+				
+				
+			
+				
+				
 				table.getColumnModel().getColumn(0).setPreferredWidth(164);
 				table.getColumnModel().getColumn(1).setPreferredWidth(161);
 				table.setBounds(49, 85, 336, 201);
@@ -455,10 +451,126 @@ public class MedHistoryGUI extends JFrame {
 
 				this.setVisible(true);
 				this.pack();
+				
+				//MouseAdapter
+				table.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						if (e.getClickCount() == 2) {
+							int row = table.getSelectedRow();
+							
+							for(int i=0; i< birthlist.size(); i++){
+								if (birthlist.get(i).getDate()==table.getValueAt(row, 0) 
+										&& birthlist.get(i).getComplications()==table.getValueAt(row, 1)) {
+									
+								   table.isCellEditable(row, 0);
+								   table.isCellEditable(row, 1);     // Thelei diortwsh
+								}
+							
+						}
+							
+							
+						}
+					}
+				}
+					
+				);
+				
+				
+				table.addKeyListener(new KeyListener() {
+					public void keyReleased(KeyEvent e) {
+
+					    int key=e.getKeyCode();
+						if (key==KeyEvent.VK_ENTER) {
+						
+							
+							//System.out.println("Double click detected!");
+							//System.out.println("Customer on " + customerTbl.getSelectedRow() + " row selected!");
+							int row = table.getSelectedRow();
+							for(int i=0; i< birthlist.size(); i++){
+								if (birthlist.get(i).getDate()==table.getValueAt(row, 0) 
+										&& birthlist.get(i).getComplications()==table.getValueAt(row, 1)) {
+									Birth tempBirth =  birthlist.get(i);
+								    Calendar birthDate = (Calendar) table.getValueAt(row, 0);
+									birthlist.get(i).setDate(birthDate);
+									String birthComplications = (String) table.getValueAt(row, 1);
+									birthlist.get(i).setComplications(birthComplications);
+									VetApp.db.DBUpdateBirth(tempBirth, birthlist.get(i));  // Enhmerwsh ths database
+								}
+							}
+						}
+					}
+
+					@Override
+					public void keyPressed(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void keyTyped(KeyEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 
 			}
 		}
 	}
+	
+	public static class BirthTableModel extends DefaultTableModel {
+
+		private String[] columnNames = {"Date", "Complications/Comments"};		//column header labels
+		private Object[][] data = new Object[20][2];
+		private  List<Birth>  list;
+       
+		 
+		public BirthTableModel(List<Birth> list) {
+		
+			this.list = list;
+		}
+
+		public void reloadBirthJTable() {
+			//System.out.println("loading pet table #2: " + list.get(0).getName());
+			
+			
+			clearJTable();
+			for(int i=0; i<list.size(); i++){
+				
+				data[i][0] = list.get(i).getDate() ;
+				data[i][1] = list.get(i).getComplications();
+				this.addRow(data);
+			}
+			System.out.println("loading pet table..");
+		}
+
+		public void clearJTable() {
+			this.setRowCount(0);
+		}
+
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+
+		public Object getValueAt(int row, int col) {
+			return data[row][col];
+		}
+        
+		
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+		
+		public boolean isCellEditable(int row, int col ) {
+			
+			    return true;
+			
+		}
+	}
+	
+	
+
+	
 }
 
 

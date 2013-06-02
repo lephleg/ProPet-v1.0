@@ -1,6 +1,6 @@
 package com.vetapp.history;
 
-public class MedHistory {
+public abstract class MedHistory {
 
 	private int mid;
 	private String grafts;

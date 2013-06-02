@@ -837,7 +837,47 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if (e.getActionCommand().equals("Set")) {
-				
+				if(txtYyyy.getText().equals("")||txtMm.getText().equals("")||txtDd.getText().equals("")||txtHh.getText().equals("")||txtMin.getText().equals(""))	
+				  {
+					  JOptionPane error = new JOptionPane();
+						error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+				  }
+				  else {
+			     	Customer cus;
+				    cus = customer;
+					 
+					int year = Integer.parseInt(txtYyyy.getText());
+					int month = Integer.parseInt(txtMm.getText());
+					int day = Integer.parseInt(txtDd.getText());
+					int hour = Integer.parseInt(txtHh.getText());
+					int minutes = Integer.parseInt(txtMin.getText());
+					   // Yparxei ena bug pou emfanizei ton epomeno mhna apo auton pou kataxwrei o xrhsths
+					
+					 Calendar cl = Calendar.getInstance();
+					
+						if(year<2013 ||  month>12 || month <0 || day <=0|| day >31 || hour < 0 ||hour >24 ||  minutes <0 || minutes >59) 
+						{
+							JOptionPane error = new JOptionPane();
+							error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					
+						else
+						{
+							  month = month -1 ;
+						     cl.set(year,month,day,hour,minutes);
+						     customer.setNextVisit(cl);
+						     VetApp.db.DBUpdateCustomer(cus, customer);
+						     dispose();
+						     JOptionPane information = new JOptionPane();
+							 information.showMessageDialog(null,"Next Visit Set!");
+					         CustomerGUI.super.dispose();    // Den ginetai asuto refresh
+					  
+						    
+						    
+						    
+						
+						}
+				  }
 			} else if (e.getActionCommand().equals("Cancel")) {
 				dispose();
 			}

@@ -226,6 +226,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 				if (customers.get(i).getLastName()==customerTbl.getValueAt(row, 0) 
 						&& customers.get(i).getFirstName()==customerTbl.getValueAt(row, 1)) {
 					new CustomerGUI(customers.get(i), customers);
+				
 				}
 			}
 			

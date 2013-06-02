@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import com.vetapp.customer.Customer;
 import com.vetapp.history.Birth;
+import com.vetapp.history.FemMedHistory;
 import com.vetapp.history.MedHistory;
 import com.vetapp.pet.Pet;
 
@@ -669,8 +670,8 @@ public class DB
 
 	//============================== MEDICAL HISTORY DB CONNECTIVITY =============================
 
-	public MedHistory DBCreateMedHistory(Pet pet, MedHistory history) {
-		MedHistory med = new MedHistory();
+	public MedHistory DBCreateMedHistory(Pet pet, FemMedHistory history) {
+		FemMedHistory med = new FemMedHistory();
 		med = history;
 		//open connection
 		Connection con = DBConnect();
@@ -792,7 +793,7 @@ public class DB
 		}
 
 		//Analyzing result and parsing the records to ArrayList
-		MedHistory history = new MedHistory();
+		MedHistory history = new FemMedHistory();
 		try
 		{
 			if (!res.next()) {
