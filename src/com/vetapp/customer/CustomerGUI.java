@@ -527,35 +527,35 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					int year = Integer.parseInt(birthYear);
 					int month = Integer.parseInt(birthMonth);
 					int day = Integer.parseInt(birthDay);
-					
+
 					Calendar cl = Calendar.getInstance();
 
-					if(year<1900 ||  month>12 || month <0 || day <=0|| day >31 ) 
+					if(year<1900 || year>2013 ||  month>12 || month <0 || day <=0|| day >31 ) 
 					{
 						JOptionPane error = new JOptionPane();
 						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
-						
-					String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
-					Date date = null;
-					try {
-						date = ft.parse(birthDate);
-					} catch (ParseException e1) {
-						System.out.println("Error parsing pet birth date: " + e1.getMessage());
-					}
-					Calendar cal = new GregorianCalendar();
-					cal.setTime(date);
 
-					Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
-					cust.addPet(pet);
+						String birthDate = birthYear + "-" + birthMonth + "-" + birthDay + " 00:00:00"; //("yyyy-MM-dd hh:mm:ss")
+						Date date = null;
+						try {
+							date = ft.parse(birthDate);
+						} catch (ParseException e1) {
+							System.out.println("Error parsing pet birth date: " + e1.getMessage());
+						}
+						Calendar cal = new GregorianCalendar();
+						cal.setTime(date);
 
-					VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
+						cust.addPet(pet);
 
-					JOptionPane information = new JOptionPane();
-					petModel.reloadPetJTable(cust);
-					information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
-					createPetGUI.this.dispose();     // Kleisimo tou frame
+						VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+
+						JOptionPane information = new JOptionPane();
+						petModel.reloadPetJTable(cust);
+						information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+						createPetGUI.this.dispose();     // Kleisimo tou frame
 					}
 
 				}                          
@@ -741,16 +741,16 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				//TODO
 				//edited this
 				if  ((firstNameTxt.getText().trim()!=null)&&(!firstNameTxt.getText().trim().isEmpty())&&(lastNameTxt.getText().trim()!=null)&&(!lastNameTxt.getText().trim().isEmpty())) {
-				//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
-				//h methodos trim() afairei leading kai trailing kena apo ta strings
+					//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
+					//h methodos trim() afairei leading kai trailing kena apo ta strings
 					JOptionPane information = new JOptionPane();
 					information.showMessageDialog(null,"Customer Edited!");   		// Emfanish mhnymatos epityxias
 					Customer newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
-														//Dhmiourgia pelath
+					//Dhmiourgia pelath
 					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
 					for(int i=0; i< cusList.size(); i++){ 					//Diagrafh tou pelath apo thn lista
 						if ((cusList.get(i).getLastName() == customer.getLastName()) && 
-							(cusList.get(i).getFirstName() == customer.getFirstName())) {
+								(cusList.get(i).getFirstName() == customer.getFirstName())) {
 							cusList.remove(i);
 							cusList.add(newCustomer); 				//Eisagwgh tou "edited" pelath sth lista
 						}
@@ -762,9 +762,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				else
 				{
 					JOptionPane.showMessageDialog(null,							// Emfanish mhnymatos sfalmatos
-						    "First and Last name are required",
-						    "Warning",
-						    JOptionPane.WARNING_MESSAGE);
+							"First and Last name are required",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
 				//end of edit
 			} else if (e.getActionCommand().equals("Cancel")) {
@@ -896,7 +896,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 					Calendar cl = Calendar.getInstance();
 
-					if(year<2013 ||  month>12 || month <0 || day <=0|| day >31 || hour < 0 ||hour >24 ||  minutes <0 || minutes >59) 
+					if(year<2013 || year>2015 ||  month>12 || month <0 || day <=0|| day >31 || hour < 0 ||hour >24 ||  minutes <0 || minutes >59) 
 					{
 						JOptionPane error = new JOptionPane();
 						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
