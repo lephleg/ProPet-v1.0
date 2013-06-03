@@ -31,14 +31,20 @@ import com.vetapp.customer.CustomerGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
+import com.vetapp.util.PropetJMenuBar;
 
 public class MedHistoryGUI extends JFrame {
+	
 	private static MedHistory history;
+	private PropetJMenuBar bar = new PropetJMenuBar();
 
 	public MedHistoryGUI(Pet aPet) {
 
 		//getting required history & passing it to private variable
 		history = VetApp.db.DBGetMedHistory(aPet);
+		
+		//JMenuBar
+		setJMenuBar(bar.drawJMenuBar());
 		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				

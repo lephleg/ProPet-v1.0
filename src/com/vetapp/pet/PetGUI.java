@@ -16,6 +16,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
+import com.vetapp.util.PropetJMenuBar;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,8 @@ public class PetGUI extends JFrame implements ActionListener {
 	public static String MAIN_WINDOW_TITLE =" ProPet v0.5";
 	public SimpleDateFormat sdf1 = new SimpleDateFormat ("yyyy-MM-dd hh:mm"); 	//edited this//
 	public SimpleDateFormat sdf2 = new SimpleDateFormat ("yyyy-MM-dd"); 		//edited this//
+	private PropetJMenuBar bar = new PropetJMenuBar();
+
 
 	public PetGUI(Customer cus, Pet thePet) {
 		
@@ -37,8 +41,11 @@ public class PetGUI extends JFrame implements ActionListener {
 		customer = cus;
 		aPet = thePet;
 		
+		//JMenuBar
+		setJMenuBar(bar.drawJMenuBar());
+		
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
-		setBounds(100, 100, 400, 330);
+		setBounds(100, 100, 410, 355);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

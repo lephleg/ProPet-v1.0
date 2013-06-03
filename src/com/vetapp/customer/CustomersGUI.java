@@ -36,8 +36,12 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.xswingx.PromptSupport;
+import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
+
 import com.vetapp.main.ShopGUI;
 import com.vetapp.main.VetApp;
+import com.vetapp.util.PropetJMenuBar;
 
 //import com.vetapp.customer.CreateCustomerGUI.cancelButtonListener;
 //import com.vetapp.customer.CreateCustomerGUI.createButtonListener;
@@ -70,11 +74,16 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	private BoxLayout controlLayout;
 
 	public static MyTableModel model = new MyTableModel();
+	private PropetJMenuBar bar = new PropetJMenuBar();
+
 
 	public static SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
 	public static SimpleDateFormat displayDateFormat = new SimpleDateFormat ("EEE dd-MM-yyyy 'at' hh:mm");
 
 	public CustomersGUI() {
+		
+		//JMenuBar
+		setJMenuBar(bar.drawJMenuBar());
 
 		//Frame configuration
 		setResizable(false);
@@ -103,7 +112,9 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		upperPnl.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		//controlPnl layout (horizontal BoxLayout) 
-		searchTxt = new JTextField("Search...",10);
+		searchTxt = new JTextField(10);
+		PromptSupport.setPrompt("Search...", searchTxt); 	//prompt text - using xswingx library
+		PromptSupport.setFocusBehavior(FocusBehavior.HIDE_PROMPT, searchTxt);
 		newBtn = new JButton(NEW_BUTTON_LABEL);
 		controlLayout = new BoxLayout(controlPnl, BoxLayout.X_AXIS);
 		controlPnl.setLayout(controlLayout);
@@ -205,9 +216,16 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			new CreateCustomerGUI();
 		} else if (e.getActionCommand().equals(SELECT_BUTTON_LABEL)) {
 			int row = customerTbl.getSelectedRow();
-			Customer cust = new Customer();
-			cust =VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
-			new CustomerGUI(cust);	
+			if (!(row==-1)) {
+				Customer cust = new Customer();
+				cust =VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
+				new CustomerGUI(cust);	
+			}else {
+				JOptionPane.showMessageDialog(null, 
+						"Please select a customer first", "No customer selected", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
 		} else if (e.getSource()==searchTxt) {
 			String value = searchTxt.getText();
 			for (int row = 0; row <= customerTbl.getRowCount() - 1; row++) {

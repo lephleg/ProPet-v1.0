@@ -36,6 +36,7 @@ import com.vetapp.customer.CustomersGUI.*;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
+import com.vetapp.util.PropetJMenuBar;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -63,6 +64,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	private JFormattedTextField nextVisit; 						//to be available in NextVisit & refresh on changes
 	public MyPetTableModel petModel = new MyPetTableModel();
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
+	private PropetJMenuBar bar = new PropetJMenuBar();
+
 
 	public CustomerGUI(Customer cus) {
 
@@ -70,8 +73,11 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		customer = cus;
 		petList = VetApp.db.DBGetAllPets(customer);
 		
+		//JMenuBar
+		setJMenuBar(bar.drawJMenuBar());
+		
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED); //to default frame border gia ta panels me perigramma
-		setBounds(100, 100, 420, 336);
+		setBounds(100, 100, 415, 360);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -183,7 +189,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				}
 			}
 		});
-
 
 		this.setResizable(false);
 		this.setVisible(true);
@@ -887,6 +892,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 						customer.setNextVisit(cl);
 						VetApp.db.DBUpdateCustomer(cus, customer);
 						nextVisit.setText(ft.format(customer.getNextVisit().getTime()));	//refreshes the value on CustomerGUI
+						CustomersGUI.model.reloadJTable();
 						JOptionPane information = new JOptionPane();
 						information.showMessageDialog(null,"Next Visit Set!");
 						dispose();
