@@ -181,6 +181,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int row = petTable.getSelectedRow();
+					System.out.println("double click! " + petTable.getValueAt(row, 1).toString());
 					for(int i=0; i< petList.size(); i++){
 						if (petList.get(i).getName().equals(petTable.getValueAt(row, 1).toString())) {
 							new PetGUI(customer, petList.get(i));
@@ -542,12 +543,10 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
 						cust.addPet(pet);
-
-						VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
-
-						JOptionPane information = new JOptionPane();
-						petModel.reloadPetJTable(cust);
-						information.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+						pet = VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+						petList.add(pet);
+						petModel.reloadPetJTable(cust);								// Reload the PetTable
+						JOptionPane.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
 						createPetGUI.this.dispose();     // Kleisimo tou frame
 					}
 
