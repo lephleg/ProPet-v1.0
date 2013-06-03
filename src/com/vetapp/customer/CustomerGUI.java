@@ -735,13 +735,27 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				if  ((firstNameTxt.getText().trim()!=null)&&(!firstNameTxt.getText().trim().isEmpty())&&(lastNameTxt.getText().trim()!=null)&&(!lastNameTxt.getText().trim().isEmpty())) {
 					//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
 					//h methodos trim() afairei leading kai trailing kena apo ta strings
-					JOptionPane information = new JOptionPane();
-					information.showMessageDialog(null,"Customer Edited!");   		// Emfanish mhnymatos epityxias
-					Customer newCustomer = new Customer( firstNameTxt.getText().trim(),lastNameTxt.getText().trim(),addressTxt.getText(),homePhoneTxt.getText(),mobilePhoneTxt.getText());  
-					//Dhmiourgia pelath
+					
+					Customer newCustomer = new Customer();							// dimiourgia neou Customer
+
+					newCustomer.setFirstName(firstNameTxt.getText().trim());		// ananewnw ta tyxon allagmena fields
+					newCustomer.setLastName(lastNameTxt.getText().trim());
+					newCustomer.setAddress(addressTxt.getText().trim());
+					newCustomer.setHomeNumber(homePhoneTxt.getText().trim());
+					newCustomer.setMobileNumber(mobilePhoneTxt.getText().trim());
+					
+					newCustomer.setNextVisit(customer.getNextVisit());				// pernaw ta fields pou dn ananewnontai 																	
+					newCustomer.setNumberOfVisits(customer.getNumberOfVisits());	// sto editCustomer
+					newCustomer.setCID(customer.getCID());
+			
+//					newCustomer.print();
+//					System.out.println("------");
+//					customer.print();
+
 					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
-					com.vetapp.customer.CustomersGUI.model.reloadJTable();		//Epanafortwsi tis listas pelatwn
-					dispose();															//kleisimo tou editCustomerGUI
+					CustomersGUI.model.reloadJTable();							//Epanafortwsi tou JTable sto CustomersGUI
+					JOptionPane.showMessageDialog(null,"Customer Edited!");   	// Emfanish mhnymatos epityxias					
+					dispose();													//kleisimo tou editCustomerGUI
 					new CustomerGUI(newCustomer);								//epanafortwsi CustomerGUI
 				}
 				else
