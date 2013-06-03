@@ -139,7 +139,8 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 		customerTbl.getColumnModel().getColumn(0).setPreferredWidth(100);	//set Last Name column preferred width
 		customerTbl.getColumnModel().getColumn(1).setPreferredWidth(80);	//set First Name column preferred width
-		customerTbl.getColumnModel().getColumn(2).setPreferredWidth(150);	//set Last Visit column preferred width   
+		customerTbl.getColumnModel().getColumn(2).setPreferredWidth(150);	//set Last Visit column preferred width  
+		customerTbl.setRowHeight(20);
 
 		//tablePnl layout (horizontal BoxLayout)
 		JScrollPane scrollPane = new JScrollPane(customerTbl);

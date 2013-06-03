@@ -3,6 +3,7 @@ package com.vetapp.customer;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultRowSorter;
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,6 +21,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -158,8 +161,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		sorter.setSortKeys(sortlist);
 		sorter.sort();
 
-		petTable.getColumnModel().getColumn(0).setPreferredWidth(100);	//set Photo column preferred width
-		petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
+		petTable.getColumnModel().getColumn(0).setPreferredWidth(60);	//set Photo column preferred width
+		petTable.getColumnModel().getColumn(1).setPreferredWidth(120);	//set Pet name column preferred width
+		petTable.setRowHeight(60);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(211, 11, 184, 150);
@@ -233,6 +237,14 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		}
 	}
 
+	public static ImageIcon setIcon(String link) {
+		try {
+			URL url = new URL(link);
+			return (new ImageIcon(url));
+		} catch (MalformedURLException e) {
+			return null;
+		}
+	}
 	//-------------------- PET JTABLE MODEL ------------------------
 
 	public static class MyPetTableModel extends DefaultTableModel {
@@ -245,12 +257,16 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			List<Pet> list = new ArrayList<Pet>();
 			list = VetApp.db.DBGetAllPets(cus);
 			clearJTable();
+			
 			for(int i=0; i<list.size(); i++){
-				if (list.get(i).getPhotoPath() == null) {
-					data[i][0] = "NO_PHOTO";
-				} else {
-					data[i][0] = list.get(i).getPhotoPath();
-				}
+//				if (list.get(i).getPhotoPath() == null) {
+//					data[i][0] = "NO_PHOTO";
+//				} else {
+//					data[i][0] = list.get(i).getPhotoPath();
+//				}
+				ImageIcon icon = new ImageIcon();
+				icon = setIcon("http://i.imgur.com/idQ66rH.png");
+				data[i][0] = icon;
 				data[i][1] = list.get(i).getName();
 				this.addRow(data);
 			}
@@ -279,9 +295,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		 * then the last column would contain text ("true"/"false"),
 		 * rather than a check box.
 		 */
-		//        public Class getColumnClass(int c) {
-		//            return getValueAt(0, c).getClass();
-		//        }
+		        public Class getColumnClass(int c) {
+		            return getValueAt(0, c).getClass();
+		        }
 
 		/*
 		 * Don't need to implement this method unless your table's
@@ -298,6 +314,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		}
 	}
 
+	
+	
 	//============================================================================================
 	//--------------------------------- createPetGUI CLASS ---------------------------------------
 	//============================================================================================

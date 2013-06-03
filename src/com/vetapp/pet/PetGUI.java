@@ -23,6 +23,8 @@ import com.vetapp.util.PropetJMenuBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -127,7 +129,7 @@ public class PetGUI extends JFrame implements ActionListener {
 
 		//-------------------- IMAGE  --------------------
 
-		ImageIcon icon = createImageIcon("Chalkboard.jpg","photo of the pet");
+		ImageIcon icon = setIcon("http://i.imgur.com/XPNpZSa.png");
 		JLabel imagePetLabel = new JLabel("",icon,JLabel.CENTER);
 		imagePetLabel.setBounds(250, 10, 140, 140);
 		contentPane.add(imagePetLabel);
@@ -158,6 +160,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("Edit Pet")) {
 			//TODO
 			new editPetGUI();
+			dispose();
 		} else if (e.getActionCommand().equals("Medical Histoty")) {
 			//TODO
 			new MedHistoryGUI(aPet);
@@ -166,6 +169,18 @@ public class PetGUI extends JFrame implements ActionListener {
 			dispose();
 		}
 
+	}
+	
+	/*
+	 * A method to retrieve the logo icon
+	 * */
+	public ImageIcon setIcon(String link) {
+		try {
+			URL url = new URL(link);
+			return (new ImageIcon(url));
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 
 	protected static ImageIcon createImageIcon(String path, String description) {
@@ -337,7 +352,8 @@ public class PetGUI extends JFrame implements ActionListener {
 				//TODO
 
 			} else if (e.getActionCommand().equals("Cancel")) {
-				//TODO
+				new PetGUI(customer,aPet);
+				dispose();
 
 			}
 		}
