@@ -13,8 +13,8 @@ import com.vetapp.util.DB;
 
 public class VetApp {
 		
-	public static String MAIN_WINDOW_TITLE =" ProPet v0.8";
-	public static String LOGO_ICON_URL = "http://i.imgur.com/sn0luPx.jpg"; //(sti teliki ekdosi ta URLs
+	public static String MAIN_WINDOW_TITLE =" ProPet v0.85";
+	public static String LOGO_ICON_URL = "http://i.imgur.com/Qxnz5p6.png"; //(sti teliki ekdosi ta URLs
 																			//tha antikatastathei me topiko directory)
 	public static String RACCOON_LOGO_ICON_URL = "http://i.imgur.com/HmklHr8.png"; 
 	public static DB db = new DB();

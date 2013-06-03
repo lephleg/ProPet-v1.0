@@ -249,10 +249,9 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		private Object[][] data = new Object[100][3];
 
 		public void reloadJTable() {
+			clearJTable();
 			List<Customer> lista = new ArrayList<Customer>();
 			lista = VetApp.db.DBGetAllCustomers();
-
-			clearJTable();
 			for(int i=0; i< lista.size(); i++){
 				data[i][0] = lista.get(i).getLastName();
 				data[i][1] = lista.get(i).getFirstName();

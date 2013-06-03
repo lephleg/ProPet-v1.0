@@ -811,7 +811,7 @@ public class DB
 		try
 		{
 			String sql = "SELECT * FROM Medical_History " 
-					+ "WHERE pid='" + pet.getPID() + "'));";
+					+ "WHERE pid='" + pet.getPID() + "';";
 			stmt = con.createStatement();
 			res = stmt.executeQuery(sql);
 		}

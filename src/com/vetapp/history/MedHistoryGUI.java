@@ -46,6 +46,9 @@ public class MedHistoryGUI extends JFrame {
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
 		
+		//JFrame configuration
+		setVisible(true);
+		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				
 				FormFactory.UNRELATED_GAP_COLSPEC,

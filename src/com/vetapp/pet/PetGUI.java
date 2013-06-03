@@ -16,6 +16,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
+import com.vetapp.history.MedHistory;
+import com.vetapp.history.MedHistoryGUI;
 import com.vetapp.util.PropetJMenuBar;
 
 import javax.swing.JButton;
@@ -158,8 +160,10 @@ public class PetGUI extends JFrame implements ActionListener {
 			new editPetGUI();
 		} else if (e.getActionCommand().equals("Medical Histoty")) {
 			//TODO
+			new MedHistoryGUI(aPet);
 		} else if (e.getActionCommand().equals("Back")) {
 			//TODO
+			dispose();
 		}
 
 	}
