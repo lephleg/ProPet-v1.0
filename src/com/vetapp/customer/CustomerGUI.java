@@ -295,9 +295,16 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		 * then the last column would contain text ("true"/"false"),
 		 * rather than a check box.
 		 */
-		        public Class getColumnClass(int c) {
-		            return getValueAt(0, c).getClass();
-		        }
+		public Class getColumnClass(int c) {
+			for(int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) { 
+				Object[] row = data[rowIndex];
+				if (row[c] != null) {
+					return getValueAt(rowIndex, c).getClass();
+				}
+			}
+			return String.class;
+		} 
+
 
 		/*
 		 * Don't need to implement this method unless your table's

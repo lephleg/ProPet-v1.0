@@ -163,7 +163,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			dispose();
 		} else if (e.getActionCommand().equals("Medical Histoty")) {
 			//TODO
-			new MedHistoryGUI(aPet);
+			//new MedHistoryGUI(aPet);
 		} else if (e.getActionCommand().equals("Back")) {
 			//TODO
 			dispose();
