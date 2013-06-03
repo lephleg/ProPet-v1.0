@@ -246,7 +246,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 	public static class MyTableModel extends DefaultTableModel {
 
-		private String[] columnNames = {"Last Name","First Name","Next Visit"};		//column header labels
+		private String[] columnNames = {"Last Name","First Name","Last/Next Visit"};		//column header labels
 		private Object[][] data = new Object[100][3];
 
 		public void reloadJTable() {
