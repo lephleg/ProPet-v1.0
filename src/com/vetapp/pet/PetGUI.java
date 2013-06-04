@@ -3,6 +3,7 @@ package com.vetapp.pet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -18,6 +19,7 @@ import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
 import com.vetapp.history.MedHistory;
 import com.vetapp.history.MedHistoryGUI;
+import com.vetapp.main.VetApp;
 import com.vetapp.util.PropetJMenuBar;
 
 import javax.swing.JButton;
@@ -86,22 +88,22 @@ public class PetGUI extends JFrame implements ActionListener {
 				RowSpec.decode("14px"),}));
 
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
-		JLabel species = new JLabel("<species>");
+		JLabel species = new JLabel(aPet.getSpecies());
 		petInfo_panel.add(species, "3, 4, 2, 1, left, center");
 
-		JLabel name = new JLabel("<name>");
+		JLabel name = new JLabel(aPet.getName());
 		petInfo_panel.add(name, "3, 6, 2, 1, left, center");
 
-		JLabel gender = new JLabel("<gender>");
+		JLabel gender = new JLabel(aPet.getGender());
 		petInfo_panel.add(gender, "3, 8, 2, 1, left, center");
 
-		JLabel birthDay = new JLabel("<birthDay>");
-		petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
+		//JLabel birthDay = new JLabel(aPet.getBirthDay());
+		//petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
 
-		JLabel furColor = new JLabel("<furColor>");
+		JLabel furColor = new JLabel(aPet.getFurColour());
 		petInfo_panel.add(furColor, "3, 12, 2, 1, left, center");
 
-		JLabel specialChars = new JLabel("<specialChars>");
+		JLabel specialChars = new JLabel(aPet.getSpecialChars());
 		petInfo_panel.add(specialChars, "3, 14, 2, 1, left, center");
 
 
@@ -113,7 +115,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		contentPane.add(electicchip_panel);
 		electicchip_panel.setLayout(null);
 
-		JLabel chipNumberLabel = new JLabel("<chipNumber>");
+		JLabel chipNumberLabel = new JLabel(aPet.getChipNumber());
 		chipNumberLabel.setBounds(15, 10, 122, 39);
 		electicchip_panel.add(chipNumberLabel);
 
@@ -156,17 +158,28 @@ public class PetGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getActionCommand().equals("Delete Pet (!)")) {
-			//TODO 
+			Object[] options = {"Yes, delete this pet.",
+			"No way!"};
+			int n = JOptionPane.showOptionDialog(this,
+					"Are you sure you want to delete this pet record?\n"
+							+ "Warning: this action cannot be undone!",
+							"Confirm Pet Deletion",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE,
+							null,     //no custom icon
+							options,  //the titles of buttons
+							options[0]); //default button title
+			if (n == JOptionPane.YES_OPTION) {
+				VetApp.db.DBDeletePet(customer, aPet);
+				this.dispose();
+			} 
 		} else if (e.getActionCommand().equals("Edit Pet")) {
-			//TODO
 			new editPetGUI();
-			dispose();
+			PetGUI.this.dispose();
 		} else if (e.getActionCommand().equals("Medical Histoty")) {
-			//TODO
-			//new MedHistoryGUI(aPet);
+			new MedHistoryGUI(aPet);
 		} else if (e.getActionCommand().equals("Back")) {
-			//TODO
-			dispose();
+			this.dispose();
 		}
 
 	}
