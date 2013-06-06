@@ -38,6 +38,7 @@ public class PetGUI extends JFrame implements ActionListener {
 	public static String MAIN_WINDOW_TITLE =" ProPet v0.5";
 	public SimpleDateFormat sdf1 = new SimpleDateFormat ("yyyy-MM-dd hh:mm"); 	//edited this//
 	public SimpleDateFormat sdf2 = new SimpleDateFormat ("yyyy-MM-dd"); 		//edited this//
+	public SimpleDateFormat display = new SimpleDateFormat ("dd-MM-yyyy"); 		
 	private PropetJMenuBar bar = new PropetJMenuBar();
 
 
@@ -97,8 +98,8 @@ public class PetGUI extends JFrame implements ActionListener {
 		JLabel gender = new JLabel(aPet.getGender());
 		petInfo_panel.add(gender, "3, 8, 2, 1, left, center");
 
-		//JLabel birthDay = new JLabel(aPet.getBirthDay());
-		//petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
+		JLabel birthDay = new JLabel(display.format(aPet.getBirthDay().getTime()));
+		petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
 
 		JLabel furColor = new JLabel(aPet.getFurColour());
 		petInfo_panel.add(furColor, "3, 12, 2, 1, left, center");
@@ -292,8 +293,8 @@ public class PetGUI extends JFrame implements ActionListener {
 			petInfo_panel.add(birthDayLabel, "2, 8,3,1");
 
 			birthDayTxt = new JTextField();
-			birthDayTxt.setText(sdf2.format(aPet.getBirthDay().getTime())); 
-			//epeleksa to sdf2 format giati thewrhsa oti h wra den exei nohma gia thn genna, 
+			birthDayTxt.setText(display.format(aPet.getBirthDay().getTime())); 
+			//epeleksa to display format giati thewrhsa oti h wra den exei nohma gia thn genna, 
 			//alla me xrhsh tou sdf1 tha empanizontai epishs wra kai lepta.
 			petInfo_panel.add(birthDayTxt, "8, 8, 3, 1, fill, default");
 			birthDayTxt.setColumns(10);
