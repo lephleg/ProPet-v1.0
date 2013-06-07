@@ -549,7 +549,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 					Calendar cl = Calendar.getInstance();
 
-					if(year<1900 || year>2013 ||  month>12 || month <0 || day <=0|| day >31 ) 
+					if(year<1900 || year>2013 ||  month>12 || month <0 || day <= 0 || day >31 ) 
 					{
 						JOptionPane error = new JOptionPane();
 						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
@@ -744,7 +744,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			cancelButton.setBounds(314, 285, 105, 28);
 			contentPane.add(cancelButton);
 
-			//this.setResizable(false);
+			this.setResizable(false);
 			this.setVisible(true);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		}

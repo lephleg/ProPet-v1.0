@@ -48,9 +48,10 @@ public class MedHistoryGUI extends JFrame {
 		
 		//JFrame configuration
 		setVisible(true);
+		setBounds(100, 100, 450, 410);
+		setResizable(false);
 		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-				
 				FormFactory.UNRELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
 				FormFactory.UNRELATED_GAP_COLSPEC,
@@ -68,9 +69,7 @@ public class MedHistoryGUI extends JFrame {
 				ColumnSpec.decode("16px"),
 				ColumnSpec.decode("88px"),
 				ColumnSpec.decode("46px"),},
-				new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
+			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -97,72 +96,72 @@ public class MedHistoryGUI extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("max(7dlu;default)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 
 		JLabel lblMedicalHistory = new JLabel("Medical History");
-		getContentPane().add(lblMedicalHistory, "6, 2, 1, 2, center, default");
+		getContentPane().add(lblMedicalHistory, "6, 2, center, default");
 
 		JLabel VaccineLbl = new JLabel("   Vaccinated:");
 		VaccineLbl.setVerticalAlignment(SwingConstants.TOP);
-		getContentPane().add(VaccineLbl, "6, 7, fill, center");
+		getContentPane().add(VaccineLbl, "6, 5, fill, center");
 
 		VaccinesTxtFld = new JTextField();
 		VaccinesTxtFld.setEditable(false);
 		VaccineLbl.setLabelFor(VaccinesTxtFld);
-		getContentPane().add(VaccinesTxtFld, "6, 9, fill, fill");
+		getContentPane().add(VaccinesTxtFld, "6, 7, fill, fill");
 		VaccinesTxtFld.setColumns(10);
 		VaccinesTxtFld.setText(Grafts);
 
 		JLabel AllergiesLbl = new JLabel("   Allergies:");
 		AllergiesLbl.setLabelFor(AllergiesLbl);
-		getContentPane().add(AllergiesLbl, "6, 11, left, center");
+		getContentPane().add(AllergiesLbl, "6, 9, left, center");
 
 		AllergiesTxtFld = new JTextField();
 		AllergiesTxtFld.setEditable(false);
-		getContentPane().add(AllergiesTxtFld, "6, 13, fill, fill");
+		getContentPane().add(AllergiesTxtFld, "6, 11, fill, fill");
 		AllergiesTxtFld.setColumns(10);
 		AllergiesTxtFld.setText(Alergies);
 
 		JLabel DiseasesLbl = new JLabel("   Diseases:");
-		getContentPane().add(DiseasesLbl, "6, 15, left, center");
+		getContentPane().add(DiseasesLbl, "6, 13, left, center");
 
 		DiseasesTxtFld = new JTextField();
 		DiseasesTxtFld.setEditable(false);
 		DiseasesLbl.setLabelFor(DiseasesTxtFld);
-		getContentPane().add(DiseasesTxtFld, "6, 17, fill, fill");
+		getContentPane().add(DiseasesTxtFld, "6, 15, fill, fill");
 		DiseasesTxtFld.setColumns(10);
 		DiseasesTxtFld.setText(As8eneies);
 
 		JLabel SurgeriesLbl = new JLabel("   Surgeries:");
 		SurgeriesLbl.setLabelFor(SurgeriesLbl);
-		getContentPane().add(SurgeriesLbl, "6, 19, left, center");
+		getContentPane().add(SurgeriesLbl, "6, 17, left, center");
 
 		SurgTxtFld = new JTextField();
 		SurgTxtFld.setEditable(false);
-		getContentPane().add(SurgTxtFld, "6, 21, fill, fill");
+		getContentPane().add(SurgTxtFld, "6, 19, fill, fill");
 		SurgTxtFld.setColumns(10);
 		SurgTxtFld.setText(Surgeries);
 
 
 		JLabel MedTrLbl = new JLabel("   Medical Treatment:");
-		getContentPane().add(MedTrLbl, "6, 23, left, center");
+		getContentPane().add(MedTrLbl, "6, 21, left, center");
 
 		MedTreatmentTxtFld = new JTextField();
 		MedTreatmentTxtFld.setEditable(false);
 		MedTrLbl.setLabelFor(MedTreatmentTxtFld);
-		getContentPane().add(MedTreatmentTxtFld, "6, 25, fill, fill");
+		getContentPane().add(MedTreatmentTxtFld, "6, 23, fill, fill");
 		MedTreatmentTxtFld.setColumns(10);
 		MedTreatmentTxtFld.setText(MedicalTreatment);
 
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
-		getContentPane().add(NeuteringLbl, "6, 27, left, top");
+		getContentPane().add(NeuteringLbl, "6, 25, left, top");
 
 		ButtonGroup BtnGroup = new ButtonGroup();
 
 		JLabel NeuValLbl = new JLabel("No");//metavliti apo db anti gia no
-		getContentPane().add(NeuValLbl, "8, 27, center, default");
+		getContentPane().add(NeuValLbl, "8, 25, center, default");
 
 		JButton EditBtn = new JButton("Edit Medical History");
 		EditBtn.addActionListener(new ActionListener() {
@@ -172,7 +171,7 @@ public class MedHistoryGUI extends JFrame {
 				
 			}
 		});
-		getContentPane().add(EditBtn, "6, 31");
+		getContentPane().add(EditBtn, "6, 29");
 
 		JButton CancelBtn = new JButton("Cancel");
 		CancelBtn.addActionListener(new ActionListener() {
@@ -180,7 +179,7 @@ public class MedHistoryGUI extends JFrame {
 				MedHistoryGUI.super.dispose();
 			}
 		});
-		getContentPane().add(CancelBtn, "8, 31, 2, 1");
+		getContentPane().add(CancelBtn, "8, 29, 2, 1");
 		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
 		//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
 		//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
