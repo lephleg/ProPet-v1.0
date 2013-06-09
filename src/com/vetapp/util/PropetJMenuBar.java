@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import com.vetapp.history.MedHistoryGUI.EditMedHistoryGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 

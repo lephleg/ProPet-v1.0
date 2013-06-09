@@ -8,8 +8,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.swing.*;
@@ -26,14 +30,13 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
-import com.vetapp.history.MedHistoryGUI.EditMedHistoryGUI.BirthGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
 import com.vetapp.util.PropetJMenuBar;
 
 public class MedHistoryGUI extends JFrame {
-	
+
 	private static MedHistory history;
 	private static String petGender;
 	private PropetJMenuBar bar = new PropetJMenuBar();
@@ -50,15 +53,15 @@ public class MedHistoryGUI extends JFrame {
 		//getting required history & passing it to private variable
 		petGender = aPet.getGender();
 		history = VetApp.db.DBGetMedHistory(aPet);
-		
+
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
-		
+
 		//JFrame configuration
 		setVisible(true);
 		setBounds(100, 100, 511, 440);
 		setResizable(false);
-		
+
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.UNRELATED_GAP_COLSPEC,
 				FormFactory.DEFAULT_COLSPEC,
@@ -77,7 +80,7 @@ public class MedHistoryGUI extends JFrame {
 				ColumnSpec.decode("16px"),
 				ColumnSpec.decode("88px"),
 				ColumnSpec.decode("46px"),},
-			new RowSpec[] {
+				new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -168,16 +171,16 @@ public class MedHistoryGUI extends JFrame {
 
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
 		getContentPane().add(NeuteringLbl, "6, 25, left, top");
-		
+
 		btnBirths = new JButton("Births");
 		btnBirths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					BirthGUI birthwindow = new BirthGUI(history);
-					birthwindow.setVisible(true);
+				BirthGUI birthwindow = new BirthGUI(history);
+				birthwindow.setVisible(true);
 			}
 		});
 		getContentPane().add(btnBirths, "10, 25");
-				
+
 		CancelBtn = new JButton();
 		CancelBtn.setText("Cancel");
 		getContentPane().add(CancelBtn, "8, 31, 2, 1");
@@ -186,40 +189,40 @@ public class MedHistoryGUI extends JFrame {
 				MedHistoryGUI.super.dispose();
 			}
 		});
-		
-		
+
+
 		NeuValLbl = new JLabel();
 		NeuValLbl.setText("No");
 		NeuValLbl.setEnabled(false);
 		getContentPane().add(NeuValLbl, "8, 25, center, default");
-		
+
 		EditBtn = new JButton();
 		EditBtn.setText("Edit Medical History");
 		getContentPane().add(EditBtn, "6, 31");
 		EditBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				//make textfields editable
 				VaccinesTxtFld.setEditable(true);
 				AllergiesTxtFld.setEditable(true);
 				DiseasesTxtFld.setEditable(true);
 				SurgTxtFld.setEditable(true);
 				MedTreatmentTxtFld.setEditable(true);
-				
+
 				//removing neutering label
 				NeuValLbl.setVisible(false);
-				
+
 				//change title
 				lblMedicalHistory.setText("Edit Medical History");
-				
+
 				//add the radio buttons
 				ButtonGroup BtnGroup = new ButtonGroup();
-				
+
 				JRadioButton NeutBtnYes = new JRadioButton("Yes");
 				getContentPane().add(NeutBtnYes, "8, 25, center, top");
 				BtnGroup.add(NeutBtnYes);
-				
+
 				JRadioButton NeutBtnNo = new JRadioButton("No");
 				NeutBtnNo.setSelected(true);
 				getContentPane().add(NeutBtnNo, "8, 26, center, top");
@@ -227,7 +230,7 @@ public class MedHistoryGUI extends JFrame {
 
 				//births button
 				btnBirths.setVisible(false);
-				
+
 				//modify the buttons
 				CancelBtn.setText("Cancel");
 				CancelBtn.addActionListener(new ActionListener() {
@@ -236,7 +239,7 @@ public class MedHistoryGUI extends JFrame {
 						new MedHistoryGUI(aPet);
 					}
 				});
-				
+
 				EditBtn.setText("Save");
 				EditBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
@@ -246,14 +249,14 @@ public class MedHistoryGUI extends JFrame {
 						new MedHistoryGUI(aPet);
 					}
 				});
-				
-				
 
-				
+
+
+
 			}
 		});
-		
-		
+
+
 		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
 		//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
 		//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
@@ -322,281 +325,317 @@ public class MedHistoryGUI extends JFrame {
 
 
 
+	//	//============================================================================================
+	//	//--------------------------------- EditMedHistoryGUI CLASS ----------------------------------
+	//	//============================================================================================
+	//
+	//		//metafer8ike ston listener tou medhistory
+	// 	public static class EditMedHistoryGUI extends JFrame { 
+	//
+	//		private String Grafts;
+	//		private String Alergies;
+	//		private String As8eneies;
+	//		private String Surgeries;
+	//		private String MedicalTreatment;
+	//		private BirthGUI births;
+	//		private JTextField VaccinesTxtFld;
+	//		private JTextField AllergiesTxtFld;
+	//		private JTextField DiseasesTxtFld;
+	//		private JTextField SurgTxtFld;
+	//		private final JRadioButton NeutBtnYes = new JRadioButton("Yes");
+	//		private JTextField MedTreatmentTxtFld;
+	//		private MedHistory newhistory;
+	//		private Boolean Female = MedHistoryGUI.isFemale();
+	//
+	//
+	//		public EditMedHistoryGUI() {
+	//			getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
+	//					FormFactory.UNRELATED_GAP_COLSPEC,
+	//					FormFactory.DEFAULT_COLSPEC,
+	//					FormFactory.UNRELATED_GAP_COLSPEC,
+	//					ColumnSpec.decode("65px"),
+	//					FormFactory.UNRELATED_GAP_COLSPEC,
+	//					ColumnSpec.decode("max(200px;default):grow"),
+	//					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+	//					ColumnSpec.decode("77px"),
+	//					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+	//					ColumnSpec.decode("86px"),
+	//					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+	//					ColumnSpec.decode("25px"),
+	//					FormFactory.UNRELATED_GAP_COLSPEC,
+	//					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+	//					ColumnSpec.decode("16px"),
+	//					ColumnSpec.decode("88px"),
+	//					ColumnSpec.decode("46px"),},
+	//					new RowSpec[] {
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					RowSpec.decode("20px"),
+	//					FormFactory.LINE_GAP_ROWSPEC,
+	//					RowSpec.decode("23px"),
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,
+	//					FormFactory.RELATED_GAP_ROWSPEC,
+	//					FormFactory.DEFAULT_ROWSPEC,}));
+	//
+	//			JLabel lblMedicalHistory = new JLabel("Edit Medical History");
+	//			getContentPane().add(lblMedicalHistory, "6, 2, 1, 2, center, default");
+	//
+	//			JLabel VaccineLbl = new JLabel("   Vaccinated:");
+	//			VaccineLbl.setVerticalAlignment(SwingConstants.TOP);
+	//			getContentPane().add(VaccineLbl, "6, 7, fill, center");
+	//
+	//			VaccinesTxtFld = new JTextField();
+	//			VaccineLbl.setLabelFor(VaccinesTxtFld);
+	//			getContentPane().add(VaccinesTxtFld, "6, 9, fill, fill");
+	//			VaccinesTxtFld.setColumns(10);
+	//			VaccinesTxtFld.setText(Grafts);
+	//
+	//			JLabel AllergiesLbl = new JLabel("   Allergies:");
+	//			AllergiesLbl.setLabelFor(AllergiesLbl);
+	//			getContentPane().add(AllergiesLbl, "6, 11, left, center");
+	//
+	//			AllergiesTxtFld = new JTextField();
+	//			getContentPane().add(AllergiesTxtFld, "6, 13, fill, fill");
+	//			AllergiesTxtFld.setColumns(10);
+	//			AllergiesTxtFld.setText(Alergies);
+	//
+	//			JLabel DiseasesLbl = new JLabel("   Diseases:");
+	//			getContentPane().add(DiseasesLbl, "6, 15, left, center");
+	//
+	//			DiseasesTxtFld = new JTextField();
+	//			DiseasesLbl.setLabelFor(DiseasesTxtFld);
+	//			getContentPane().add(DiseasesTxtFld, "6, 17, fill, fill");
+	//			DiseasesTxtFld.setColumns(10);
+	//			DiseasesTxtFld.setText(As8eneies);
+	//
+	//			JLabel SurgeriesLbl = new JLabel("   Surgeries:");
+	//			SurgeriesLbl.setLabelFor(SurgeriesLbl);
+	//			getContentPane().add(SurgeriesLbl, "6, 19, left, center");
+	//
+	//			SurgTxtFld = new JTextField();
+	//			getContentPane().add(SurgTxtFld, "6, 21, fill, fill");
+	//			SurgTxtFld.setColumns(10);
+	//			SurgTxtFld.setText(Surgeries);
+	//
+	//
+	//			JLabel MedTrLbl = new JLabel("   Medical Treatment:");
+	//			getContentPane().add(MedTrLbl, "6, 23, left, center");
+	//
+	//			MedTreatmentTxtFld = new JTextField();
+	//			MedTrLbl.setLabelFor(MedTreatmentTxtFld);
+	//			getContentPane().add(MedTreatmentTxtFld, "6, 25, fill, fill");
+	//			MedTreatmentTxtFld.setColumns(10);
+	//			MedTreatmentTxtFld.setText(MedicalTreatment);
+	//
+	//			JLabel NeuteringLbl = new JLabel("   Neutering:");
+	//			getContentPane().add(NeuteringLbl, "6, 27, left, default");
+	//
+	//			
+	//
+	//			
+	//			//getContentPane().add(btnNewButton, "8, 33, 2, 1");
+	//			//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
+	//			//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
+	//			//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
+	//
+	//		}
+
 	//============================================================================================
-	//--------------------------------- EditMedHistoryGUI CLASS ----------------------------------
+	//------------------------------------- BirthGUI CLASS ---------------------------------------
 	//============================================================================================
 
-		//metafer8ike ston listener tou medhistory
- 	public static class EditMedHistoryGUI extends JFrame { 
+	public class BirthGUI extends JFrame {
+		private JTable table;  // BirthTable
+		private JButton back_button ;
+		private JButton add_button;
+		private JButton save_button;
+		private BirthTableModel myModel = new BirthTableModel();;
+		public SimpleDateFormat ft = new SimpleDateFormat ("dd-MM-yyyy");
 
-		private String Grafts;
-		private String Alergies;
-		private String As8eneies;
-		private String Surgeries;
-		private String MedicalTreatment;
-		private BirthGUI births;
-		private JTextField VaccinesTxtFld;
-		private JTextField AllergiesTxtFld;
-		private JTextField DiseasesTxtFld;
-		private JTextField SurgTxtFld;
-		private final JRadioButton NeutBtnYes = new JRadioButton("Yes");
-		private JTextField MedTreatmentTxtFld;
-		private MedHistory newhistory;
-		private Boolean Female = MedHistoryGUI.isFemale();
+		private	 List<Birth> birthlist = new ArrayList<Birth>();
 
+		public BirthGUI(MedHistory history) {
 
-		public EditMedHistoryGUI() {
-			getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
-					FormFactory.UNRELATED_GAP_COLSPEC,
-					FormFactory.DEFAULT_COLSPEC,
-					FormFactory.UNRELATED_GAP_COLSPEC,
-					ColumnSpec.decode("65px"),
-					FormFactory.UNRELATED_GAP_COLSPEC,
-					ColumnSpec.decode("max(200px;default):grow"),
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					ColumnSpec.decode("77px"),
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					ColumnSpec.decode("86px"),
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					ColumnSpec.decode("25px"),
-					FormFactory.UNRELATED_GAP_COLSPEC,
-					FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-					ColumnSpec.decode("16px"),
-					ColumnSpec.decode("88px"),
-					ColumnSpec.decode("46px"),},
-					new RowSpec[] {
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					RowSpec.decode("20px"),
-					FormFactory.LINE_GAP_ROWSPEC,
-					RowSpec.decode("23px"),
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,
-					FormFactory.RELATED_GAP_ROWSPEC,
-					FormFactory.DEFAULT_ROWSPEC,}));
+			//passing & getting required objects
+			birthlist = VetApp.db.DBGetAllBirths(history);
 
-			JLabel lblMedicalHistory = new JLabel("Edit Medical History");
-			getContentPane().add(lblMedicalHistory, "6, 2, 1, 2, center, default");
+			//JMenuBar
+			setJMenuBar(bar.drawJMenuBar());
 
-			JLabel VaccineLbl = new JLabel("   Vaccinated:");
-			VaccineLbl.setVerticalAlignment(SwingConstants.TOP);
-			getContentPane().add(VaccineLbl, "6, 7, fill, center");
+			//JFrame Configuration
+			setBounds(100, 100, 295, 374);
 
-			VaccinesTxtFld = new JTextField();
-			VaccineLbl.setLabelFor(VaccinesTxtFld);
-			getContentPane().add(VaccinesTxtFld, "6, 9, fill, fill");
-			VaccinesTxtFld.setColumns(10);
-			VaccinesTxtFld.setText(Grafts);
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setAutoRequestFocus(false);
 
-			JLabel AllergiesLbl = new JLabel("   Allergies:");
-			AllergiesLbl.setLabelFor(AllergiesLbl);
-			getContentPane().add(AllergiesLbl, "6, 11, left, center");
+			JPanel  panel = new JPanel();
+			panel.setLayout(new BorderLayout());
 
-			AllergiesTxtFld = new JTextField();
-			getContentPane().add(AllergiesTxtFld, "6, 13, fill, fill");
-			AllergiesTxtFld.setColumns(10);
-			AllergiesTxtFld.setText(Alergies);
+			//-------------------- BIRTH TABLE --------------------
 
-			JLabel DiseasesLbl = new JLabel("   Diseases:");
-			getContentPane().add(DiseasesLbl, "6, 15, left, center");
+			table = new JTable();
+			table.setModel(myModel);
+			myModel.reloadBirthJTable();
+			table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-			DiseasesTxtFld = new JTextField();
-			DiseasesLbl.setLabelFor(DiseasesTxtFld);
-			getContentPane().add(DiseasesTxtFld, "6, 17, fill, fill");
-			DiseasesTxtFld.setColumns(10);
-			DiseasesTxtFld.setText(As8eneies);
+			table.getColumnModel().getColumn(0).setPreferredWidth(100);
+			table.getColumnModel().getColumn(1).setPreferredWidth(80);
+			table.getColumnModel().getColumn(2).setPreferredWidth(115);
+			table.setRowHeight(20);
 
-			JLabel SurgeriesLbl = new JLabel("   Surgeries:");
-			SurgeriesLbl.setLabelFor(SurgeriesLbl);
-			getContentPane().add(SurgeriesLbl, "6, 19, left, center");
+			JScrollPane scroller = new JScrollPane(table );
+			table.setBounds(49, 85, 295, 374);
 
-			SurgTxtFld = new JTextField();
-			getContentPane().add(SurgTxtFld, "6, 21, fill, fill");
-			SurgTxtFld.setColumns(10);
-			SurgTxtFld.setText(Surgeries);
+			panel.add(scroller,BorderLayout.CENTER);
 
+			JLabel label = new JLabel("Births Given");
+			//label.setFont(new Font("Tahoma", Font.BOLD, 11));
 
-			JLabel MedTrLbl = new JLabel("   Medical Treatment:");
-			getContentPane().add(MedTrLbl, "6, 23, left, center");
+			panel.add(label ,BorderLayout.NORTH);
+			back_button = new JButton("Back");
+			add_button = new JButton("Add");
+			save_button = new JButton("Save");
 
-			MedTreatmentTxtFld = new JTextField();
-			MedTrLbl.setLabelFor(MedTreatmentTxtFld);
-			getContentPane().add(MedTreatmentTxtFld, "6, 25, fill, fill");
-			MedTreatmentTxtFld.setColumns(10);
-			MedTreatmentTxtFld.setText(MedicalTreatment);
+			back_button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					dispose();
+				}
+			});
 
-			JLabel NeuteringLbl = new JLabel("   Neutering:");
-			getContentPane().add(NeuteringLbl, "6, 27, left, default");
+			add_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					myModel.addRow(new Object[]{"", "", ""});
+				}
+			});
 
-			
+			save_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
 
-			
-			//getContentPane().add(btnNewButton, "8, 33, 2, 1");
-			//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
-			//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
-			//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
+				}
+			});
 
-		}
+			JPanel panel_1 = new JPanel();  // Voithitiko panel
+			this.setContentPane(panel);
 
-		//============================================================================================
-		//------------------------------------- BirthGUI CLASS ---------------------------------------
-		//============================================================================================
+			panel_1.add(add_button);
+			panel_1.add(save_button);
+			panel_1.add(back_button);
 
-		public static class BirthGUI extends JFrame {
-			private JTable table;  // BirthTable
-			private JButton back_button ;
-			private BirthTableModel myModel;
+			panel.add(panel_1 , BorderLayout.SOUTH);
 
-			
-		    private	 List<Birth> birthlist = new ArrayList<Birth>();
-		
-			public BirthGUI(MedHistory history) {
-				birthlist = VetApp.db.DBGetAllBirths(history); // Klhsh ths database
-				myModel = new  BirthTableModel(birthlist);
-				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				setAutoRequestFocus(false);
+			this.setVisible(true);
+			this.setResizable(false);
 
-				JPanel  panel = new JPanel();
-				panel.setLayout(new BorderLayout());
-				table = new JTable();
-				table.setModel(myModel);
-				
-				table.getColumnModel().getColumn(0).setPreferredWidth(164);
-				table.getColumnModel().getColumn(1).setPreferredWidth(161);
-				table.setBounds(49, 85, 336, 201);
-				JScrollPane scroller = new JScrollPane(table );   // Xwris JScrollPane den emfanizontai ta headers
-				panel.add(scroller,BorderLayout.CENTER );
-				JLabel label = new JLabel("                                                  Births Given");
-				label.setFont(new Font("Tahoma", Font.BOLD, 11));
-				panel.add(label ,BorderLayout.NORTH);
-				back_button = new JButton("Back");
-				back_button.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						BirthGUI.super.dispose();
-					}
-				});
-				//panel.add(back_button, BorderLayout.SOUTH);
-				JPanel panel_1 =new JPanel();  // Voithitiko panel 
-				panel_1.add(back_button);
-				panel.add(panel_1 , BorderLayout.SOUTH);
-				this.setContentPane(panel );
-
-				this.setVisible(true);
-				this.pack();
-				
-				//MouseAdapter
-				table.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						if (e.getClickCount() == 2) {
-							int row = table.getSelectedRow();
-							
-							for(int i=0; i< birthlist.size(); i++){
-								if (birthlist.get(i).getDate()==table.getValueAt(row, 0) 
-										&& birthlist.get(i).getComplications()==table.getValueAt(row, 1)) {
-									
-								   table.isCellEditable(row, 0);
-								   table.isCellEditable(row, 1);     // Thelei diortwsh
-								}
-							
-						}
-							
-							
-						}
+			//MouseAdapter
+			table.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {					
+					if (e.getClickCount() == 2) {
+						System.out.println("double click detected!");
+						int row = table.getSelectedRow();
+						table.isCellEditable(row, 0);
+						table.isCellEditable(row, 1); 
+						table.isCellEditable(row, 2); 
+						
 					}
 				}
-					
-				);
-				
-				
-				table.addKeyListener(new KeyListener() {
-					public void keyReleased(KeyEvent e) {
+			}
+					);
 
-					    int key=e.getKeyCode();
-						if (key==KeyEvent.VK_ENTER) {
-						
-							
-							//System.out.println("Double click detected!");
-							//System.out.println("Customer on " + customerTbl.getSelectedRow() + " row selected!");
-							int row = table.getSelectedRow();
-							for(int i=0; i< birthlist.size(); i++){
-								if (birthlist.get(i).getDate()==table.getValueAt(row, 0) 
-										&& birthlist.get(i).getComplications()==table.getValueAt(row, 1)) {
-									Birth tempBirth =  birthlist.get(i);
-								    Calendar birthDate = (Calendar) table.getValueAt(row, 0);
-									birthlist.get(i).setDate(birthDate);
-									String birthComplications = (String) table.getValueAt(row, 1);
-									birthlist.get(i).setComplications(birthComplications);
-									VetApp.db.DBUpdateBirth(tempBirth, birthlist.get(i));  // Enhmerwsh ths database
+			table.addKeyListener(new KeyListener() {
+				public void keyReleased(KeyEvent e) {
+					int key=e.getKeyCode();
+					if (key==KeyEvent.VK_ENTER) {
+						System.out.println("Enter key pressed!");
+						System.out.println("Birth on " + table.getSelectedRow() + " row was selected!");
+						int row = table.getSelectedRow();
+						CellEditor cellEditor = table.getCellEditor();
+						if (cellEditor != null)
+							if (cellEditor.getCellEditorValue() != null)
+								cellEditor.stopCellEditing();
+							else
+								cellEditor.cancelCellEditing();
+						for(int i=0; i< birthlist.size(); i++){
+							if (birthlist.get(i).getDate()==table.getValueAt(row, 0) 
+									&& birthlist.get(i).getNumberOfChildren()==(Integer)table.getValueAt(row, 1)) {
+
+								Birth tempBirth =  birthlist.get(i);
+								Date birthDate = null;
+								try {
+									birthDate = ft.parse((String) table.getValueAt(row, 0));
+								} catch (ParseException e1) {
+									JOptionPane.showMessageDialog(null, "Error on date format.", "Date error", JOptionPane.ERROR_MESSAGE);
 								}
+								Calendar cal = new GregorianCalendar();
+								cal.setTime(birthDate);
+								birthlist.get(i).setDate(cal);
+								birthlist.get(i).setNumberOfChildren((Integer) table.getValueAt(row, 1));
+								birthlist.get(i).setComplications( (String) table.getValueAt(row, 2));
+								VetApp.db.DBUpdateBirth(tempBirth, birthlist.get(i));  // Enhmerwsh ths database
+								System.out.println("Birth Updated!");
+
 							}
 						}
 					}
+				}
 
-					@Override
-					public void keyPressed(KeyEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
+				@Override
+				public void keyPressed(KeyEvent arg0) {
+					// TODO Auto-generated method stub
 
-					@Override
-					public void keyTyped(KeyEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+				}
 
-			}
+				@Override
+				public void keyTyped(KeyEvent arg0) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
 		}
 	}
-	
+
 	public static class BirthTableModel extends DefaultTableModel {
 
-		private String[] columnNames = {"Date", "Complications/Comments"};		//column header labels
-		private Object[][] data = new Object[20][2];
+		private String[] columnNames = {"Date", "Children", "Complications/Comments"};		//column header labels
+		private Object[][] data = new Object[20][3];
 		private  List<Birth>  list;
-       
-		 
-		public BirthTableModel(List<Birth> list) {
-		
-			this.list = list;
-		}
 
 		public void reloadBirthJTable() {
-			//System.out.println("loading pet table #2: " + list.get(0).getName());
-			
-			
+			System.out.println("loading birth table..");
+			List<Birth> birthlist = new ArrayList<Birth>();
+			birthlist = VetApp.db.DBGetAllBirths(history);
 			clearJTable();
-			for(int i=0; i<list.size(); i++){
-				
-				data[i][0] = list.get(i).getDate() ;
-				data[i][1] = list.get(i).getComplications();
+			for(int i=0; i<birthlist.size(); i++){
+				data[i][0] = birthlist.get(i).getDate() ;
+				data[i][1] = birthlist.get(i).getNumberOfChildren();
+				data[i][2] = birthlist.get(i).getComplications();
 				this.addRow(data);
 			}
-			System.out.println("loading pet table..");
 		}
 
 		public void clearJTable() {
@@ -610,23 +649,20 @@ public class MedHistoryGUI extends JFrame {
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
-        
-		
+
 		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-		
+
 		public boolean isCellEditable(int row, int col ) {
-			
-			    return true;
-			
+			return true;
 		}
 	}
-	
-	
 
-	
+
+
+
 }
 
 
