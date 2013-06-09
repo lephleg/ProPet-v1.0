@@ -1,4 +1,4 @@
-package com.vetapp.pet;
+package raccooncoding.propet.pet;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -7,21 +7,24 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
+import raccooncoding.propet.customer.Customer;
+import raccooncoding.propet.customer.CustomerGUI;
+import raccooncoding.propet.history.MedHistoryGUI;
+import raccooncoding.propet.main.ProPetApp;
+import raccooncoding.propet.util.PropetJMenuBar;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
-import com.vetapp.customer.Customer;
-import com.vetapp.customer.CustomerGUI;
-import com.vetapp.history.MedHistoryGUI;
-import com.vetapp.main.VetApp;
-import com.vetapp.util.PropetJMenuBar;
 
 import java.awt.Image;
 import java.awt.event.ActionListener;
@@ -62,7 +65,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
 
 
 		//-------------------- PET INFO PANEL ------------------------
@@ -139,12 +142,12 @@ public class PetGUI extends JFrame implements ActionListener {
 		//-------------------- IMAGE  --------------------
 		ImageIcon icon = new ImageIcon();
 		if (aPet.getPhotoPath() == null) {
-			icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default  pet image");
+			icon = createImageIcon(raccooncoding.propet.main.ProPetApp.DEFAULT_PET_IMAGE_PATH,"default  pet image");
 		} else {
-			icon = createImageIcon(com.vetapp.main.VetApp.IMAGES_PATH + aPet.getPhotoPath(),"users pet image");
+			icon = createImageIcon(raccooncoding.propet.main.ProPetApp.IMAGES_PATH + aPet.getPhotoPath(),"users pet image");
 		}
 		icon = ResizeIcon(icon,125,125);
-		JLabel imagePetLabel = new JLabel("",icon,JLabel.CENTER);
+		JLabel imagePetLabel = new JLabel("",icon,SwingConstants.CENTER);
 		imagePetLabel.setBounds(250, 10, 140, 140);
 		contentPane.add(imagePetLabel);
 
@@ -160,7 +163,7 @@ public class PetGUI extends JFrame implements ActionListener {
 
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 	}
 
@@ -182,7 +185,7 @@ public class PetGUI extends JFrame implements ActionListener {
 							options,  //the titles of buttons
 							options[0]); //default button title
 			if (n == JOptionPane.YES_OPTION) {
-				VetApp.db.DBDeletePet(customer, aPet);
+				ProPetApp.db.DBDeletePet(customer, aPet);
 				this.dispose();
 			} 
 		} else if (e.getActionCommand().equals("Edit Pet")) {
@@ -235,7 +238,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Edit: " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Edit: " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
 
 
 			//-------------------- PET INFO PANEL ------------------------
@@ -357,7 +360,7 @@ public class PetGUI extends JFrame implements ActionListener {
 
 			this.setResizable(false);
 			this.setVisible(true);
-			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		}
 
 		
@@ -423,7 +426,7 @@ public class PetGUI extends JFrame implements ActionListener {
 						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
 						pet.setPhotoPath(aPet.getPhotoPath());					// Pass the PhotoPath to new object
 
-						VetApp.db.DBUpdatePet(customer, aPet, pet);				//update database
+						ProPetApp.db.DBUpdatePet(customer, aPet, pet);				//update database
 						System.out.println("RELOADING PET TABLE WITH NEW IMAGE");
 						CustomerGUI.petModel.reloadPetJTable(customer);			// Reload the PetTable
 						JOptionPane.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias

@@ -1,4 +1,4 @@
-package com.vetapp.history;
+package raccooncoding.propet.history;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.vetapp.main;
+package raccooncoding.propet.main;
 
-import com.vetapp.util.DB;
+import raccooncoding.propet.util.DB;
 
-public class VetApp {
+public class ProPetApp {
 
 	//hardcoded window titles & relative image paths
 	public static String MAIN_WINDOW_TITLE =" ProPet v1.00";

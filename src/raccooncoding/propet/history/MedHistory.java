@@ -1,4 +1,4 @@
-package com.vetapp.history;
+package raccooncoding.propet.history;
 
 public class MedHistory {
 

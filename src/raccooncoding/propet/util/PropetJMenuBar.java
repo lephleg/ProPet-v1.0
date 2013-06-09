@@ -1,4 +1,4 @@
-package com.vetapp.util;
+package raccooncoding.propet.util;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -20,8 +20,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 
-import com.vetapp.main.VetApp;
+import raccooncoding.propet.main.ProPetApp;
+
 
 public class PropetJMenuBar extends JMenu implements ActionListener {
 
@@ -108,8 +110,8 @@ public class PropetJMenuBar extends JMenu implements ActionListener {
 		public AboutGUI() {
 			
 			setResizable(true);
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
 
 			mainPnl = new JPanel();
 			paneLayout = new BoxLayout(mainPnl, BoxLayout.Y_AXIS);
@@ -120,10 +122,10 @@ public class PropetJMenuBar extends JMenu implements ActionListener {
 			getContentPane().add(Box.createRigidArea(new Dimension(15, 0)));
 
 			titleFont = new Font("Arial", Font.BOLD, 20);
-			titleLbl = new JLabel(VetApp.MAIN_WINDOW_TITLE);
+			titleLbl = new JLabel(ProPetApp.MAIN_WINDOW_TITLE);
 			titleLbl.setFont(titleFont);
 			
-			logo = createImageIcon(com.vetapp.main.VetApp.RACCOON_LOGO_ICON_PATH,"company logo image");
+			logo = createImageIcon(raccooncoding.propet.main.ProPetApp.RACCOON_LOGO_ICON_PATH,"company logo image");
 			logoLbl = new JLabel(logo);
 			
 			font = new Font("Arial", Font.PLAIN, 12);

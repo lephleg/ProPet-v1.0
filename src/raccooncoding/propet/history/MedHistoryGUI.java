@@ -1,16 +1,17 @@
-package com.vetapp.history;
+package raccooncoding.propet.history;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
+import raccooncoding.propet.main.ProPetApp;
+import raccooncoding.propet.pet.Pet;
+import raccooncoding.propet.util.PropetJMenuBar;
+
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import com.vetapp.main.VetApp;
-import com.vetapp.pet.Pet;
-import com.vetapp.util.PropetJMenuBar;
 
 public class MedHistoryGUI extends JFrame {
 
@@ -27,7 +28,7 @@ public class MedHistoryGUI extends JFrame {
 		pet = aPet;
 		//getting required history & passing it to private variable
 		petGender = pet.getGender();
-		history = VetApp.db.DBGetMedHistory(pet);
+		history = ProPetApp.db.DBGetMedHistory(pet);
 
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
@@ -36,7 +37,7 @@ public class MedHistoryGUI extends JFrame {
 		setVisible(true);
 		setBounds(100, 100, 511, 440);
 		setResizable(false);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - Medical History");	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Medical History");	//gets window title from constant in com.vetapp.main.VetApp
 
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.UNRELATED_GAP_COLSPEC,
@@ -151,6 +152,7 @@ public class MedHistoryGUI extends JFrame {
 		btnBirths = new JButton("Births");
 		btnBirths.setEnabled(false);
 		btnBirths.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				//BirthGUI birthwindow = new BirthGUI(history);
 				//birthwindow.setVisible(true);
@@ -162,6 +164,7 @@ public class MedHistoryGUI extends JFrame {
 		CancelBtn.setText("Cancel");
 		getContentPane().add(CancelBtn, "8, 31, 2, 1");
 		CancelBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				MedHistoryGUI.super.dispose();
 			}
@@ -211,6 +214,7 @@ public class MedHistoryGUI extends JFrame {
 				//modify the buttons
 				CancelBtn.setText("Cancel");
 				CancelBtn.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						MedHistoryGUI.super.dispose();
 						new MedHistoryGUI(pet);
@@ -219,9 +223,10 @@ public class MedHistoryGUI extends JFrame {
 
 				EditBtn.setText("Save");
 				EditBtn.addActionListener(new ActionListener(){
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						MedHistory newhistory = new MedHistory(AllergiesTxtFld.getText(),DiseasesTxtFld.getText(),VaccinesTxtFld.getText(),MedTreatmentTxtFld.getText(), SurgTxtFld.getText());
-						VetApp.db.DBUpdateMedHistory(history, newhistory);
+						ProPetApp.db.DBUpdateMedHistory(history, newhistory);
 						MedHistoryGUI.super.dispose();
 						new MedHistoryGUI(pet);
 					}

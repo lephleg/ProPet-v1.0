@@ -1,4 +1,4 @@
-package com.vetapp.customer;
+package raccooncoding.propet.customer;
 
 /*
  * CustomersGUI.java
@@ -32,6 +32,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
@@ -39,9 +40,10 @@ import javax.swing.table.DefaultTableModel;
 import org.jdesktop.xswingx.PromptSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
-import com.vetapp.main.ShopGUI;
-import com.vetapp.main.VetApp;
-import com.vetapp.util.PropetJMenuBar;
+import raccooncoding.propet.main.ShopGUI;
+import raccooncoding.propet.main.ProPetApp;
+import raccooncoding.propet.util.PropetJMenuBar;
+
 
 public class CustomersGUI extends JFrame implements ActionListener {
 
@@ -83,8 +85,8 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 		//Frame configuration
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - List of Customers");	//gets window title from constant in com.vetapp.main.VetApp
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - List of Customers");	//gets window title from constant in com.vetapp.main.VetApp
 
 		upperPnl = new JPanel();	
 		lowerPnl = new JPanel();	
@@ -178,11 +180,12 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 		//MouseAdapter
 		customerTbl.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int row = customerTbl.getSelectedRow();
 					Customer cust = new Customer();
-					cust=VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
+					cust=ProPetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
 					new CustomerGUI(cust);
 				}
 			}
@@ -213,7 +216,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			int row = customerTbl.getSelectedRow();
 			if (!(row==-1)) {
 				Customer cust = new Customer();
-				cust =VetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
+				cust =ProPetApp.db.DBGetCustomer(customerTbl.getValueAt(row, 0).toString(),customerTbl.getValueAt(row, 1).toString());
 				new CustomerGUI(cust);	
 			}else {
 				JOptionPane.showMessageDialog(null, 
@@ -246,7 +249,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		public void reloadJTable() {
 			clearJTable();
 			List<Customer> lista = new ArrayList<Customer>();
-			lista = VetApp.db.DBGetAllCustomers();
+			lista = ProPetApp.db.DBGetAllCustomers();
 			for(int i=0; i< lista.size(); i++){
 				data[i][0] = lista.get(i).getLastName();
 				data[i][1] = lista.get(i).getFirstName();
@@ -264,10 +267,12 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			model.setRowCount(0);
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -276,6 +281,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		public int getColumnCount() {
 			return columnNames.length;
 		}
+		@Override
 		public Class getColumnClass(int c) {
 			for(int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) { 
 				Object[] row = data[rowIndex];
@@ -285,6 +291,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			}
 			return String.class;
 		} 
+		@Override
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
@@ -331,8 +338,8 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 			//Frame configuration
 			setResizable(false);
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Create New Customer");	//gets window title from constant in com.vetapp.main.VetApp
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Create New Customer");	//gets window title from constant in com.vetapp.main.VetApp
 
 			//contentPane layout (horizontal BoxLayout)
 			mainPnl = new JPanel();
@@ -462,7 +469,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 					aCustomer = new Customer( fNameTxt.getText().trim(),lNameTxt.getText().trim(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
 					JOptionPane.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
-					aCustomer = VetApp.db.DBCreateCustomer(aCustomer);			// Eisagwgh tou pelath sth vasi
+					aCustomer = ProPetApp.db.DBCreateCustomer(aCustomer);			// Eisagwgh tou pelath sth vasi
 					model.reloadJTable();										// Epanafortwsi tis listas pelatwn tou CustomersGUI
 					this.dispose();												// Kleisimo frame
 				}

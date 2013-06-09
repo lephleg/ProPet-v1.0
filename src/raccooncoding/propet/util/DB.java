@@ -1,4 +1,4 @@
-package com.vetapp.util;
+package raccooncoding.propet.util;
 
 import java.sql.*;
 import java.text.ParseException;
@@ -7,11 +7,12 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import com.vetapp.customer.Customer;
-import com.vetapp.history.Birth;
-import com.vetapp.history.FemMedHistory;
-import com.vetapp.history.MedHistory;
-import com.vetapp.pet.Pet;
+import raccooncoding.propet.customer.Customer;
+import raccooncoding.propet.history.Birth;
+import raccooncoding.propet.history.FemMedHistory;
+import raccooncoding.propet.history.MedHistory;
+import raccooncoding.propet.pet.Pet;
+
 
 /**
  * This class demonstrates how to create a connection

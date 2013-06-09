@@ -1,4 +1,4 @@
-package com.vetapp.main;
+package raccooncoding.propet.main;
 
 /*
  * ShopGUI.java
@@ -17,9 +17,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-import com.vetapp.util.PropetJMenuBar;
-import com.vetapp.customer.CustomersGUI;
+import raccooncoding.propet.customer.CustomersGUI;
+import raccooncoding.propet.util.PropetJMenuBar;
+
 
 public class ShopGUI extends JFrame implements ActionListener {
 
@@ -40,8 +42,8 @@ public class ShopGUI extends JFrame implements ActionListener {
 
 		//Frame configuration
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle(com.vetapp.main.VetApp.MAIN_WINDOW_TITLE);	//gets window title from constant in com.vetapp.main.VetApp
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setTitle(raccooncoding.propet.main.ProPetApp.MAIN_WINDOW_TITLE);	//gets window title from constant in com.vetapp.main.VetApp
 		
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
@@ -56,7 +58,7 @@ public class ShopGUI extends JFrame implements ActionListener {
 		getContentPane().add(Box.createRigidArea(new Dimension(40, 0)));
 
 		//shopPnl layout (vertical BoxLayout)
-		logo = createImageIcon(com.vetapp.main.VetApp.LOGO_IMAGE_PATH, "ProPet logo");
+		logo = createImageIcon(raccooncoding.propet.main.ProPetApp.LOGO_IMAGE_PATH, "ProPet logo");
 		logoLbl = new JLabel(logo);
 		customersBtn = new JButton(CUSTOMERS_BUTTON_LABEL);
 		quitBtn = new JButton(QUIT_BUTTON_LABEL);

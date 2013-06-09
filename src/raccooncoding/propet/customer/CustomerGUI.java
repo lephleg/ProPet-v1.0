@@ -1,4 +1,4 @@
-package com.vetapp.customer;
+package raccooncoding.propet.customer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -14,6 +14,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -32,10 +33,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
-import com.vetapp.main.VetApp;
-import com.vetapp.pet.Pet;
-import com.vetapp.pet.PetGUI;
-import com.vetapp.util.PropetJMenuBar;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -49,6 +46,11 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import org.jdesktop.xswingx.PromptSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
+
+import raccooncoding.propet.main.ProPetApp;
+import raccooncoding.propet.pet.Pet;
+import raccooncoding.propet.pet.PetGUI;
+import raccooncoding.propet.util.PropetJMenuBar;
 
 import java.awt.GridLayout;
 
@@ -69,7 +71,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		//passing & getting required objects
 		customer = cus;
-		petList = VetApp.db.DBGetAllPets(customer);
+		petList = ProPetApp.db.DBGetAllPets(customer);
 		
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
@@ -80,7 +82,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - " + customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
 
 		//-------------------- CUSTOMER INFO PANEL ------------------------
 
@@ -173,6 +175,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		//MouseAdapter gia JTable
 		petTable.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int row = petTable.getSelectedRow();
@@ -188,7 +191,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	//----------------------------- CustomerGUI ACTION LISTENERS ------------------------------------------
@@ -212,8 +215,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 							options,  //the titles of buttons
 							options[0]); //default button title
 			if (n == JOptionPane.YES_OPTION) {
-				VetApp.db.DBDeleteCustomer(customer);
-				com.vetapp.customer.CustomersGUI.model.reloadJTable();
+				ProPetApp.db.DBDeleteCustomer(customer);
+				raccooncoding.propet.customer.CustomersGUI.model.reloadJTable();
 				this.dispose();
 			}
 		} else if (e.getActionCommand().equals("Edit Customer")) {
@@ -256,7 +259,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		public void reloadPetJTable(Customer cus) {
 			List<Pet> list = new ArrayList<Pet>();
-			list = VetApp.db.DBGetAllPets(cus);
+			list = ProPetApp.db.DBGetAllPets(cus);
 			clearJTable();
 			
 			for(int i=0; i<list.size(); i++){
@@ -266,15 +269,15 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				System.out.println("Photo Path: " + list.get(i).getPhotoPath());
 
 				if (list.get(i).getPhotoPath()==null || list.get(i).getPhotoPath()=="" || list.get(i).getPhotoPath().equals("null")) {
-					System.out.println("Mini Image Path NULL -> " + com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH);
-					icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
+					System.out.println("Mini Image Path NULL -> " + raccooncoding.propet.main.ProPetApp.DEFAULT_PET_IMAGE_PATH);
+					icon = createImageIcon(raccooncoding.propet.main.ProPetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
 					System.out.println("Default Image selected.");
 				} else {
-					System.out.println("Mini Image Path: " + com.vetapp.main.VetApp.IMAGES_PATH + list.get(i).getPhotoPath());
-					icon = createImageIcon(com.vetapp.main.VetApp.IMAGES_PATH + list.get(i).getPhotoPath(),"users mini pet image");
+					System.out.println("Mini Image Path: " + raccooncoding.propet.main.ProPetApp.IMAGES_PATH + list.get(i).getPhotoPath());
+					icon = createImageIcon(raccooncoding.propet.main.ProPetApp.IMAGES_PATH + list.get(i).getPhotoPath(),"users mini pet image");
 					System.out.println("User's Image selected.");
 					if( icon==null ) {
-						icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
+						icon = createImageIcon(raccooncoding.propet.main.ProPetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
 						System.out.println("File not found. Selected default icon.");
 
 					}
@@ -291,10 +294,12 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.setRowCount(0);
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -304,6 +309,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			return columnNames.length;
 		}
 
+		@Override
 		public Class getColumnClass(int c) {
 			for(int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) { 
 				Object[] row = data[rowIndex];
@@ -314,6 +320,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			return String.class;
 		} 
 
+		@Override
 		public boolean isCellEditable(int row, int col) {
 				return false;
 		}
@@ -351,7 +358,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Create New Pet");	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Create New Pet");	//gets window title from constant in com.vetapp.main.VetApp
 
 			JLabel createPetLabel = new JLabel("Create New Pet");
 			createPetLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -543,7 +550,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					if(year<1900 || year>2013 ||  month>12 || month <0 || day <= 0 || day >31 ) 
 					{
 						JOptionPane error = new JOptionPane();
-						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 
@@ -559,7 +566,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
 						cust.addPet(pet);
-						pet = VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
+						pet = ProPetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
 						petList.add(pet);
 						petModel.reloadPetJTable(cust);								// Reload the PetTable
 						JOptionPane.showMessageDialog(null,"Pet Added!");   		// Emfanish mhnymatos epityxias
@@ -595,7 +602,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Edit Customer Details: "+ customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Edit Customer Details: "+ customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
 
 			//-------------------- CUSTOMER INFO PANEL ------------------------
 
@@ -759,7 +766,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					newCustomer.setNumberOfVisits(customer.getNumberOfVisits());	// sto editCustomer
 					newCustomer.setCID(customer.getCID());
 			
-					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
+					ProPetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
 					CustomersGUI.model.reloadJTable();							//Epanafortwsi tou JTable sto CustomersGUI
 					JOptionPane.showMessageDialog(null,"Customer Edited!");   	// Emfanish mhnymatos epityxias					
 					dispose();													//kleisimo tou editCustomerGUI
@@ -797,12 +804,12 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		public NextVisitGUI() {
 			setResizable(false);
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			setBounds(100, 100, 404, 152);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Set New Appointment");	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(ProPetApp.MAIN_WINDOW_TITLE + " - Set New Appointment");	//gets window title from constant in com.vetapp.main.VetApp
 			contentPane.setLayout(null);
 
 			JLabel lblCreatrNewAppointment = new JLabel("Create New Appointment");
@@ -877,7 +884,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				if(txtYyyy.getText().equals("")||txtMm.getText().equals("")||txtDd.getText().equals("")||txtHh.getText().equals("")||txtMin.getText().equals(""))	
 				{
 					JOptionPane error = new JOptionPane();
-					error.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					Customer cus;
@@ -894,28 +901,28 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					if(year<2013 || year>2015 ||  month>12 || month <0 || day <=0|| day >31 || hour < 0 ||hour >24 ||  minutes <0 || minutes >59) 
 					{
 						JOptionPane error = new JOptionPane();
-						error.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Conflicting types", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					else 
 					{
 						month = month -1 ;
 						cl.set(year,month,day,hour,minutes);
 						customer.setNextVisit(cl);
-						VetApp.db.DBUpdateCustomer(cus, customer);
+						ProPetApp.db.DBUpdateCustomer(cus, customer);
 						nextVisit.setText(ft.format(customer.getNextVisit().getTime()));	//refreshes the value on CustomerGUI
 						CustomersGUI.model.reloadJTable();
 						JOptionPane information = new JOptionPane();
-						information.showMessageDialog(null,"Next Visit Set!");
+						JOptionPane.showMessageDialog(null,"Next Visit Set!");
 						dispose();
 					}
 				}
 			} else if (e.getActionCommand().equals("Cancel")) {
 				customer.setNextVisit(null);
-				VetApp.db.DBUpdateCustomer(customer, customer);
+				ProPetApp.db.DBUpdateCustomer(customer, customer);
 				nextVisit.setText("_ _ /_ _ /_ _ _ _ ,  _ _ : _ _");
-				com.vetapp.customer.CustomersGUI.model.reloadJTable();		// Epanafortwsi tis listas pelatwn
+				raccooncoding.propet.customer.CustomersGUI.model.reloadJTable();		// Epanafortwsi tis listas pelatwn
 				JOptionPane information = new JOptionPane();
-				information.showMessageDialog(null,"Appointment has been canceled!");
+				JOptionPane.showMessageDialog(null,"Appointment has been canceled!");
 				dispose();
 			}
 

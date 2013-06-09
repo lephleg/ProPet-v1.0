@@ -1,11 +1,12 @@
-package com.vetapp.customer;
+package raccooncoding.propet.customer;
  
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.vetapp.pet.Pet;
+import raccooncoding.propet.pet.Pet;
+
 
 //import com.vetapp.pet.Pet;
 

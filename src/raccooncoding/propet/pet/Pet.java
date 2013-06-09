@@ -1,9 +1,10 @@
-package com.vetapp.pet;
+package raccooncoding.propet.pet;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.vetapp.history.FemMedHistory;
+import raccooncoding.propet.history.FemMedHistory;
+
 
 public class Pet {
 
