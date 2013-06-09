@@ -10,11 +10,6 @@ package com.vetapp.main;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,7 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.vetapp.util.PropetJMenuBar;
-import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomersGUI;
 
 public class ShopGUI extends JFrame implements ActionListener {
@@ -93,18 +87,6 @@ public class ShopGUI extends JFrame implements ActionListener {
 		shopPnl.setVisible(true);
 	}
 
-	/*
-	 * A method to retrieve the logo icon
-	 * */
-	public ImageIcon setIcon(String link) {
-		try {
-			URL url = new URL(link);
-			return (new ImageIcon(url));
-		} catch (MalformedURLException e) {
-			return null;
-		}
-	}
-	
 	/** Returns an ImageIcon, or null if the path was invalid. */
 	protected ImageIcon createImageIcon(String path,
 	                                           String description) {
@@ -117,7 +99,6 @@ public class ShopGUI extends JFrame implements ActionListener {
 	    }
 	}
 	
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(CUSTOMERS_BUTTON_LABEL)) {

@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -21,8 +20,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +32,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
-import com.vetapp.customer.CustomersGUI.*;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
@@ -46,15 +42,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Image;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-
 import org.jdesktop.xswingx.PromptSupport;
 import org.jdesktop.xswingx.PromptSupport.FocusBehavior;
 
@@ -62,7 +54,6 @@ import java.awt.GridLayout;
 
 
 public class CustomerGUI extends JFrame implements ActionListener {
-	//Simeiosi: xrisimopoio tin default grammatoseira, i opoia stin ektelesi fainetai ligo megaluteri ap' oti i8ela. 
 
 	private JPanel contentPane;
 	private JTable petTable;
@@ -89,7 +80,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
 
 		//-------------------- CUSTOMER INFO PANEL ------------------------
 
@@ -150,12 +141,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		contentPane.add(editCustomerButton);
 
 		//-------------------- PET TABLE --------------------
-
-		//String[] columnNames = {"Photo","Name"};
-		//Object[][] petData = { {"<pic0>", "Rex"}, {"<pic1>", "Epameinwndas"} };	 //Ta dedomena ton pet lamvanontai apo alli klasi kata tin dimiourgia tou frame
-
+		
 		petTable = new JTable(petModel);
-
 		petModel.reloadPetJTable(customer);
 		petTable.setAutoCreateRowSorter(true);									//enable row sorters						
 
@@ -202,11 +189,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 	}
 
 	//----------------------------- CustomerGUI ACTION LISTENERS ------------------------------------------
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -240,15 +225,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.dispose();
 		}
 	}
-
-//	private static ImageIcon setIcon(String link) {
-//		try {
-//			URL url = new URL(link);
-//			return (new ImageIcon(url));
-//		} catch (MalformedURLException e) {
-//			return null;
-//		}
-//	}
 	
 	private static ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = CustomerGUI.class.getResource(path);
@@ -279,7 +255,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		private Object[][] data = new Object[100][2];
 
 		public void reloadPetJTable(Customer cus) {
-			//System.out.println("loading pet table #2: " + list.get(0).getName());
 			List<Pet> list = new ArrayList<Pet>();
 			list = VetApp.db.DBGetAllPets(cus);
 			clearJTable();
@@ -344,7 +319,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			return String.class;
 		} 
 
-
 		/*
 		 * Don't need to implement this method unless your table's
 		 * editable.
@@ -352,11 +326,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public boolean isCellEditable(int row, int col) {
 			//Note that the data/cell address is constant,
 			//no matter where the cell appears onscreen.
-			if (col < 2) {
 				return false;
-			} else {
-				return true;
-			}
 		}
 	}
 
@@ -366,8 +336,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	//--------------------------------- createPetGUI CLASS ---------------------------------------
 	//============================================================================================
 
-
-	//Odhgia pros synaderfous : Dhmiourghsa to parakatw frame me font times new Roman 14
 	public class createPetGUI extends JFrame implements ActionListener {
 
 		private JPanel contentPane;
@@ -396,8 +364,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
-
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Create New Pet");	//gets window title from constant in com.vetapp.main.VetApp
 
 			JLabel createPetLabel = new JLabel("Create New Pet");
 			createPetLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -453,8 +420,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					FormFactory.DEFAULT_ROWSPEC,
 					FormFactory.RELATED_GAP_ROWSPEC,
 					FormFactory.DEFAULT_ROWSPEC,}));
-
-
 
 			JLabel lblSpecies = new JLabel("Species*:");
 			petInfoPane.add(lblSpecies, "2, 2");
@@ -617,11 +582,9 @@ public class CustomerGUI extends JFrame implements ActionListener {
 				}                          
 			} else if (e.getActionCommand().equals("Cancel")) {
 				this.dispose();
-
 			}
 		}
 	}
-
 
 	//============================================================================================
 	//------------------------------ editCustomerGUI CLASS ---------------------------------------
@@ -645,8 +608,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
-
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Edit Customer Details: "+ customer.getLastName() + " " + customer.getFirstName());	//gets window title from constant in com.vetapp.main.VetApp
 
 			//-------------------- CUSTOMER INFO PANEL ------------------------
 
@@ -719,7 +681,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			customerInfo_panel.add(mobilePhoneTxt, "4, 10, 7, 1, fill, default");
 			mobilePhoneTxt.setColumns(10);
 
-
 			//-------------------- VISITS PANEL ------------------------
 
 			JPanel visits_panel = new JPanel();				
@@ -740,7 +701,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 			visits_panel.setLayout(null);
 			visits_panel.add(nextVisit);
-
 
 			JButton createcancelAppointmentButton = new JButton("Create/Cancel Appointment");	//Create/Cancel app. button (8elei auction listener)
 			createcancelAppointmentButton.setEnabled(false);
@@ -789,7 +749,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		}
 
-
 		//----------------------------- editCustomerGUI ACTION LISTENERS ------------------------------------------
 
 		@Override
@@ -813,10 +772,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					newCustomer.setNumberOfVisits(customer.getNumberOfVisits());	// sto editCustomer
 					newCustomer.setCID(customer.getCID());
 			
-//					newCustomer.print();
-//					System.out.println("------");
-//					customer.print();
-
 					VetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
 					CustomersGUI.model.reloadJTable();							//Epanafortwsi tou JTable sto CustomersGUI
 					JOptionPane.showMessageDialog(null,"Customer Edited!");   	// Emfanish mhnymatos epityxias					
@@ -830,7 +785,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
 				}
-				//end of edit
 			} else if (e.getActionCommand().equals("Cancel")) {
 				new CustomerGUI(customer);
 				this.dispose();
@@ -861,9 +815,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Set New Appointment");	//gets window title from constant in com.vetapp.main.VetApp
 			contentPane.setLayout(null);
-
 
 			JLabel lblCreatrNewAppointment = new JLabel("Create New Appointment");
 			lblCreatrNewAppointment.setHorizontalAlignment(SwingConstants.CENTER);
@@ -907,19 +860,14 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			datePanel.add(txtMin);
 			txtMin.setColumns(10);
 			contentPane.add(lblCreatrNewAppointment);
-			//txtDd.setText("DD");
 			PromptSupport.setPrompt("dd", txtDd); 		//prompt text - using xswingx library
 			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtDd);
-			//txtMm.setText("MM");
 			PromptSupport.setPrompt("mm", txtMm);
 			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
-			//txtYyyy.setText("YYYY");
 			PromptSupport.setPrompt("yyyy", txtYyyy);
 			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtYyyy);
-			//txtHh.setText("HH");
 			PromptSupport.setPrompt("hh", txtHh);
 			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
-			//txtHh_1.setText("MM");
 			PromptSupport.setPrompt("mm", txtMin);
 			PromptSupport.setFocusBehavior(FocusBehavior.SHOW_PROMPT, txtMm);
 			btnSet.setBounds(98, 90, 89, 23);
@@ -938,7 +886,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getActionCommand().equals("Set")) {
 				if(txtYyyy.getText().equals("")||txtMm.getText().equals("")||txtDd.getText().equals("")||txtHh.getText().equals("")||txtMin.getText().equals(""))	
 				{
@@ -954,7 +901,6 @@ public class CustomerGUI extends JFrame implements ActionListener {
 					int day = Integer.parseInt(txtDd.getText());
 					int hour = Integer.parseInt(txtHh.getText());
 					int minutes = Integer.parseInt(txtMin.getText());
-					// Yparxei ena bug pou emfanizei ton epomeno mhna apo auton pou kataxwrei o xrhsths
 
 					Calendar cl = Calendar.getInstance();
 

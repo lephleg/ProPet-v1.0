@@ -43,10 +43,6 @@ import com.vetapp.main.ShopGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.util.PropetJMenuBar;
 
-//import com.vetapp.customer.CreateCustomerGUI.cancelButtonListener;
-//import com.vetapp.customer.CreateCustomerGUI.createButtonListener;
-//import com.vetapp.shop.ShopGUI;
-
 public class CustomersGUI extends JFrame implements ActionListener {
 
 	//JButton labels strings declared as constants
@@ -56,7 +52,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 	private JTextField searchTxt;
 	private JButton newBtn;
-	private JButton selectBtn;	//***temporary solution***
+	private JButton selectBtn;
 	private JButton backBtn;
 	private JTable customerTbl;
 
@@ -81,14 +77,14 @@ public class CustomersGUI extends JFrame implements ActionListener {
 	public static SimpleDateFormat displayDateFormat = new SimpleDateFormat ("EEE dd-MM-yyyy 'at' hh:mm");
 
 	public CustomersGUI() {
-		
+
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
 
 		//Frame configuration
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - List of Customers");	//gets window title from constant in com.vetapp.main.VetApp
 
 		upperPnl = new JPanel();	
 		lowerPnl = new JPanel();	
@@ -174,8 +170,6 @@ public class CustomersGUI extends JFrame implements ActionListener {
 		lowerPnl.add(buttonPnl);
 		lowerPnl.add(Box.createRigidArea(new Dimension(0, 10)));
 
-		//backBtn.setAlignmentX(Component.CENTER_ALIGNMENT);	//set "Back" JButton alignment to CENTER
-
 		//ActionListeners
 		newBtn.addActionListener(this);
 		selectBtn.addActionListener(this);
@@ -226,7 +220,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 						"Please select a customer first", "No customer selected", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			
+
 		} else if (e.getSource()==searchTxt) {
 			String value = searchTxt.getText();
 			for (int row = 0; row <= customerTbl.getRowCount() - 1; row++) {
@@ -292,13 +286,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			return String.class;
 		} 
 		public boolean isCellEditable(int row, int col) {
-			//Note that the data/cell address is constant,
-			//no matter where the cell appears onscreen.
-			if (col < 2) {
-				return false;
-			} else {
-				return true;
-			}
+			return false;
 		}
 	}
 
@@ -344,7 +332,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 			//Frame configuration
 			setResizable(false);
 			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + this.getClass().getName());	//gets window title from constant in com.vetapp.main.VetApp
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Create New Customer");	//gets window title from constant in com.vetapp.main.VetApp
 
 			//contentPane layout (horizontal BoxLayout)
 			mainPnl = new JPanel();
@@ -466,18 +454,15 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-
 			//fixed this
 			if (e.getActionCommand().equals(CREATE_BUTTON_LABEL)) {
 				if  ((fNameTxt.getText().trim()!=null)&&(!fNameTxt.getText().trim().isEmpty())&&(lNameTxt.getText().trim()!=null)&&(!lNameTxt.getText().trim().isEmpty())) {
 					//elegxos ean to First Name h Last Name einai adeia h exoun mono kena
 					//h methodos trim() afairei leading kai trailing kena apo ta strings
+
 					aCustomer = new Customer( fNameTxt.getText().trim(),lNameTxt.getText().trim(),addrTxt.getText(),hPhoneTxt.getText(),mPhoneTxt.getText());  //Dhmiourgia pelath
-					//flag = false;
 					JOptionPane.showMessageDialog(null,"Customer Added!");   	// Emfanish mhnymatos epityxias
 					aCustomer = VetApp.db.DBCreateCustomer(aCustomer);			// Eisagwgh tou pelath sth vasi
-					//CustomersGUI.this.setCustomer(aCustomer);     			// Eisagwgh tou pelath sth lista pelatwn ths klasshs customersGUI
 					model.reloadJTable();										// Epanafortwsi tis listas pelatwn tou CustomersGUI
 					this.dispose();												// Kleisimo frame
 				}
@@ -488,8 +473,6 @@ public class CustomersGUI extends JFrame implements ActionListener {
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
 				}
-				//end of fix								// Kleisimo frame
-
 			} else if (e.getActionCommand().equals(CANCEL_BUTTON_LABEL)) {
 				this.dispose();
 			}

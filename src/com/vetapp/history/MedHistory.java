@@ -28,7 +28,6 @@ public class MedHistory {
 		this.medicalTreatment="";
 		this.surgeries="";
 		this.mid = 0;
-		
 	}
 
 	//Getters 

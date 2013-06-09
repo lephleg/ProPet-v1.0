@@ -1,38 +1,15 @@
 package com.vetapp.history;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-//exo pros8esei kai forma gia na kineitai o xristis me tab kai oxi mono me click, gia na mpei xreiazetai import to 
-//parakato package kai uncomment to line 130
-
-//import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import com.vetapp.customer.Customer;
-import com.vetapp.customer.CustomerGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
-import com.vetapp.pet.PetGUI;
 import com.vetapp.util.PropetJMenuBar;
 
 public class MedHistoryGUI extends JFrame {
@@ -44,11 +21,8 @@ public class MedHistoryGUI extends JFrame {
 	private JLabel NeuValLbl;
 	private JButton EditBtn;
 	private JButton CancelBtn;
-	private MedHistory newhistory;
 
 	public MedHistoryGUI(final Pet aPet) {
-
-		//history = new FemMedHistory();
 
 		//getting required history & passing it to private variable
 		petGender = aPet.getGender();
@@ -61,6 +35,7 @@ public class MedHistoryGUI extends JFrame {
 		setVisible(true);
 		setBounds(100, 100, 511, 440);
 		setResizable(false);
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - Medical History");	//gets window title from constant in com.vetapp.main.VetApp
 
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.UNRELATED_GAP_COLSPEC,
@@ -256,11 +231,6 @@ public class MedHistoryGUI extends JFrame {
 
 			}
 		});
-
-
-		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
-		//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
-		//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
 
 	}
 	private String Grafts;
