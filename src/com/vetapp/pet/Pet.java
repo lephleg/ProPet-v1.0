@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.vetapp.history.FemMedHistory;
-import com.vetapp.history.MedHistory;
 
 public class Pet {
 
@@ -33,7 +32,6 @@ public class Pet {
 		this.specialChars = specialChars;
 		this.chipNumber = chipNumber;
 		this.setPhotoPath(null);
-		//this.history = history;    // Pisteuw pws to medical history den prepei na vrisketai sto constructor
 		
 	}
 	
@@ -144,16 +142,5 @@ public class Pet {
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
 	}
-
-	//Other Methods
-	
-	public void editPet() { //Edits any properties of class Pet.
-		//to be written
-	}
-
-
-
-
-
 
 }

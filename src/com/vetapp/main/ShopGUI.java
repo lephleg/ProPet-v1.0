@@ -23,17 +23,17 @@ import com.vetapp.customer.CustomersGUI;
 
 public class ShopGUI extends JFrame implements ActionListener {
 
-	//Icon URL/directory link & JButton label strings declared as constants
+	//JButton label strings declared as constants
 	private static String CUSTOMERS_BUTTON_LABEL = "Customers";
 	private static String QUIT_BUTTON_LABEL = "Exit";
 
-	private JPanel shopPnl;	//containing logoLlb, customerBtn & quitBtn
+	private JPanel shopPnl;			//containing logoLlb, customerBtn & quitBtn
 	private BoxLayout paneLayout;	//contentPane layout
 	private BoxLayout shopLayout;	//shopPnl layout
 	private JLabel logoLbl;
 	private JButton customersBtn;
 	private JButton quitBtn;
-	private ImageIcon logo;	//ImageIcon object for logoLbl image
+	private ImageIcon logo;			//ImageIcon object for logoLbl image
 	private PropetJMenuBar bar = new PropetJMenuBar();
 
 	public ShopGUI() {
@@ -71,9 +71,9 @@ public class ShopGUI extends JFrame implements ActionListener {
 		shopPnl.add(quitBtn);
 		shopPnl.add(Box.createRigidArea(new Dimension(0, 15)));
 
-		logoLbl.setAlignmentX(CENTER_ALIGNMENT);	//set logo JLabel alignment to CENTER
+		logoLbl.setAlignmentX(CENTER_ALIGNMENT);		//set logo JLabel alignment to CENTER
 		customersBtn.setAlignmentX(CENTER_ALIGNMENT);	//set customers JButton alignment to CENTER
-		quitBtn.setAlignmentX(CENTER_ALIGNMENT);	//set exit JButton alignment to CENTER
+		quitBtn.setAlignmentX(CENTER_ALIGNMENT);		//set exit JButton alignment to CENTER
 
 		//ActionListener
 		customersBtn.addActionListener(this);

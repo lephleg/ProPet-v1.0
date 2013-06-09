@@ -10,45 +10,37 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
-import com.vetapp.customer.CustomerGUI.createPetGUI;
-import com.vetapp.history.MedHistory;
 import com.vetapp.history.MedHistoryGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.util.PropetJMenuBar;
-
-import javax.swing.JButton;
 
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 public class PetGUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private Customer customer = new Customer();
 	private Pet aPet = new Pet();
-	public static String MAIN_WINDOW_TITLE =" ProPet v0.5";
 	public SimpleDateFormat sdf1 = new SimpleDateFormat ("yyyy-MM-dd hh:mm"); 	//edited this//
 	public SimpleDateFormat sdf2 = new SimpleDateFormat ("yyyy-MM-dd"); 		//edited this//
 	public SimpleDateFormat display = new SimpleDateFormat ("dd-MM-yyyy"); 		
@@ -70,6 +62,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setTitle(VetApp.MAIN_WINDOW_TITLE + " - " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
 
 
 		//-------------------- PET INFO PANEL ------------------------
@@ -202,18 +195,6 @@ public class PetGUI extends JFrame implements ActionListener {
 		}
 
 	}
-	
-//	/*
-//	 * A method to retrieve the logo icon
-//	 * */
-//	public ImageIcon setIcon(String link) {
-//		try {
-//			URL url = new URL(link);
-//			return (new ImageIcon(url));
-//		} catch (MalformedURLException e) {
-//			return null;
-//		}
-//	}
 
 	protected static ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = CustomerGUI.class.getResource(path);
@@ -254,6 +235,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 			setContentPane(contentPane);
 			contentPane.setLayout(null);
+			setTitle(VetApp.MAIN_WINDOW_TITLE + " - Edit: " + aPet.getName() + " (" + aPet.getSpecies() + ")");	//gets window title from constant in com.vetapp.main.VetApp
 
 
 			//-------------------- PET INFO PANEL ------------------------

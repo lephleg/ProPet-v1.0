@@ -303,12 +303,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		public int getColumnCount() {
 			return columnNames.length;
 		}
-		/*
-		 * JTable uses this method to determine the default renderer/
-		 * editor for each cell.  If we didn't implement this method,
-		 * then the last column would contain text ("true"/"false"),
-		 * rather than a check box.
-		 */
+
 		public Class getColumnClass(int c) {
 			for(int rowIndex = 0; rowIndex < getRowCount(); rowIndex++) { 
 				Object[] row = data[rowIndex];
@@ -319,19 +314,11 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			return String.class;
 		} 
 
-		/*
-		 * Don't need to implement this method unless your table's
-		 * editable.
-		 */ 
 		public boolean isCellEditable(int row, int col) {
-			//Note that the data/cell address is constant,
-			//no matter where the cell appears onscreen.
 				return false;
 		}
 	}
 
-	
-	
 	//============================================================================================
 	//--------------------------------- createPetGUI CLASS ---------------------------------------
 	//============================================================================================
@@ -575,8 +562,8 @@ public class CustomerGUI extends JFrame implements ActionListener {
 						pet = VetApp.db.DBCreatePet(cust, pet);						// Eisagwgh tou pet sth vasi
 						petList.add(pet);
 						petModel.reloadPetJTable(cust);								// Reload the PetTable
-						JOptionPane.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
-						createPetGUI.this.dispose();     // Kleisimo tou frame
+						JOptionPane.showMessageDialog(null,"Pet Added!");   		// Emfanish mhnymatos epityxias
+						createPetGUI.this.dispose();     							// Kleisimo tou frame
 					}
 
 				}                          

@@ -33,7 +33,7 @@ public class DB
 	//============================== GENERAL DB CONNECTIVITY =============================
 
 	public Connection DBConnect() {
-		//STEP 1: Setup the Driver
+		//Setup the Driver
 		try
 		{
 			//Load the JDBC driver class dynamically.
@@ -47,7 +47,7 @@ public class DB
 			return null;
 		}
 
-		//STEP 2: Create connection to database using database URL
+		//Create connection to database using database URL
 		Connection con;
 		try
 		{
@@ -180,14 +180,10 @@ public class DB
 				cus.setMobileNumber(res.getString("mobile_phone"));
 				cus.setNumberOfVisits(res.getInt("num_of_visits"));
 				String temp = res.getString("next_visit");
-				//System.out.println("received: " + temp);
 				if (temp==null) {
-					//System.out.println("next_visit was not set");
 					cus.setNextVisit(null);
 				} else {
-					//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-					//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
-					Calendar tempCal = new GregorianCalendar();
+				Calendar tempCal = new GregorianCalendar();
 					tempCal.setTime(dbDateFormat.parse(res.getString("next_visit")));
 					cus.setNextVisit(tempCal);
 				}
@@ -280,8 +276,8 @@ public class DB
 		Connection con = DBConnect();
 
 
-		//		//SQL Statement
-		//		//Delete Pets related to this customer
+		//SQL Statement
+		//Delete Pets related to this customer
 		Statement stmt0 = null;
 		try
 		{ String sql2 = "DELETE FROM Pet " +
@@ -357,68 +353,13 @@ public class DB
 					tempCus.setMobileNumber(res.getString("mobile_phone"));
 					tempCus.setNumberOfVisits(res.getInt("num_of_visits"));
 					String temp = res.getString("next_visit");
-					//System.out.println("received: " + temp);
 					if (temp==null) {
-						//System.out.println("next_visit was not set");
 						tempCus.setNextVisit(null);
 					} else {
-						//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-						//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
 						Calendar tempCal = new GregorianCalendar();
 						tempCal.setTime(dbDateFormat.parse(res.getString("next_visit")));
 						tempCus.setNextVisit(tempCal);
 					}
-					//					//SQL statement for getting Customers Pets by matching cid
-					//					Statement stmt0 = null;
-					//					ResultSet res0 = null;
-					//					try
-					//					{
-					//						String sql0 = "SELECT * FROM Pet " +
-					//								"WHERE cid='" + res.getInt("cid") + "';";
-					//						stmt0 = con.createStatement();
-					//						res0 = stmt0.executeQuery(sql0);
-					//					}
-					//					catch(SQLException e)
-					//					{
-					//						System.out.println("Error creating or running PET LIST statement: " + e.toString());
-					//					}
-					//
-					//					//Analyzing result and parsing the records to ArrayList
-					//					List<Pet> petList = new ArrayList<Pet>();  
-					//					petList.clear();  	
-					//					try
-					//					{
-					//						if (!res0.next()) {
-					//							System.out.println("No pets found");
-					//						} else {
-					//							do {
-					//								Pet tempPet = new Pet();
-					//								tempPet.setSpecies(res0.getString("species"));
-					//								tempPet.setName(res0.getString("pet_name"));
-					//								tempPet.setGender(res0.getString("gender"));
-					//								String tmp = res0.getString("birthday");
-					//								if (tmp==null) {
-					//									//System.out.println("next_visit was not set");
-					//									tempPet.setBirthDay(null);
-					//								} else {
-					//									//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-					//									//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
-					//									Calendar tmpCal = new GregorianCalendar();
-					//									tmpCal.setTime(dbPetDateFormat.parse(tmp));
-					//									tempPet.setBirthDay(tmpCal);
-					//								}
-					//								tempPet.setFurColour(res0.getString("fur_colour"));
-					//								tempPet.setSpecialChars(res0.getString("special_chars"));
-					//								tempPet.setChipNumber(res0.getString("chip_number"));
-					//								tempPet.setPhotoPath(res0.getString("photo_path"));
-					//								tempCus.addPet(tempPet);
-					//							} while (res0.next());
-					//						}
-					//					}
-					//					catch(SQLException e)
-					//					{
-					//						System.out.println("Error analyzing PET LIST statement: " + e.toString());
-					//					}
 					fullList.add(tempCus);
 				} while (res.next());
 			}
@@ -517,11 +458,8 @@ public class DB
 					tempPet.setGender(res.getString("gender"));
 					String tmp = res.getString("birthday");
 					if (tmp==null) {
-						//System.out.println("next_visit was not set");
 						tempPet.setBirthDay(null);
 					} else {
-						//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-						//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
 						Calendar tmpCal = new GregorianCalendar();
 						tmpCal.setTime(dbPetDateFormat.parse(tmp));
 						tempPet.setBirthDay(tmpCal);
@@ -1065,11 +1003,8 @@ public class DB
 					tempBirth.setNumberOfChildren(res.getInt("children"));
 					String tmp = res.getString("date");
 					if (tmp==null) {
-						//System.out.println("next_visit was not set");
 						tempBirth.setDate(null);
 					} else {
-						//System.out.println("Date object retrieved: " + res.getString("next_visit"));
-						//System.out.println("Date object retrieved: " + ft.format(ft.parse(res.getString("next_visit"))).toString());
 						Calendar tmpCal = new GregorianCalendar();
 						tmpCal.setTime(dbPetDateFormat.parse(tmp));
 						tempBirth.setDate(tmpCal);

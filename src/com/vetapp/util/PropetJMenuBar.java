@@ -7,9 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -25,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import com.vetapp.main.VetApp;
-import com.vetapp.pet.Pet;
 
 public class PropetJMenuBar extends JMenu implements ActionListener {
 
@@ -175,18 +171,6 @@ public class PropetJMenuBar extends JMenu implements ActionListener {
 			getContentPane().setVisible(true);
 			mainPnl.setVisible(true);
 		}
-		
-//		/*
-//		 * A method to retrieve the logo icon
-//		 * */
-//		public ImageIcon setIcon(String link) {
-//			try {
-//				URL url = new URL(link);
-//				return (new ImageIcon(url));
-//			} catch (MalformedURLException e) {
-//				return null;
-//			}
-//		}
 		
 		/** Returns an ImageIcon, or null if the path was invalid. */
 		protected ImageIcon createImageIcon(String path,
