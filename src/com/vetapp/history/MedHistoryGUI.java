@@ -36,19 +36,28 @@ import com.vetapp.util.PropetJMenuBar;
 public class MedHistoryGUI extends JFrame {
 	
 	private static MedHistory history;
+	private static String petGender;
 	private PropetJMenuBar bar = new PropetJMenuBar();
+	private JLabel lblMedicalHistory;
+	private JLabel NeuValLbl;
+	private JButton btnBirths;
+	private JButton EditBtn;
+	private JButton CancelBtn;
+	private MedHistory newhistory;
 
-	public MedHistoryGUI(Pet aPet) {
+	public MedHistoryGUI(final Pet aPet) {
 
 		//getting required history & passing it to private variable
+		petGender = aPet.getGender();
 		history = VetApp.db.DBGetMedHistory(aPet);
+		System.out.print(history);
 		
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
 		
 		//JFrame configuration
 		setVisible(true);
-		setBounds(100, 100, 450, 410);
+		setBounds(100, 100, 511, 440);
 		setResizable(false);
 		
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
@@ -95,12 +104,15 @@ public class MedHistoryGUI extends JFrame {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("max(7dlu;default)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 
-		JLabel lblMedicalHistory = new JLabel("Medical History");
+		lblMedicalHistory = new JLabel();
+		lblMedicalHistory.setText("Medical History");
 		getContentPane().add(lblMedicalHistory, "6, 2, center, default");
 
 		JLabel VaccineLbl = new JLabel("   Vaccinated:");
@@ -112,7 +124,7 @@ public class MedHistoryGUI extends JFrame {
 		VaccineLbl.setLabelFor(VaccinesTxtFld);
 		getContentPane().add(VaccinesTxtFld, "6, 7, fill, fill");
 		VaccinesTxtFld.setColumns(10);
-		VaccinesTxtFld.setText(Grafts);
+		VaccinesTxtFld.setText(history.getGrafts());
 
 		JLabel AllergiesLbl = new JLabel("   Allergies:");
 		AllergiesLbl.setLabelFor(AllergiesLbl);
@@ -122,7 +134,7 @@ public class MedHistoryGUI extends JFrame {
 		AllergiesTxtFld.setEditable(false);
 		getContentPane().add(AllergiesTxtFld, "6, 11, fill, fill");
 		AllergiesTxtFld.setColumns(10);
-		AllergiesTxtFld.setText(Alergies);
+		AllergiesTxtFld.setText(history.getAllergies());
 
 		JLabel DiseasesLbl = new JLabel("   Diseases:");
 		getContentPane().add(DiseasesLbl, "6, 13, left, center");
@@ -132,7 +144,7 @@ public class MedHistoryGUI extends JFrame {
 		DiseasesLbl.setLabelFor(DiseasesTxtFld);
 		getContentPane().add(DiseasesTxtFld, "6, 15, fill, fill");
 		DiseasesTxtFld.setColumns(10);
-		DiseasesTxtFld.setText(As8eneies);
+		DiseasesTxtFld.setText(history.getDiseases());
 
 		JLabel SurgeriesLbl = new JLabel("   Surgeries:");
 		SurgeriesLbl.setLabelFor(SurgeriesLbl);
@@ -142,7 +154,7 @@ public class MedHistoryGUI extends JFrame {
 		SurgTxtFld.setEditable(false);
 		getContentPane().add(SurgTxtFld, "6, 19, fill, fill");
 		SurgTxtFld.setColumns(10);
-		SurgTxtFld.setText(Surgeries);
+		SurgTxtFld.setText(history.getSurgeries());
 
 
 		JLabel MedTrLbl = new JLabel("   Medical Treatment:");
@@ -153,33 +165,98 @@ public class MedHistoryGUI extends JFrame {
 		MedTrLbl.setLabelFor(MedTreatmentTxtFld);
 		getContentPane().add(MedTreatmentTxtFld, "6, 23, fill, fill");
 		MedTreatmentTxtFld.setColumns(10);
-		MedTreatmentTxtFld.setText(MedicalTreatment);
+		MedTreatmentTxtFld.setText(history.getMedicalTreatment());
 
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
 		getContentPane().add(NeuteringLbl, "6, 25, left, top");
 
 		ButtonGroup BtnGroup = new ButtonGroup();
-
-		JLabel NeuValLbl = new JLabel("No");//metavliti apo db anti gia no
-		getContentPane().add(NeuValLbl, "8, 25, center, default");
-
-		JButton EditBtn = new JButton("Edit Medical History");
-		EditBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new EditMedHistoryGUI();
-				
-			}
-		});
-		getContentPane().add(EditBtn, "6, 29");
-
-		JButton CancelBtn = new JButton("Cancel");
+		
+		CancelBtn = new JButton();
+		CancelBtn.setText("Cancel");
+		getContentPane().add(CancelBtn, "8, 31, 2, 1");
 		CancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MedHistoryGUI.super.dispose();
 			}
 		});
-		getContentPane().add(CancelBtn, "8, 29, 2, 1");
+		
+		NeuValLbl = new JLabel();
+		NeuValLbl.setText("No");
+		NeuValLbl.setEnabled(false);
+		getContentPane().add(NeuValLbl, "8, 25, center, default");
+		
+		EditBtn = new JButton();
+		EditBtn.setText("Edit Medical History");
+		getContentPane().add(EditBtn, "6, 31");
+		EditBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				//make textfields editable
+				VaccinesTxtFld.setEditable(true);
+				AllergiesTxtFld.setEditable(true);
+				DiseasesTxtFld.setEditable(true);
+				SurgTxtFld.setEditable(true);
+				MedTreatmentTxtFld.setEditable(true);
+				
+				//removing neutering label
+				NeuValLbl.setVisible(false);
+				
+				//change title
+				lblMedicalHistory.setText("Edit Medical History");
+				
+				//add the radio buttons
+				ButtonGroup BtnGroup = new ButtonGroup();
+				
+				JRadioButton NeutBtnYes = new JRadioButton("Yes");
+				getContentPane().add(NeutBtnYes, "8, 25, center, top");
+				BtnGroup.add(NeutBtnYes);
+				
+				JRadioButton NeutBtnNo = new JRadioButton("No");
+				NeutBtnNo.setSelected(true);
+				getContentPane().add(NeutBtnNo, "8, 26, center, top");
+				BtnGroup.add(NeutBtnNo);
+
+				//births button
+				btnBirths.setEnabled(false);
+				getContentPane().add(btnBirths, "10, 25");
+				
+				//modify the buttons
+				CancelBtn.setText("Cancel");
+				CancelBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						MedHistoryGUI.super.dispose();
+						new MedHistoryGUI(aPet);
+					}
+				});
+				
+				EditBtn.setText("Save");
+				EditBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0) {
+						MedHistory newhistory = new MedHistory(AllergiesTxtFld.getText(),DiseasesTxtFld.getText(),VaccinesTxtFld.getText(),MedTreatmentTxtFld.getText(), SurgTxtFld.getText());
+						//void DBUpdateMedHistory(history, newhistory);
+						MedHistoryGUI.super.dispose();
+						new MedHistoryGUI(aPet);
+					}
+				});
+				
+				
+
+				
+			}
+		});
+		
+		btnBirths = new JButton("Births");
+		btnBirths.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//BirthGUI birthwindow = new MedHistoryGUI.BirthGUI(history);
+				//birthwindow.setVisible(true);
+				
+			}
+		});
+		
 		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
 		//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
 		//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
@@ -196,7 +273,8 @@ public class MedHistoryGUI extends JFrame {
 	private JTextField DiseasesTxtFld;
 	private JTextField SurgTxtFld;
 	private JTextField MedTreatmentTxtFld;
-	private boolean Female;
+	private static Boolean Female = false;
+	private JButton btnNewButton;
 
 	public String getGrafts() {
 		return Grafts;
@@ -233,18 +311,15 @@ public class MedHistoryGUI extends JFrame {
 		MedicalTreatment = medicalTreatment;
 	}
 
-	public void editMeHistory() {
-		//to be written
-	}
-
 	public void CheckGender(){
-		//if(metavliti apo pet){
-		Female=true;
+		if(petGender.equals("Female")){
+			Female = true;
+		}
 		//}
 	}
 
-	public boolean isFemale() {
-		return Female;
+	public static boolean isFemale() {
+		return Female.booleanValue();
 	}
 
 
@@ -253,7 +328,8 @@ public class MedHistoryGUI extends JFrame {
 	//--------------------------------- EditMedHistoryGUI CLASS ----------------------------------
 	//============================================================================================
 
-	public class EditMedHistoryGUI extends JFrame { 
+		//metafer8ike ston listener tou medhistory
+ 	public static class EditMedHistoryGUI extends JFrame { 
 
 		private String Grafts;
 		private String Alergies;
@@ -267,6 +343,9 @@ public class MedHistoryGUI extends JFrame {
 		private JTextField SurgTxtFld;
 		private final JRadioButton NeutBtnYes = new JRadioButton("Yes");
 		private JTextField MedTreatmentTxtFld;
+		private MedHistory newhistory;
+		private Boolean Female = MedHistoryGUI.isFemale();
+
 
 		public EditMedHistoryGUI() {
 			getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
@@ -375,43 +454,10 @@ public class MedHistoryGUI extends JFrame {
 			JLabel NeuteringLbl = new JLabel("   Neutering:");
 			getContentPane().add(NeuteringLbl, "6, 27, left, default");
 
-			ButtonGroup BtnGroup = new ButtonGroup();
-			getContentPane().add(NeutBtnYes, "8, 27, center, top");
-			BtnGroup.add(NeutBtnYes);
+			
 
-			JButton BirthsBtn = new JButton("Births");
-			BirthsBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					new BirthGUI();
-				}
-			});
-			if(Female ){
-				BirthsBtn.setEnabled(true);
-			} else {
-				BirthsBtn.setEnabled(false);
-			}
-			getContentPane().add(BirthsBtn, "6, 29");
-
-			JRadioButton NeutBtnNo = new JRadioButton("No");
-			NeutBtnNo.setSelected(true);
-			getContentPane().add(NeutBtnNo, "8, 29, center, top");
-			BtnGroup.add(NeutBtnNo);
-
-			JButton btnSaveChanges = new JButton("Save Changes");
-			btnSaveChanges.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					//Saves the changes in the DB
-				}
-			});
-			getContentPane().add(btnSaveChanges, "6, 33");
-
-			JButton btnNewButton = new JButton("Cancel");
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					EditMedHistoryGUI.super.dispose();
-				}
-			});
-			getContentPane().add(btnNewButton, "8, 33, 2, 1");
+			
+			//getContentPane().add(btnNewButton, "8, 33, 2, 1");
 			//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
 			//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
 			//btnNewButton, VaccineLbl, MedTrLbl, AllergiesLbl, DiseasesLbl, SurgeriesLbl, NeuteringLbl}));
@@ -422,7 +468,7 @@ public class MedHistoryGUI extends JFrame {
 		//------------------------------------- BirthGUI CLASS ---------------------------------------
 		//============================================================================================
 
-		public class BirthGUI extends JFrame {
+		public static class BirthGUI extends JFrame {
 			private JTable table;  // BirthTable
 			private JButton back_button ;
 			private BirthTableModel myModel;
