@@ -642,6 +642,12 @@ public class MedHistoryGUI extends JFrame {
 			this.setRowCount(0);
 		}
 
+		@Override
+		public void addRow(Object[] arg0) {
+			// TODO Auto-generated method stub
+			super.addRow(arg0);
+		}
+
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
@@ -655,8 +661,11 @@ public class MedHistoryGUI extends JFrame {
 			return columnNames.length;
 		}
 
-		public boolean isCellEditable(int row, int col ) {
+		@Override
+		public boolean isCellEditable(int row, int col) {
+		
 			return true;
+		
 		}
 	}
 
