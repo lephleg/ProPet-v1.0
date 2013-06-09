@@ -45,10 +45,11 @@ public class MedHistoryGUI extends JFrame {
 
 	public MedHistoryGUI(final Pet aPet) {
 
+		//history = new FemMedHistory();
+
 		//getting required history & passing it to private variable
 		petGender = aPet.getGender();
 		history = VetApp.db.DBGetMedHistory(aPet);
-		System.out.print(history);
 		
 		//JMenuBar
 		setJMenuBar(bar.drawJMenuBar());
@@ -240,7 +241,7 @@ public class MedHistoryGUI extends JFrame {
 				EditBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 						MedHistory newhistory = new MedHistory(AllergiesTxtFld.getText(),DiseasesTxtFld.getText(),VaccinesTxtFld.getText(),MedTreatmentTxtFld.getText(), SurgTxtFld.getText());
-						//void DBUpdateMedHistory(history, newhistory);
+						VetApp.db.DBUpdateMedHistory(history, newhistory);
 						MedHistoryGUI.super.dispose();
 						new MedHistoryGUI(aPet);
 					}

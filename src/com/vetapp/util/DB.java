@@ -822,10 +822,12 @@ public class DB
 
 		//Analyzing result and parsing the records to ArrayList
 		MedHistory history = new FemMedHistory();
+		boolean flag = false;
 		try
 		{
 			if (!res.next()) {
 				System.out.println("No Medical History found");
+				flag = true;
 			} else {
 				history.setAllergies(res.getString("allergies"));
 				history.setGrafts(res.getString("grafts"));
@@ -840,6 +842,22 @@ public class DB
 		{
 			System.out.println("Error processing results: " + e.toString());
 		}
+
+		if (flag==true) {
+			//Close statement & connection
+			try {
+				stmt.close();
+				con.close();
+				System.out.println("Connection closed succesfully!");
+			}
+			catch (Exception e1) {
+				System.out.println("Error closing connection: " + e1.toString());
+			}
+			
+			history = DBCreateMedHistory(pet, (FemMedHistory) history);
+			return history;
+		}
+
 		//Close statement & connection
 		try {
 			stmt.close();

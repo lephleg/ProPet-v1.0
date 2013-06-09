@@ -35,7 +35,7 @@ public class VetApp {
 //		List<Birth> list = new ArrayList<Birth>();
 //		Birth birth2 = new Birth(new GregorianCalendar(1821,4,25,00,00,00),"epanastasi", 8000);
 //		list.add(new Birth(new GregorianCalendar(2011,4,10),"kaisariki",4));
-//		FemMedHistory female = new FemMedHistory("allergia3","astheneia3","emvolia3","farmekeutiki agwgi3", "xeirourgeia3", list);
+//		FemMedHistory female = new FemMedHistory();
 	
 //		cus0 = db.DBGetCustomer("Papadopoulos","Kwstas");
 //		System.out.println(cus0.getCID());
@@ -50,13 +50,13 @@ public class VetApp {
 //		db.DBUpdatePet(cus1, pet1, pet0);
 		
 //		list = db.DBGetAllPets(cus0);
-//		cus0 = db.DBCreateCustomer(cus1);
+//		cus0 = db.DBCreateCustomer(cus0);
 //		System.out.println(cus0.getCID());
 //		db.DBDeleteCustomer(cus0);
 //		db.DBUpdateCustomer(cus0, cus1);
-//		db.DBCreatePet(cus1, pet0);
+//		db.DBCreatePet(cus0, pet0);
 //		pet1.setPID(48);
-//		db.DBCreateMedHistory(pet1, history0);
+//		db.DBCreateMedHistory(pet0, female);
 //		history0.setMID(16);
 //		db.DBUpdateMedHistory(history0, history1);
 //		db.DBDeletePet(cus1,pet0);
