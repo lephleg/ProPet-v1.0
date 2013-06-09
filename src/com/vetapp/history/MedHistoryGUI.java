@@ -8,8 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -28,6 +26,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
+import com.vetapp.history.MedHistoryGUI.EditMedHistoryGUI.BirthGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.pet.Pet;
 import com.vetapp.pet.PetGUI;
@@ -40,7 +39,6 @@ public class MedHistoryGUI extends JFrame {
 	private PropetJMenuBar bar = new PropetJMenuBar();
 	private JLabel lblMedicalHistory;
 	private JLabel NeuValLbl;
-	private JButton btnBirths;
 	private JButton EditBtn;
 	private JButton CancelBtn;
 	private MedHistory newhistory;
@@ -169,9 +167,16 @@ public class MedHistoryGUI extends JFrame {
 
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
 		getContentPane().add(NeuteringLbl, "6, 25, left, top");
-
-		ButtonGroup BtnGroup = new ButtonGroup();
 		
+		btnBirths = new JButton("Births");
+		btnBirths.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					BirthGUI birthwindow = new BirthGUI(history);
+					birthwindow.setVisible(true);
+			}
+		});
+		getContentPane().add(btnBirths, "10, 25");
+				
 		CancelBtn = new JButton();
 		CancelBtn.setText("Cancel");
 		getContentPane().add(CancelBtn, "8, 31, 2, 1");
@@ -180,6 +185,7 @@ public class MedHistoryGUI extends JFrame {
 				MedHistoryGUI.super.dispose();
 			}
 		});
+		
 		
 		NeuValLbl = new JLabel();
 		NeuValLbl.setText("No");
@@ -219,8 +225,7 @@ public class MedHistoryGUI extends JFrame {
 				BtnGroup.add(NeutBtnNo);
 
 				//births button
-				btnBirths.setEnabled(false);
-				getContentPane().add(btnBirths, "10, 25");
+				btnBirths.setVisible(false);
 				
 				//modify the buttons
 				CancelBtn.setText("Cancel");
@@ -247,15 +252,6 @@ public class MedHistoryGUI extends JFrame {
 			}
 		});
 		
-		btnBirths = new JButton("Births");
-		btnBirths.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//BirthGUI birthwindow = new MedHistoryGUI.BirthGUI(history);
-				//birthwindow.setVisible(true);
-				
-			}
-		});
 		
 		//getContentPane().setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{VaccinesTxtFld, 
 		//AllergiesTxtFld, DiseasesTxtFld, SurgTxtFld, MedTreatmentTxtFld, NeutBtnNo, NeutBtnYes, btnSaveChanges, 
@@ -275,6 +271,7 @@ public class MedHistoryGUI extends JFrame {
 	private JTextField MedTreatmentTxtFld;
 	private static Boolean Female = false;
 	private JButton btnNewButton;
+	private JButton btnBirths;
 
 	public String getGrafts() {
 		return Grafts;
@@ -476,7 +473,7 @@ public class MedHistoryGUI extends JFrame {
 			
 		    private	 List<Birth> birthlist = new ArrayList<Birth>();
 		
-			public BirthGUI() {
+			public BirthGUI(MedHistory history) {
 				birthlist = VetApp.db.DBGetAllBirths(history); // Klhsh ths database
 				myModel = new  BirthTableModel(birthlist);
 				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -495,7 +492,12 @@ public class MedHistoryGUI extends JFrame {
 				JLabel label = new JLabel("                                                  Births Given");
 				label.setFont(new Font("Tahoma", Font.BOLD, 11));
 				panel.add(label ,BorderLayout.NORTH);
-				back_button = new JButton("Back");   
+				back_button = new JButton("Back");
+				back_button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0) {
+						BirthGUI.super.dispose();
+					}
+				});
 				//panel.add(back_button, BorderLayout.SOUTH);
 				JPanel panel_1 =new JPanel();  // Voithitiko panel 
 				panel_1.add(back_button);
