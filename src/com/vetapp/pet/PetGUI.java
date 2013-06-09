@@ -2,6 +2,7 @@ package com.vetapp.pet;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,17 +18,29 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 import com.vetapp.customer.Customer;
 import com.vetapp.customer.CustomerGUI;
+import com.vetapp.customer.CustomerGUI.createPetGUI;
 import com.vetapp.history.MedHistory;
 import com.vetapp.history.MedHistoryGUI;
 import com.vetapp.main.VetApp;
 import com.vetapp.util.PropetJMenuBar;
 
 import javax.swing.JButton;
+
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class PetGUI extends JFrame implements ActionListener {
@@ -131,8 +144,13 @@ public class PetGUI extends JFrame implements ActionListener {
 		contentPane.add(editPetButton);
 
 		//-------------------- IMAGE  --------------------
-
-		ImageIcon icon = setIcon("http://i.imgur.com/XPNpZSa.png");
+		ImageIcon icon = new ImageIcon();
+		if (aPet.getPhotoPath() == null) {
+			icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default  pet image");
+		} else {
+			icon = createImageIcon(com.vetapp.main.VetApp.IMAGES_PATH + aPet.getPhotoPath(),"users pet image");
+		}
+		icon = ResizeIcon(icon,125,125);
 		JLabel imagePetLabel = new JLabel("",icon,JLabel.CENTER);
 		imagePetLabel.setBounds(250, 10, 140, 140);
 		contentPane.add(imagePetLabel);
@@ -185,17 +203,17 @@ public class PetGUI extends JFrame implements ActionListener {
 
 	}
 	
-	/*
-	 * A method to retrieve the logo icon
-	 * */
-	public ImageIcon setIcon(String link) {
-		try {
-			URL url = new URL(link);
-			return (new ImageIcon(url));
-		} catch (MalformedURLException e) {
-			return null;
-		}
-	}
+//	/*
+//	 * A method to retrieve the logo icon
+//	 * */
+//	public ImageIcon setIcon(String link) {
+//		try {
+//			URL url = new URL(link);
+//			return (new ImageIcon(url));
+//		} catch (MalformedURLException e) {
+//			return null;
+//		}
+//	}
 
 	protected static ImageIcon createImageIcon(String path, String description) {
 		java.net.URL imgURL = CustomerGUI.class.getResource(path);
@@ -206,6 +224,12 @@ public class PetGUI extends JFrame implements ActionListener {
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
+	}
+	
+	private static ImageIcon ResizeIcon(ImageIcon icon, int width, int height) {
+		Image img = icon.getImage();
+		Image newimg = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);  
+		return icon = new ImageIcon(newimg); 
 	}
 	
 	//============================================================================================
@@ -327,7 +351,7 @@ public class PetGUI extends JFrame implements ActionListener {
 			electicchipLabel.setBounds(18, 25, 74, 27);
 			electicchip_panel.add(electicchipLabel);
 
-			JTextField electicchipTxt = new JTextField();
+			electicchipTxt = new JTextField();
 			electicchipTxt.setText(aPet.getChipNumber());
 			electicchipTxt.setBounds(101, 25, 198, 26);
 			electicchip_panel.add(electicchipTxt);
@@ -361,9 +385,71 @@ public class PetGUI extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Upload image")) {
 				//TODO
-
+				final JFileChooser fc = new JFileChooser();
+				fc.showOpenDialog(this);
+				File file = fc.getSelectedFile();
+				String source = file.getAbsolutePath();
+				
+				//Get current path
+				String current=null;
+				try {
+					current = (new File(".").getCanonicalPath());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				String destination = current + "/images/pet" + aPet.getPID() +".png";	//set destination filename using PID
+				try {
+					Files.copy(Paths.get(source), Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);	// copy file to ProPet directory renaming it
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+				aPet.setPhotoPath("pet" + aPet.getPID() + ".png");	//save filename to Pet object
 			} else if (e.getActionCommand().equals("Save Changes")) {
-				//TODO
+				
+				String species = speciesTxt.getText();
+				String name = nameTxt.getText();
+				String birthDay =  birthDayTxt.getText();
+				String gender = genderTxt.getText();
+				String furColour = furColorTxt.getText();
+				String special = specialCharsTxt.getText();
+				String chip =  electicchipTxt.getText();
+
+				// Kwdikas gia apaloifh twn kenwn
+				species.trim();
+				name.trim();
+				gender.trim();
+				birthDay.trim();
+				furColour.trim();
+				special.trim();
+				chip.trim();
+
+				if(species.equals("")||name.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, "Please fill the required fields", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else 
+				{
+					
+					Calendar cal = new GregorianCalendar();
+						try {
+							cal.setTime(display.parse(birthDay));
+						} catch (ParseException e1) {
+							System.out.println("Error parsing pet birth date: " + e1.getMessage());
+						}
+
+						Pet pet = new Pet(species,name,gender,cal,furColour,special,chip);
+						pet.setPhotoPath(aPet.getPhotoPath());					// Pass the PhotoPath to new object
+
+						VetApp.db.DBUpdatePet(customer, aPet, pet);				//update database
+						System.out.println("RELOADING PET TABLE WITH NEW IMAGE");
+						CustomerGUI.petModel.reloadPetJTable(customer);			// Reload the PetTable
+						JOptionPane.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+						dispose();     											// Kleisimo tou frame
+						pet.setPID(aPet.getPID());								// Pass the PID to new object
+						new PetGUI(customer, pet);
+					}
+				
 
 			} else if (e.getActionCommand().equals("Cancel")) {
 				new PetGUI(customer,aPet);

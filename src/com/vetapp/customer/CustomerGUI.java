@@ -46,7 +46,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
@@ -65,7 +69,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 	private Customer customer = new Customer();
 	private List<Pet> petList = new ArrayList<Pet>();		
 	private JFormattedTextField nextVisit; 						//to be available in NextVisit & refresh on changes
-	public MyPetTableModel petModel = new MyPetTableModel();
+	public static MyPetTableModel petModel = new MyPetTableModel();
 	public SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd hh:mm");
 	private PropetJMenuBar bar = new PropetJMenuBar();
 
@@ -237,14 +241,36 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		}
 	}
 
-	public static ImageIcon setIcon(String link) {
-		try {
-			URL url = new URL(link);
-			return (new ImageIcon(url));
-		} catch (MalformedURLException e) {
+//	private static ImageIcon setIcon(String link) {
+//		try {
+//			URL url = new URL(link);
+//			return (new ImageIcon(url));
+//		} catch (MalformedURLException e) {
+//			return null;
+//		}
+//	}
+	
+	private static ImageIcon createImageIcon(String path, String description) {
+		java.net.URL imgURL = CustomerGUI.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL, description);
+		} 
+		else {
+			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 	}
+	
+	private static ImageIcon ResizeIcon(ImageIcon icon, int width, int height) {
+		System.out.println("RESIZING START");
+		Image img = icon.getImage();
+		System.out.println("RESIZING MIDDLE");
+		Image newimg = img.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);  
+		System.out.println("RESIZING END");
+
+		return icon = new ImageIcon(newimg); 
+	}
+	
 	//-------------------- PET JTABLE MODEL ------------------------
 
 	public static class MyPetTableModel extends DefaultTableModel {
@@ -259,18 +285,31 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			clearJTable();
 			
 			for(int i=0; i<list.size(); i++){
-//				if (list.get(i).getPhotoPath() == null) {
-//					data[i][0] = "NO_PHOTO";
-//				} else {
-//					data[i][0] = list.get(i).getPhotoPath();
-//				}
+				System.out.println("Pet: " + i);
+
 				ImageIcon icon = new ImageIcon();
-				icon = setIcon("http://i.imgur.com/idQ66rH.png");
+				System.out.println("Photo Path: " + list.get(i).getPhotoPath());
+
+				if (list.get(i).getPhotoPath()==null || list.get(i).getPhotoPath()=="" || list.get(i).getPhotoPath().equals("null")) {
+					System.out.println("Mini Image Path NULL -> " + com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH);
+					icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
+					System.out.println("Default Image selected.");
+				} else {
+					System.out.println("Mini Image Path: " + com.vetapp.main.VetApp.IMAGES_PATH + list.get(i).getPhotoPath());
+					icon = createImageIcon(com.vetapp.main.VetApp.IMAGES_PATH + list.get(i).getPhotoPath(),"users mini pet image");
+					System.out.println("User's Image selected.");
+					if( icon==null ) {
+						icon = createImageIcon(com.vetapp.main.VetApp.DEFAULT_PET_IMAGE_PATH,"default pet image");
+						System.out.println("File not found. Selected default icon.");
+
+					}
+				}
+				ImageIcon newImg = icon;
+				icon = ResizeIcon(newImg,60,60);
 				data[i][0] = icon;
 				data[i][1] = list.get(i).getName();
 				this.addRow(data);
 			}
-			System.out.println("loading pet table..");
 		}
 
 		public void clearJTable() {
@@ -726,9 +765,10 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			sorter.setSortKeys(sortlist);
 			sorter.sort();
 
-			petTable.getColumnModel().getColumn(0).setPreferredWidth(100);	//set Photo column preferred width
-			petTable.getColumnModel().getColumn(1).setPreferredWidth(80);	//set Pet name column preferred width
-
+			petTable.getColumnModel().getColumn(0).setPreferredWidth(60);	//set Photo column preferred width
+			petTable.getColumnModel().getColumn(1).setPreferredWidth(120);	//set Pet name column preferred width
+			petTable.setRowHeight(60);
+			
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(294, 10, 145, 170);
 			contentPane.add(scrollPane);
@@ -746,7 +786,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 
 			this.setResizable(false);
 			this.setVisible(true);
-			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		}
 
 

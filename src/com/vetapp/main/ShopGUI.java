@@ -62,7 +62,7 @@ public class ShopGUI extends JFrame implements ActionListener {
 		getContentPane().add(Box.createRigidArea(new Dimension(40, 0)));
 
 		//shopPnl layout (vertical BoxLayout)
-		logo = setIcon(com.vetapp.main.VetApp.LOGO_ICON_URL);
+		logo = createImageIcon(com.vetapp.main.VetApp.LOGO_IMAGE_PATH, "ProPet logo");
 		logoLbl = new JLabel(logo);
 		customersBtn = new JButton(CUSTOMERS_BUTTON_LABEL);
 		quitBtn = new JButton(QUIT_BUTTON_LABEL);
@@ -80,7 +80,6 @@ public class ShopGUI extends JFrame implements ActionListener {
 		logoLbl.setAlignmentX(CENTER_ALIGNMENT);	//set logo JLabel alignment to CENTER
 		customersBtn.setAlignmentX(CENTER_ALIGNMENT);	//set customers JButton alignment to CENTER
 		quitBtn.setAlignmentX(CENTER_ALIGNMENT);	//set exit JButton alignment to CENTER
-
 
 		//ActionListener
 		customersBtn.addActionListener(this);
@@ -105,6 +104,19 @@ public class ShopGUI extends JFrame implements ActionListener {
 			return null;
 		}
 	}
+	
+	/** Returns an ImageIcon, or null if the path was invalid. */
+	protected ImageIcon createImageIcon(String path,
+	                                           String description) {
+	    java.net.URL imgURL = getClass().getResource(path);
+	    if (imgURL != null) {
+	        return new ImageIcon(imgURL, description);
+	    } else {
+	        System.err.println("Couldn't find file: " + path);
+	        return null;
+	    }
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -115,7 +127,4 @@ public class ShopGUI extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 	}
-
 }
-
-

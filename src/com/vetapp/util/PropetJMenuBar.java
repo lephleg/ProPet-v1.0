@@ -127,7 +127,7 @@ public class PropetJMenuBar extends JMenu implements ActionListener {
 			titleLbl = new JLabel(VetApp.MAIN_WINDOW_TITLE);
 			titleLbl.setFont(titleFont);
 			
-			logo = setIcon(com.vetapp.main.VetApp.RACCOON_LOGO_ICON_URL);
+			logo = createImageIcon(com.vetapp.main.VetApp.RACCOON_LOGO_ICON_PATH,"company logo image");
 			logoLbl = new JLabel(logo);
 			
 			font = new Font("Arial", Font.PLAIN, 12);
@@ -176,16 +176,28 @@ public class PropetJMenuBar extends JMenu implements ActionListener {
 			mainPnl.setVisible(true);
 		}
 		
-		/*
-		 * A method to retrieve the logo icon
-		 * */
-		public ImageIcon setIcon(String link) {
-			try {
-				URL url = new URL(link);
-				return (new ImageIcon(url));
-			} catch (MalformedURLException e) {
-				return null;
-			}
+//		/*
+//		 * A method to retrieve the logo icon
+//		 * */
+//		public ImageIcon setIcon(String link) {
+//			try {
+//				URL url = new URL(link);
+//				return (new ImageIcon(url));
+//			} catch (MalformedURLException e) {
+//				return null;
+//			}
+//		}
+		
+		/** Returns an ImageIcon, or null if the path was invalid. */
+		protected ImageIcon createImageIcon(String path,
+		                                           String description) {
+		    java.net.URL imgURL = getClass().getResource(path);
+		    if (imgURL != null) {
+		        return new ImageIcon(imgURL, description);
+		    } else {
+		        System.err.println("Couldn't find file: " + path);
+		        return null;
+		    }
 		}
 	}
 	

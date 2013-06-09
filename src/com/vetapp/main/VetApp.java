@@ -1,8 +1,12 @@
 package com.vetapp.main;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import com.vetapp.customer.Customer;
 import com.vetapp.history.Birth;
@@ -13,29 +17,38 @@ import com.vetapp.util.DB;
 
 public class VetApp {
 		
-	public static String MAIN_WINDOW_TITLE =" ProPet v0.85";
-	public static String LOGO_ICON_URL = "http://i.imgur.com/NHhsSTl.png"; //(sti teliki ekdosi ta URLs
-																			//tha antikatastathei me topiko directory)
-	public static String RACCOON_LOGO_ICON_URL = "http://i.imgur.com/HmklHr8.png"; 
+	public static String MAIN_WINDOW_TITLE =" ProPet v1.02";
+	//public static String LOGO_ICON_URL = "http://i.imgur.com/NHhsSTl.png"; 			//(sti teliki ekdosi ta URLs
+	//public static String RACCOON_LOGO_ICON_URL = "http://i.imgur.com/HmklHr8.png";	//tha antikatastathei me topiko directory)
+	
+	public static String LOGO_IMAGE_PATH = "../../../images/ProPetlogo_130px_v085.png";
+	public static String RACCOON_LOGO_ICON_PATH = "../../../images/comp_logo.png"; 
+
+	public static String IMAGES_PATH = "../../../images/";
+	public static String DEFAULT_PET_IMAGE_PATH = "../../../images/default_125x125.png";
+
 	public static DB db = new DB();
+	MedHistory history0 = new MedHistory();
 
 	public static void main(String[] args) {
 
-	new ShopGUI();					
+	new ShopGUI();			
+		
 
+	
+	
 //		Customer cus0 = new Customer("Giwrgos", "Iwannidis", "Maiandrou 32, Athina", "2102946365", "6986284859", 2, new GregorianCalendar(1991,02,25,21,58,10) );
 //		Customer cus1 = new Customer("Kwstas", "Papadopoulos", "Fragkoklissias 2, Kozani", "2231029465", "6988584896", 2, new GregorianCalendar(2012,11,25,10,00,10));
 
 //		Pet pet0 = new Pet("cat", "Fluffy", "male",  new GregorianCalendar(2011,9,12,00,00,00), "red", "fluffy tail", "CH2325424GR2");
 //		Pet pet1 = new Pet("dog", "Lucy", "female",  new GregorianCalendar(2012,5,12,00,00,00), "black", "long ears", "CH4326922GR9");
-//		MedHistory history0 = new MedHistory("allergia","astheneia","emvolia","farmekeutiki agwgi", "xeirourgeia");
-//		MedHistory history1 = new MedHistory("allergia2","astheneia2","emvolia2","farmekeutiki agwgi2", "xeirourgeia2");
+//		MedHistory history0 = new MedHistory("allergia2","astheneia2","emvolia2","farmekeutiki agwgi2", "xeirourgeia2");
 //		cus0.addPet(pet0);
 //		Birth birth1 = new Birth();
 //		List<Birth> list = new ArrayList<Birth>();
 //		Birth birth2 = new Birth(new GregorianCalendar(1821,4,25,00,00,00),"epanastasi", 8000);
 //		list.add(new Birth(new GregorianCalendar(2011,4,10),"kaisariki",4));
-//		FemMedHistory female = new FemMedHistory();
+//		FemMedHistory female = new FemMedHistory("allergia3","astheneia3","emvolia3","farmekeutiki agwgi3", "xeirourgeia3", list);
 	
 //		cus0 = db.DBGetCustomer("Papadopoulos","Kwstas");
 //		System.out.println(cus0.getCID());
@@ -50,13 +63,13 @@ public class VetApp {
 //		db.DBUpdatePet(cus1, pet1, pet0);
 		
 //		list = db.DBGetAllPets(cus0);
-//		cus0 = db.DBCreateCustomer(cus0);
+//		cus0 = db.DBCreateCustomer(cus1);
 //		System.out.println(cus0.getCID());
 //		db.DBDeleteCustomer(cus0);
 //		db.DBUpdateCustomer(cus0, cus1);
-//		db.DBCreatePet(cus0, pet0);
+//		db.DBCreatePet(cus1, pet0);
 //		pet1.setPID(48);
-//		db.DBCreateMedHistory(pet0, female);
+//		db.DBCreateMedHistory(pet1, history0);
 //		history0.setMID(16);
 //		db.DBUpdateMedHistory(history0, history1);
 //		db.DBDeletePet(cus1,pet0);
@@ -91,6 +104,8 @@ public class VetApp {
 //		List<Birth> births = female.getBirths();
 //		System.out.println(births.get(0).getComplications());
 		
-	}
 
+	
+	}
+	
 }
