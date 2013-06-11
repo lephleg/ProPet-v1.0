@@ -98,22 +98,22 @@ public class PetGUI extends JFrame implements ActionListener {
 				RowSpec.decode("14px"),}));
 
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
-		JLabel species = new JLabel("<html><font color=\"#96968F\">Species:</font> " + aPet.getSpecies() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
+		JLabel species = new JLabel("<html><font color=\"#96968F\">Species:</font> " + aPet.getSpecies() + "</html>"); 	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(species, "3, 4, 2, 1, left, center");
 
-		JLabel name = new JLabel("<html><font color=\"#96968F\">Name:</font> " + aPet.getName() + "</html>");
+		JLabel name = new JLabel("<html><font color=\"#96968F\">Name:</font> " + aPet.getName() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(name, "3, 6, 2, 1, left, center");
 
-		JLabel gender = new JLabel("<html><font color=\"#96968F\">Gender:</font> " + aPet.getGender() + "</html>");
+		JLabel gender = new JLabel("<html><font color=\"#96968F\">Gender:</font> " + aPet.getGender() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(gender, "3, 8, 2, 1, left, center");
 
-		JLabel birthDay = new JLabel("<html><font color=\"#96968F\">Birth date:</font> " + display.format(aPet.getBirthDay().getTime()) + "</html>");
+		JLabel birthDay = new JLabel("<html><font color=\"#96968F\">Birth date:</font> " + display.format(aPet.getBirthDay().getTime()) + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
 
-		JLabel furColor = new JLabel("<html><font color=\"#96968F\">Fur Colour:</font> " + aPet.getFurColour() + "</html>");
+		JLabel furColor = new JLabel("<html><font color=\"#96968F\">Fur Colour:</font> " + aPet.getFurColour() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(furColor, "3, 12, 2, 1, left, center");
 
-		JLabel specialChars = new JLabel("<html><font color=\"#96968F\">Special Characteristics:</font> " + aPet.getSpecialChars() + "</html>");
+		JLabel specialChars = new JLabel("<html><font color=\"#96968F\">Special Characteristics:</font> " + aPet.getSpecialChars() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(specialChars, "3, 14, 2, 1, left, center");
 
 
@@ -348,9 +348,15 @@ public class PetGUI extends JFrame implements ActionListener {
 
 			//-------------------- IMAGE  --------------------
 
-			JButton UploadImageButton = new JButton("Upload image");      
+			//last minute implementation of an instructions label for image selection 
+			//also used HTML tags to correct text appearance
+			
+			JLabel UploadLabel = new JLabel("<html><font color=\"#96968F\">Select a .PNG file of any dimensions for pet image:</font>");
+			JButton UploadImageButton = new JButton("Select image");      
 			UploadImageButton.addActionListener(this);
-			UploadImageButton.setBounds(403, 52, 130, 28);
+			UploadImageButton.setBounds(403, 98, 130, 28);
+			UploadLabel.setBounds(413, 40, 130, 50);
+			contentPane.add(UploadLabel);
 			contentPane.add(UploadImageButton);
 
 			JButton cancelButton = new JButton("Cancel");			
