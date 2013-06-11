@@ -92,20 +92,20 @@ public class CustomerGUI extends JFrame implements ActionListener {
 		contentPane.add(customerInfo_panel);
 		customerInfo_panel.setLayout(new GridLayout(5, 0, 0, 0));
 
-		JLabel lastName = new JLabel(customer.getLastName());
+		JLabel lastName = new JLabel("<html><font color=\"#96968F\">Last Name:</font> " + customer.getLastName() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		customerInfo_panel.add(lastName);
 
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
-		JLabel firstName = new JLabel(customer.getFirstName());
+		JLabel firstName = new JLabel("<html><font color=\"#96968F\">First Name:</font> " + customer.getFirstName() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
 		customerInfo_panel.add(firstName);
 
-		JLabel address = new JLabel(customer.getAddress());
+		JLabel address = new JLabel("<html><font color=\"#96968F\">Address:</font> " + customer.getAddress() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
 		customerInfo_panel.add(address);
 
-		JLabel homeNumber = new JLabel(customer.getHomeNumber());
+		JLabel homeNumber = new JLabel("<html><font color=\"#96968F\">Home Number:</font> " + customer.getHomeNumber() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
 		customerInfo_panel.add(homeNumber);
 
-		JLabel mobileNumber = new JLabel(customer.getMobileNumber());
+		JLabel mobileNumber = new JLabel("<html><font color=\"#96968F\">Mobile Number:</font> " + customer.getMobileNumber() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
 		customerInfo_panel.add(mobileNumber);
 
 		//-------------------- VISITS PANEL ------------------------
@@ -768,7 +768,7 @@ public class CustomerGUI extends JFrame implements ActionListener {
 			
 					ProPetApp.db.DBUpdateCustomer(customer, newCustomer);			//Update tou pelath sth vasi
 					CustomersGUI.model.reloadJTable();							//Epanafortwsi tou JTable sto CustomersGUI
-					JOptionPane.showMessageDialog(null,"Customer Edited!");   	// Emfanish mhnymatos epityxias					
+					JOptionPane.showMessageDialog(null,"Your changes have been saved.");   	// Emfanish mhnymatos epityxias					
 					dispose();													//kleisimo tou editCustomerGUI
 					new CustomerGUI(newCustomer);								//epanafortwsi CustomerGUI
 				}

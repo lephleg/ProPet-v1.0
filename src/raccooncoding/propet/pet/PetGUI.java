@@ -98,22 +98,22 @@ public class PetGUI extends JFrame implements ActionListener {
 				RowSpec.decode("14px"),}));
 
 		//Dedomena tou xristi (8a antikatastountai me ali8ina dedomena kata tin dimiourgia tou frame)
-		JLabel species = new JLabel(aPet.getSpecies());
+		JLabel species = new JLabel("<html><font color=\"#96968F\">Species:</font> " + aPet.getSpecies() + "</html>"); //last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(species, "3, 4, 2, 1, left, center");
 
-		JLabel name = new JLabel(aPet.getName());
+		JLabel name = new JLabel("<html><font color=\"#96968F\">Name:</font> " + aPet.getName() + "</html>");
 		petInfo_panel.add(name, "3, 6, 2, 1, left, center");
 
-		JLabel gender = new JLabel(aPet.getGender());
+		JLabel gender = new JLabel("<html><font color=\"#96968F\">Gender:</font> " + aPet.getGender() + "</html>");
 		petInfo_panel.add(gender, "3, 8, 2, 1, left, center");
 
-		JLabel birthDay = new JLabel(display.format(aPet.getBirthDay().getTime()));
+		JLabel birthDay = new JLabel("<html><font color=\"#96968F\">Birth date:</font> " + display.format(aPet.getBirthDay().getTime()) + "</html>");
 		petInfo_panel.add(birthDay, "3, 10, 2, 1, left, center");
 
-		JLabel furColor = new JLabel(aPet.getFurColour());
+		JLabel furColor = new JLabel("<html><font color=\"#96968F\">Fur Colour:</font> " + aPet.getFurColour() + "</html>");
 		petInfo_panel.add(furColor, "3, 12, 2, 1, left, center");
 
-		JLabel specialChars = new JLabel(aPet.getSpecialChars());
+		JLabel specialChars = new JLabel("<html><font color=\"#96968F\">Special Characteristics:</font> " + aPet.getSpecialChars() + "</html>");
 		petInfo_panel.add(specialChars, "3, 14, 2, 1, left, center");
 
 
@@ -429,7 +429,7 @@ public class PetGUI extends JFrame implements ActionListener {
 						ProPetApp.db.DBUpdatePet(customer, aPet, pet);				//update database
 						System.out.println("RELOADING PET TABLE WITH NEW IMAGE");
 						CustomerGUI.petModel.reloadPetJTable(customer);			// Reload the PetTable
-						JOptionPane.showMessageDialog(null,"Pet Added!");   	// Emfanish mhnymatos epityxias
+						JOptionPane.showMessageDialog(null,"Your changes have been saved.");   	// Emfanish mhnymatos epityxias
 						dispose();     											// Kleisimo tou frame
 						pet.setPID(aPet.getPID());								// Pass the PID to new object
 						new PetGUI(customer, pet);
