@@ -276,6 +276,7 @@ public class DB
 		//open connection
 		Connection con = DBConnect();
 
+		//FIXME: Here we should also delete related MedHistory records
 
 		//SQL Statement
 		//Delete Pets related to this customer
@@ -643,6 +644,8 @@ public class DB
 		//open connection
 		Connection con = DBConnect();
 
+		//TODO: We should also store "neutering" in db!
+		
 		//SQL statement
 		Statement stmt;
 		ResultSet rs;

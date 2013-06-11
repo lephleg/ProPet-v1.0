@@ -148,6 +148,8 @@ public class MedHistoryGUI extends JFrame {
 
 		JLabel NeuteringLbl = new JLabel("   Neutering:");
 		getContentPane().add(NeuteringLbl, "6, 25, left, top");
+		
+		NeuteringLbl.setVisible(false);					//EXCLUDING NEUTERING FEATURE
 
 		btnBirths = new JButton("Births");
 		btnBirths.setEnabled(false);
@@ -175,6 +177,8 @@ public class MedHistoryGUI extends JFrame {
 		NeuValLbl.setText("No");
 		NeuValLbl.setEnabled(false);
 		getContentPane().add(NeuValLbl, "8, 25, center, default");
+		
+		NeuValLbl.setVisible(false);				//EXCLUDING NEUTERING FEATURE
 
 		EditBtn = new JButton();
 		EditBtn.setText("Edit Medical History");
@@ -207,6 +211,9 @@ public class MedHistoryGUI extends JFrame {
 				NeutBtnNo.setSelected(true);
 				getContentPane().add(NeutBtnNo, "8, 26, center, top");
 				BtnGroup.add(NeutBtnNo);
+				
+				NeutBtnYes.setVisible(false);				//EXCLUDING NEUTERING FEATURE
+				NeutBtnNo.setVisible(false);				//EXCLUDING NEUTERING FEATURE
 
 				//births button
 				btnBirths.setVisible(false);
@@ -226,6 +233,7 @@ public class MedHistoryGUI extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						MedHistory newhistory = new MedHistory(AllergiesTxtFld.getText(),DiseasesTxtFld.getText(),VaccinesTxtFld.getText(),MedTreatmentTxtFld.getText(), SurgTxtFld.getText());
+						//TODO: We should also store "neutering" in MedHistory class and store it to DB!
 						ProPetApp.db.DBUpdateMedHistory(history, newhistory);
 						MedHistoryGUI.super.dispose();
 						new MedHistoryGUI(pet);
