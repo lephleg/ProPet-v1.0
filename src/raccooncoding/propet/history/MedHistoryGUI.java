@@ -1,5 +1,6 @@
 package raccooncoding.propet.history;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -94,7 +95,9 @@ public class MedHistoryGUI extends JFrame {
 		lblMedicalHistory.setText("Medical History");
 		getContentPane().add(lblMedicalHistory, "6, 2, center, default");
 
-		JLabel VaccineLbl = new JLabel("   Vaccinated:");
+        Font displayFont = new Font("Arial", Font.ITALIC,12);
+		
+		JLabel VaccineLbl = new JLabel("Vaccinated:");
 		VaccineLbl.setVerticalAlignment(SwingConstants.TOP);
 		getContentPane().add(VaccineLbl, "6, 5, fill, center");
 
@@ -104,8 +107,9 @@ public class MedHistoryGUI extends JFrame {
 		getContentPane().add(VaccinesTxtFld, "6, 7, fill, fill");
 		VaccinesTxtFld.setColumns(10);
 		VaccinesTxtFld.setText(history.getGrafts());
+		VaccinesTxtFld.setFont(displayFont);
 
-		JLabel AllergiesLbl = new JLabel("   Allergies:");
+		JLabel AllergiesLbl = new JLabel("Allergies:");
 		AllergiesLbl.setLabelFor(AllergiesLbl);
 		getContentPane().add(AllergiesLbl, "6, 9, left, center");
 
@@ -114,8 +118,9 @@ public class MedHistoryGUI extends JFrame {
 		getContentPane().add(AllergiesTxtFld, "6, 11, fill, fill");
 		AllergiesTxtFld.setColumns(10);
 		AllergiesTxtFld.setText(history.getAllergies());
+		AllergiesTxtFld.setFont(displayFont);
 
-		JLabel DiseasesLbl = new JLabel("   Diseases:");
+		JLabel DiseasesLbl = new JLabel("Diseases:");
 		getContentPane().add(DiseasesLbl, "6, 13, left, center");
 
 		DiseasesTxtFld = new JTextField();
@@ -124,8 +129,9 @@ public class MedHistoryGUI extends JFrame {
 		getContentPane().add(DiseasesTxtFld, "6, 15, fill, fill");
 		DiseasesTxtFld.setColumns(10);
 		DiseasesTxtFld.setText(history.getDiseases());
+		DiseasesTxtFld.setFont(displayFont);
 
-		JLabel SurgeriesLbl = new JLabel("   Surgeries:");
+		JLabel SurgeriesLbl = new JLabel("Surgeries:");
 		SurgeriesLbl.setLabelFor(SurgeriesLbl);
 		getContentPane().add(SurgeriesLbl, "6, 17, left, center");
 
@@ -134,9 +140,9 @@ public class MedHistoryGUI extends JFrame {
 		getContentPane().add(SurgTxtFld, "6, 19, fill, fill");
 		SurgTxtFld.setColumns(10);
 		SurgTxtFld.setText(history.getSurgeries());
+		SurgTxtFld.setFont(displayFont);
 
-
-		JLabel MedTrLbl = new JLabel("   Medical Treatment:");
+		JLabel MedTrLbl = new JLabel("Medical Treatment:");
 		getContentPane().add(MedTrLbl, "6, 21, left, center");
 
 		MedTreatmentTxtFld = new JTextField();
@@ -145,8 +151,9 @@ public class MedHistoryGUI extends JFrame {
 		getContentPane().add(MedTreatmentTxtFld, "6, 23, fill, fill");
 		MedTreatmentTxtFld.setColumns(10);
 		MedTreatmentTxtFld.setText(history.getMedicalTreatment());
+		MedTreatmentTxtFld.setFont(displayFont);
 
-		JLabel NeuteringLbl = new JLabel("   Neutering:");
+		JLabel NeuteringLbl = new JLabel("Neutering:");
 		getContentPane().add(NeuteringLbl, "6, 25, left, top");
 		
 		NeuteringLbl.setVisible(false);					//EXCLUDING NEUTERING FEATURE
@@ -187,12 +194,22 @@ public class MedHistoryGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+		        Font editFont = new Font("Arial", Font.PLAIN,12);
+
 				//make textfields editable
 				VaccinesTxtFld.setEditable(true);
 				AllergiesTxtFld.setEditable(true);
 				DiseasesTxtFld.setEditable(true);
 				SurgTxtFld.setEditable(true);
 				MedTreatmentTxtFld.setEditable(true);
+				
+				//change font to regular
+				VaccinesTxtFld.setFont(editFont);
+				AllergiesTxtFld.setFont(editFont);
+				DiseasesTxtFld.setFont(editFont);
+				SurgTxtFld.setFont(editFont);
+				MedTreatmentTxtFld.setFont(editFont);
+
 
 				//removing neutering label
 				NeuValLbl.setVisible(false);

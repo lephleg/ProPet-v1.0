@@ -113,7 +113,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		JLabel furColor = new JLabel("<html><font color=\"#96968F\">Fur Colour:</font> " + aPet.getFurColour() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(furColor, "3, 12, 2, 1, left, center");
 
-		JLabel specialChars = new JLabel("<html><font color=\"#96968F\">Special Characteristics:</font> " + aPet.getSpecialChars() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
+		JLabel specialChars = new JLabel("<html><font color=\"#96968F\">Special Chars:</font> " + aPet.getSpecialChars() + "</html>");	//last minute fix using HTML tags to correct text appearance requested as "bug"
 		petInfo_panel.add(specialChars, "3, 14, 2, 1, left, center");
 
 
@@ -151,7 +151,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		imagePetLabel.setBounds(250, 10, 140, 140);
 		contentPane.add(imagePetLabel);
 
-		JButton medicalHistoryButton = new JButton("Medical Histoty");      //Medical History  button 
+		JButton medicalHistoryButton = new JButton("Medical History");      //Medical History  button 
 		medicalHistoryButton.addActionListener(this);
 		medicalHistoryButton.setBounds(253, 152, 130, 28);
 		contentPane.add(medicalHistoryButton);
@@ -191,7 +191,7 @@ public class PetGUI extends JFrame implements ActionListener {
 		} else if (e.getActionCommand().equals("Edit Pet")) {
 			new editPetGUI();
 			PetGUI.this.dispose();
-		} else if (e.getActionCommand().equals("Medical Histoty")) {
+		} else if (e.getActionCommand().equals("Medical History")) {
 			new MedHistoryGUI(aPet);
 		} else if (e.getActionCommand().equals("Back")) {
 			this.dispose();
@@ -374,7 +374,7 @@ public class PetGUI extends JFrame implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("Upload image")) {
+			if (e.getActionCommand().equals("Select image")) {
 				//TODO
 				final JFileChooser fc = new JFileChooser();
 				fc.showOpenDialog(this);
