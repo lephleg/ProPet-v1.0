@@ -111,7 +111,7 @@ public class CustomersGUI extends JFrame implements ActionListener {
 
 		//controlPnl layout (horizontal BoxLayout) 
 		searchTxt = new JTextField(10);
-		PromptSupport.setPrompt("Search...", searchTxt); 	//prompt text - using xswingx library
+		PromptSupport.setPrompt("Search for a customer...", searchTxt); 	//prompt text - using xswingx library
 		PromptSupport.setFocusBehavior(FocusBehavior.HIDE_PROMPT, searchTxt);
 		newBtn = new JButton(NEW_BUTTON_LABEL);
 		controlLayout = new BoxLayout(controlPnl, BoxLayout.X_AXIS);
@@ -254,7 +254,8 @@ public class CustomersGUI extends JFrame implements ActionListener {
 				data[i][0] = lista.get(i).getLastName();
 				data[i][1] = lista.get(i).getFirstName();
 				if (lista.get(i).getNextVisit()==null) {
-					data[i][2] = "NOT SET";
+					//data[i][2] = "NOT SET";
+					data[i][2] = "";				//better to display nothing
 				} else {
 					String date = displayDateFormat.format(lista.get(i).getNextVisit().getTime());
 					data[i][2] = date;

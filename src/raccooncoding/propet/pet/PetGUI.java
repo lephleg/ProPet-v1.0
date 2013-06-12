@@ -121,7 +121,7 @@ public class PetGUI extends JFrame implements ActionListener {
 
 		JPanel electicchip_panel = new JPanel();				
 		electicchip_panel.setBounds(10, 202, 230, 50);
-		electicchip_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Electric Chip"));
+		electicchip_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Electronic Chip"));
 		contentPane.add(electicchip_panel);
 		electicchip_panel.setLayout(null);
 
@@ -328,12 +328,12 @@ public class PetGUI extends JFrame implements ActionListener {
 
 			JPanel electicchip_panel = new JPanel();				
 			electicchip_panel.setBounds(10, 222, 380, 69);
-			electicchip_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Edit Electric Chip"));
+			electicchip_panel.setBorder(BorderFactory.createTitledBorder(loweredetched, "Edit Electronic Chip"));
 			contentPane.add(electicchip_panel);
 			electicchip_panel.setLayout(null);
 
-			JLabel electicchipLabel = new JLabel("ChipNumber:");
-			electicchipLabel.setBounds(18, 25, 74, 27);
+			JLabel electicchipLabel = new JLabel("Chip Number:");
+			electicchipLabel.setBounds(18, 25, 100, 27);
 			electicchip_panel.add(electicchipLabel);
 
 			electicchipTxt = new JTextField();
